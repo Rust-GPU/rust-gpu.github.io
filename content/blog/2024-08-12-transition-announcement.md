@@ -94,7 +94,7 @@ To put Rust GPU in context, here's an overview of the current landscape:
 
    Additionally, Rust's `no_std` ecosystem offers a wide array of libraries that can be
    used in environments without the standard library. Traditionally this has meant
-   embedded devices, but a lot of the same assumptions apply to GPU shaders! As a
+   embedded devices, but a lot of the same assumptions apply to GPUs! As a
    consequence, you can reuse [existing `no_std` libraries from
    crates.io](https://crates.io/categories/no-std::no-alloc) in your GPU code _without
    the authors explicitly adding GPU support_. This is uniquely enabled by Rust GPU's
