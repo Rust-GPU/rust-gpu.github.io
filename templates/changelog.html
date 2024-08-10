@@ -1,0 +1,35 @@
+{% extends "juice/templates/index.html" %}
+{% import "_macros2.html" as macros2 %}
+
+{% block head %}
+<link rel="alternate" type="application/atom+xml" title="RSS" href="{{ get_url(path="atom.xml", trailing_slash=false) }}">
+{% endblock head %}
+
+{% block fonts %}
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Fira+Sans:400,500,600&display=swap" rel="stylesheet">
+{% endblock fonts %}
+
+{% block title %}{{ page.title }} | {{ super() }} {% endblock title %}
+
+{% block header %}
+<style>
+    .logo {
+        font-family: 'Inter', serif;
+    }
+</style>
+{{ macros2::hide_logo_img() }}
+<header class="box-shadow">
+    {{ macros::render_header() }}
+</header>
+{% endblock header %}
+
+{% block content %}
+{{ page.content | safe }}
+{% endblock content %}
+
+{% block sidebar %}
+{% endblock sidebar %}
+
+{% block footer %}
+{% endblock footer %}
