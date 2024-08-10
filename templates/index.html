@@ -2,6 +2,7 @@
 {% import "_macros2.html" as macros2 %}
 
 {% block head %}
+<link rel="stylesheet" href="{{ get_url(path="custom.css") }}">
 <link rel="alternate" type="application/atom+xml" title="RSS" href="{{ get_url(path="atom.xml", trailing_slash=false) }}">
 {% endblock head %}
 
@@ -14,9 +15,6 @@
 <script async defer src="https://buttons.github.io/buttons.js"></script>
 {{ macros2::hide_logo() }}
 <style>
-    .logo {
-        font-family: 'Inter', serif;
-    }
   .hero section {
     padding: 0 5rem;
   }

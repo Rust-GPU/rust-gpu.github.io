@@ -2,6 +2,7 @@
 {% import "_macros2.html" as macros2 %}
 
 {% block head %}
+<link rel="stylesheet" href="{{ get_url(path="custom.css") }}">
 <link rel="alternate" type="application/atom+xml" title="RSS" href="{{ get_url(path="atom.xml", trailing_slash=false) }}">
 {% endblock head %}
 
@@ -13,11 +14,6 @@
 {% block title %}{{ page.title }} | {{ super() }} {% endblock title %}
 
 {% block header %}
-<style>
-    .logo {
-        font-family: 'Inter', serif;
-    }
-</style>
 {{ macros2::hide_logo_img() }}
 <header class="box-shadow">
     {{ macros::render_header() }}
