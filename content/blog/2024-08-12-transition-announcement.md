@@ -55,8 +55,8 @@ To put Rust GPU in context, here's an overview of the current landscape:
   [MSL](https://developer.apple.com/metal/)). These shaders ultimately run on the GPU.
 - [ZLUDA](https://github.com/vosen/ZLUDA): A drop-in replacement for CUDA written in
   Rust. Enables using tools and libraries targeted at CUDA on non-NVIDIA hardware.
-- [Ashai Linux GPU
-  Drivers](https://asahilinux.org/2022/12/gpu-drivers-now-in-asahi-linux/): GPU drivers
+- [Asahi Linux GPU
+  drivers](https://asahilinux.org/2022/12/gpu-drivers-now-in-asahi-linux/): GPU drivers
   partially written in Rust to add Linux support for Apple GPUs.
 
 ## Why Rust for GPU Programming?
