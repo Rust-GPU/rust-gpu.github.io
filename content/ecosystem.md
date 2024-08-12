@@ -56,6 +56,5 @@ shader languages ([WGSL](https://www.w3.org/TR/WGSL/),
 A drop-in replacement for CUDA written in Rust. Enables using tools and libraries
 targeted at CUDA on non-NVIDIA hardware.
 
-# [Ashai Linux GPU Drivers](https://asahilinux.org/2022/12/gpu-drivers-now-in-asahi-linux/)
-
+# [Asahi Linux GPU drivers](https://asahilinux.org/2022/12/gpu-drivers-now-in-asahi-linux/)
 GPU drivers partially written in Rust to add Linux support for Apple GPUs.
