@@ -180,9 +180,7 @@ Our immediate focus is on the following tasks:
 - **Better compatibility.**
   - Fully switch to [quasi-pointers](https://github.com/EmbarkStudios/spirt/pull/24) to
     support more advanced Rust constructs.
-  - Add `alloc` support. This will allow us to move from supporting [at most 500
-    `no_std`, no alloc crates](https://crates.io/categories/no-std::no-alloc) to [over
-    6,000 `no_std` + alloc crates](https://crates.io/categories/no-std).
+  - Add `alloc` support. This will allow us to use even more `no_std` crates that also allocate memory.
 - **Better testing.**
   - Develop our own crater-like tool to create a burndown list of `no_std` and `alloc`
     crates that don't work with Rust GPU.
