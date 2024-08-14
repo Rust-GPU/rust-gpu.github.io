@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Blog |  </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    
+    <link rel="icon" type="image/png" href="/favicon.ico">
+    
+    <style>
+    :root {
+      /* Primary theme color */
+      --primary-color: #fff; /* GitHub green for buttons and highlights */
+      /* Primary theme text color */
+      --primary-text-color: #24292e; /* GitHub dark gray for primary text */
+      --primary-text-color-over: #0056b3; /* White text over primary color */
+      /* Primary theme link color */
+      --primary-link-color: #0366d6; /* GitHub blue for links */
+      /* Secondary color: the background body color */
+      --secondary-color: #f6f8fa; /* GitHub light gray background */
+      --secondary-text-color: #586069; /* GitHub medium gray for secondary text */
+      /* Highlight text color for table of contents */
+      --toc-highlight-text-color: #a66cdc; /* GitHub red for warnings */
+      /* Table of contents background color */
+      --toc-background-color: #ffffff; /* White background for table of contents */
+      /* Code block text color */
+      --code-color: #24292e; /* Dark gray for code text */
+      /* Code block background color */
+      --code-background-color: #eeeeee; /* Light gray background for code */
+      /* Shadow color for elements */
+      --shadow-color: rgba(27, 31, 35, 0.15); /* Subtle shadow */
+      /* Font used for headers (h1 & h2) */
+      --header-font-family: "Fira Sans", sans-serif;
+      /* Font used for text */
+      --text-font-family: "Fira Sans", sans-serif;
+      /* Link hover and active states */
+      --link-hover-color: #0056b3; /* Darker blue on hover */
+      --link-active-color: #0056b3; /* Same color for active state */
+      /* Border and focus states */
+      --border-color: #e1e4e8; /* Light gray borders */
+      --focus-border-color: #0366d6; /* Blue border for focus */
+    }
+</style>
+
+
+    
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Fira+Sans:400,500,600&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="/normalize.css">
+    <link rel="stylesheet" href="https://rust-gpu.github.io/juice.css">
+    
+<link rel="stylesheet" href="https://rust-gpu.github.io/custom.css">
+<link rel="alternate" type="application/atom+xml" title="RSS" href="https://rust-gpu.github.io/atom.xml">
+
+</head>
+
+<body>
+    
+<header class="box-shadow">
+    
+
+<a href="https://rust-gpu.github.io/">
+    <div class="logo">
+        <img src="https://rust-gpu.github.io" alt="logo">
+        Rust GPU
+    </div>
+</a>
+
+<nav>
+    
+    
+    
+    
+    
+    
+    
+    
+        
+        <a class="nav-item subtitle-text" href="https://rust-gpu.github.io/rust-gpu/book/">Docs</a>
+        
+        <a class="nav-item subtitle-text" href="/blog/">Blog</a>
+        
+        <a class="nav-item subtitle-text" href="/ecosystem/">Ecosystem</a>
+        
+        <a class="nav-item subtitle-text" href="/changelog/">Changelog</a>
+        
+        <a class="nav-item subtitle-text" href="https://github.com/Rust-GPU/rust-gpu">GitHub</a>
+        
+    
+</nav>
+
+</header>
+
+
+    <main>
+        
+        
+        
+        
+
+        <div class="content text">
+            
+<div class="blog">
+    <div id="features" class="heading-text">Blog</div>
+    <p>Rust GPU announcements, tips and tricks, and community showcases.</p>
+
+
+    <hr/>
+
+
+    
+        <article>
+            <h2>2024-08-12 - <a href="https:&#x2F;&#x2F;rust-gpu.github.io&#x2F;blog&#x2F;transition-announcement&#x2F;">Rust GPU Transitions to Community Ownership</h2>
+            <p></p>
+        </article>
+    
+
+</div>
+
+        </div>
+
+        
+
+    </main>
+
+    
+
+</body>
+<script>
+    const scrollHandler = entries => {
+        // Find the first entry which intersecting and ratio > 0.9 to highlight.
+        let entry = entries.find(entry => {
+            return entry.isIntersecting && entry.intersectionRatio > 0.9;
+        });
+        if (!entry) return;
+
+        document.querySelectorAll(".toc a").forEach((item) => {
+            item.classList.remove("active");
+        });
+
+        // let url = new URL(`#${entry.target.id}`);
+        let link = document.querySelector(`.toc a[href$="${decodeURIComponent(`#${entry.target.id}`)}"]`)
+        if (link) {
+            link.classList.add("active");
+            link.scrollIntoView({ behavior: "auto", block: "nearest" });
+        }
+    };
+    // Set -100px root margin to improve highlight experience.
+    const observer = new IntersectionObserver(scrollHandler, { threshold: 1 });
+    let items = document.querySelectorAll('h1,h2,h3,h4,h5,h6');
+    items.forEach(item => observer.observe(item));
+</script>
+
+</html>

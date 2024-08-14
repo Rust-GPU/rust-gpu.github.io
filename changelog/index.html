@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Changelog |  </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    
+    <link rel="icon" type="image/png" href="/favicon.ico">
+    
+    <style>
+    :root {
+      /* Primary theme color */
+      --primary-color: #fff; /* GitHub green for buttons and highlights */
+      /* Primary theme text color */
+      --primary-text-color: #24292e; /* GitHub dark gray for primary text */
+      --primary-text-color-over: #0056b3; /* White text over primary color */
+      /* Primary theme link color */
+      --primary-link-color: #0366d6; /* GitHub blue for links */
+      /* Secondary color: the background body color */
+      --secondary-color: #f6f8fa; /* GitHub light gray background */
+      --secondary-text-color: #586069; /* GitHub medium gray for secondary text */
+      /* Highlight text color for table of contents */
+      --toc-highlight-text-color: #a66cdc; /* GitHub red for warnings */
+      /* Table of contents background color */
+      --toc-background-color: #ffffff; /* White background for table of contents */
+      /* Code block text color */
+      --code-color: #24292e; /* Dark gray for code text */
+      /* Code block background color */
+      --code-background-color: #eeeeee; /* Light gray background for code */
+      /* Shadow color for elements */
+      --shadow-color: rgba(27, 31, 35, 0.15); /* Subtle shadow */
+      /* Font used for headers (h1 & h2) */
+      --header-font-family: "Fira Sans", sans-serif;
+      /* Font used for text */
+      --text-font-family: "Fira Sans", sans-serif;
+      /* Link hover and active states */
+      --link-hover-color: #0056b3; /* Darker blue on hover */
+      --link-active-color: #0056b3; /* Same color for active state */
+      /* Border and focus states */
+      --border-color: #e1e4e8; /* Light gray borders */
+      --focus-border-color: #0366d6; /* Blue border for focus */
+    }
+</style>
+
+
+    
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Fira+Sans:400,500,600&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="/normalize.css">
+    <link rel="stylesheet" href="https://rust-gpu.github.io/juice.css">
+    
+<link rel="stylesheet" href="https://rust-gpu.github.io/custom.css">
+<link rel="alternate" type="application/atom+xml" title="RSS" href="https://rust-gpu.github.io/atom.xml">
+
+</head>
+
+<body>
+    
+<header class="box-shadow">
+    
+
+<a href="https://rust-gpu.github.io/">
+    <div class="logo">
+        <img src="https://rust-gpu.github.io" alt="logo">
+        Rust GPU
+    </div>
+</a>
+
+<nav>
+    
+    
+    
+    
+    
+    
+    
+    
+        
+        <a class="nav-item subtitle-text" href="https://rust-gpu.github.io/rust-gpu/book/">Docs</a>
+        
+        <a class="nav-item subtitle-text" href="/blog/">Blog</a>
+        
+        <a class="nav-item subtitle-text" href="/ecosystem/">Ecosystem</a>
+        
+        <a class="nav-item subtitle-text" href="/changelog/">Changelog</a>
+        
+        <a class="nav-item subtitle-text" href="https://github.com/Rust-GPU/rust-gpu">GitHub</a>
+        
+    
+</nav>
+
+</header>
+
+
+    <main>
+        
+        
+        
+        
+        
+        <div class="toc">
+            <div class="toc-sticky">
+                
+                <div class="toc-item">
+                    <a class="subtext" href="https://rust-gpu.github.io/changelog/#rust-gpu-changelog">rust-gpu Changelog</a>
+                </div>
+                
+                
+                <div class="toc-item-child">
+                    <a class="subtext" href="https://rust-gpu.github.io/changelog/#unreleased"><small>- [Unreleased]</small></a>
+                </div>
+                
+                <div class="toc-item-child">
+                    <a class="subtext" href="https://rust-gpu.github.io/changelog/#0-9-0"><small>- [0.9.0]</small></a>
+                </div>
+                
+                <div class="toc-item-child">
+                    <a class="subtext" href="https://rust-gpu.github.io/changelog/#0-8-0"><small>- [0.8.0]</small></a>
+                </div>
+                
+                <div class="toc-item-child">
+                    <a class="subtext" href="https://rust-gpu.github.io/changelog/#0-7-0"><small>- [0.7.0]</small></a>
+                </div>
+                
+                <div class="toc-item-child">
+                    <a class="subtext" href="https://rust-gpu.github.io/changelog/#0-6-1"><small>- [0.6.1]</small></a>
+                </div>
+                
+                <div class="toc-item-child">
+                    <a class="subtext" href="https://rust-gpu.github.io/changelog/#0-6-0"><small>- [0.6.0]</small></a>
+                </div>
+                
+                <div class="toc-item-child">
+                    <a class="subtext" href="https://rust-gpu.github.io/changelog/#0-5-0"><small>- [0.5.0]</small></a>
+                </div>
+                
+                <div class="toc-item-child">
+                    <a class="subtext" href="https://rust-gpu.github.io/changelog/#0-4-0"><small>- [0.4.0]</small></a>
+                </div>
+                
+                <div class="toc-item-child">
+                    <a class="subtext" href="https://rust-gpu.github.io/changelog/#0-4-0-alpha-17"><small>- [0.4.0-alpha.17]</small></a>
+                </div>
+                
+                <div class="toc-item-child">
+                    <a class="subtext" href="https://rust-gpu.github.io/changelog/#0-4-0-alpha-16"><small>- [0.4.0-alpha.16]</small></a>
+                </div>
+                
+                <div class="toc-item-child">
+                    <a class="subtext" href="https://rust-gpu.github.io/changelog/#0-4-0-alpha-15"><small>- [0.4.0-alpha.15]</small></a>
+                </div>
+                
+                <div class="toc-item-child">
+                    <a class="subtext" href="https://rust-gpu.github.io/changelog/#0-4-0-alpha-14"><small>- [0.4.0-alpha.14]</small></a>
+                </div>
+                
+                <div class="toc-item-child">
+                    <a class="subtext" href="https://rust-gpu.github.io/changelog/#0-4-0-alpha-13"><small>- [0.4.0-alpha.13]</small></a>
+                </div>
+                
+                <div class="toc-item-child">
+                    <a class="subtext" href="https://rust-gpu.github.io/changelog/#0-4-0-alpha-12"><small>- [0.4.0-alpha.12]</small></a>
+                </div>
+                
+                <div class="toc-item-child">
+                    <a class="subtext" href="https://rust-gpu.github.io/changelog/#0-4-0-alpha-11"><small>- [0.4.0-alpha.11]</small></a>
+                </div>
+                
+                <div class="toc-item-child">
+                    <a class="subtext" href="https://rust-gpu.github.io/changelog/#0-4-0-alpha-10"><small>- [0.4.0-alpha.10]</small></a>
+                </div>
+                
+                <div class="toc-item-child">
+                    <a class="subtext" href="https://rust-gpu.github.io/changelog/#0-4-0-alpha-9"><small>- [0.4.0-alpha.9]</small></a>
+                </div>
+                
+                <div class="toc-item-child">
+                    <a class="subtext" href="https://rust-gpu.github.io/changelog/#0-4-0-alpha-8"><small>- [0.4.0-alpha.8]</small></a>
+                </div>
+                
+                <div class="toc-item-child">
+                    <a class="subtext" href="https://rust-gpu.github.io/changelog/#0-4-0-alpha-7"><small>- [0.4.0-alpha.7]</small></a>
+                </div>
+                
+                <div class="toc-item-child">
+                    <a class="subtext" href="https://rust-gpu.github.io/changelog/#0-4-0-alpha-6"><small>- [0.4.0-alpha.6]</small></a>
+                </div>
+                
+                <div class="toc-item-child">
+                    <a class="subtext" href="https://rust-gpu.github.io/changelog/#0-4-0-alpha-5"><small>- [0.4.0-alpha.5]</small></a>
+                </div>
+                
+                <div class="toc-item-child">
+                    <a class="subtext" href="https://rust-gpu.github.io/changelog/#0-4-0-alpha-4"><small>- [0.4.0-alpha.4]</small></a>
+                </div>
+                
+                <div class="toc-item-child">
+                    <a class="subtext" href="https://rust-gpu.github.io/changelog/#0-4-0-alpha-3"><small>- [0.4.0-alpha.3]</small></a>
+                </div>
+                
+                <div class="toc-item-child">
+                    <a class="subtext" href="https://rust-gpu.github.io/changelog/#0-4-0-alpha-2"><small>- [0.4.0-alpha.2]</small></a>
+                </div>
+                
+                <div class="toc-item-child">
+                    <a class="subtext" href="https://rust-gpu.github.io/changelog/#0-4-0-alpha-1"><small>- [0.4.0-alpha.1]</small></a>
+                </div>
+                
+                <div class="toc-item-child">
+                    <a class="subtext" href="https://rust-gpu.github.io/changelog/#0-3-1"><small>- [0.3.1]</small></a>
+                </div>
+                
+                <div class="toc-item-child">
+                    <a class="subtext" href="https://rust-gpu.github.io/changelog/#0-3-0"><small>- [0.3.0]</small></a>
+                </div>
+                
+                <div class="toc-item-child">
+                    <a class="subtext" href="https://rust-gpu.github.io/changelog/#0-2-0"><small>- [0.2.0]</small></a>
+                </div>
+                
+                <div class="toc-item-child">
+                    <a class="subtext" href="https://rust-gpu.github.io/changelog/#0-1-0"><small>- [0.1.0]</small></a>
+                </div>
+                
+                
+                
+            </div>
+        </div>
+        
+        
+
+        <div class="content text">
+            
+<h1 id="rust-gpu-changelog"><code>rust-gpu</code> Changelog</h1>
+<p>All notable changes to this project will be documented in this file.</p>
+<p>The format is based on <a href="https://keepachangelog.com/en/1.0.0/">Keep a Changelog</a>,
+and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semantic Versioning</a>.</p>
+<!-- NOTE(eddyb) sections from the original template:
+
+### Added ⭐
+- New features go here in a bullet list
+
+### Changed 🛠
+- Changes to existing functionality go here in a bullet list
+
+### Deprecated 🚧
+- Mark features soon-to-be removed in a bullet list
+
+### Removed 🔥
+- Features that have been removed in a bullet list
+
+### Fixed 🩹
+- Bug fixes in a bullet list
+
+### Security 🔐
+- Changes/fixes related to security vulnerabilities in a bullet list
+
+-->
+<h2 id="unreleased">[Unreleased]</h2>
+<h3 id="changed-tools">Changed 🛠</h3>
+<ul>
+<li><a href="https://github.com/EmbarkStudios/rust-gpu/pull/1127">PR#1127</a> updated <code>spirv-tools</code> to <code>0.10.0</code>, which follows <code>vulkan-sdk-1.3.275</code></li>
+<li><a href="https://github.com/EmbarkStudios/rust-gpu/pull/1101">PR#1101</a> added <code>ignore</code> and <code>no_run</code> to documentation to make <code>cargo test</code> pass</li>
+<li><a href="https://github.com/EmbarkStudios/rust-gpu/pull/1112">PR#1112</a> updated wgpu and winit in example runners</li>
+<li><a href="https://github.com/EmbarkStudios/rust-gpu/pull/1100">PR#1100</a> updated toolchain to <code>nightly-2023-09-30</code></li>
+<li><a href="https://github.com/EmbarkStudios/rust-gpu/pull/1091">PR#1091</a> updated toolchain to <code>nightly-2023-08-29</code></li>
+<li><a href="https://github.com/EmbarkStudios/rust-gpu/pull/1085">PR#1085</a> updated toolchain to <code>nightly-2023-07-08</code></li>
+<li><a href="https://github.com/EmbarkStudios/rust-gpu/pull/1115">PR#1115</a> relaxed <code>glam</code> version requirements (from <code>&gt;=0.22, &lt;=0.24</code> to <code>&gt;=0.22, &lt;=0.25</code>)</li>
+</ul>
+<h3 id="fixed-adhesive-bandage">Fixed 🩹</h3>
+<ul>
+<li><a href="https://github.com/EmbarkStudios/rust-gpu/pull/1129">PR#1129</a> fixed <a href="https://github.com/EmbarkStudios/rust-gpu/issues/1062">#1062</a> by not flipping the comparison of the rotate amount with zero</li>
+</ul>
+<h2 id="0-9-0">[0.9.0]</h2>
+<h3 id="added">Added ⭐</h3>
+<ul>
+<li><a href="https://github.com/EmbarkStudios/rust-gpu/pull/1082">PR#1082</a> added partial
+support for extracting <code>format_args!</code> from <code>panic!</code>s, and converting them to
+<code>debugPrintf</code> calls (if enabled via <code>ShaderPanicStrategy</code>), including runtime
+arguments (<code>u32</code>/<code>i32</code>/<code>f32</code> with <code>Display</code>/<code>Debug</code> formatting, for now)</li>
+<li><a href="https://github.com/EmbarkStudios/rust-gpu/pull/1081">PR#1081</a> added the ability
+to access SPIR-V specialization constants (<code>OpSpecConstant</code>) via entry-point
+inputs declared as <code>#[spirv(spec_constant(id = ..., default = ...))] x: u32</code><br />
+(see also <a href="https://rust-gpu.github.io/changelog/docs/src/attributes.md#specialization-constants">the <code>#[spirv(spec_constant)]</code> attribute documentation</a>)</li>
+<li><a href="https://github.com/EmbarkStudios/rust-gpu/pull/1036">PR#1036</a> added a <code>--force-spirv-passthru</code> flag to <code>example-runner-wgpu</code>, to bypass Naga (<code>wgpu</code>'s shader translator),
+used it to test <code>debugPrintf</code> for <code>wgpu</code>,  and updated <code>ShaderPanicStrategy::DebugPrintfThenExit</code> docs to reflect what "enabling <code>debugPrintf</code>" looks like for <code>wgpu</code><br />
+<sub><sup>(e.g. <code>VK_LOADER_LAYERS_ENABLE=VK_LAYER_KHRONOS_validation VK_LAYER_ENABLES=VK_VALIDATION_FEATURE_ENABLE_DEBUG_PRINTF_EXT DEBUG_PRINTF_TO_STDOUT=1</code>)</sup></sub></li>
+<li><a href="https://github.com/EmbarkStudios/rust-gpu/pull/1080">PR#1080</a> added <code>debugPrintf</code>-based
+panic reporting, with the desired behavior selected via <code>spirv_builder::ShaderPanicStrategy</code><br />
+(see its documentation for more details about each available panic handling strategy)</li>
+</ul>
+<h3 id="changed-tools-1">Changed 🛠</h3>
+<ul>
+<li><a href="https://github.com/EmbarkStudios/rust-gpu/pull/1083">PR#1083</a> updated SPIR-T to get pretty-printer
+improvements (especially for <code>OpExtInst</code>, including Rust-GPU's custom ones), and started more
+aggressively deduplicating custom debuginfo instructions (to make SPIR-T dumps more readable)</li>
+<li><a href="https://github.com/EmbarkStudios/rust-gpu/pull/1079">PR#1079</a> revised <code>spirv-builder</code>'s <code>README.md</code>,
+and added a way for <code>docs.rs</code> to be able to build it (via <code>cargo +stable doc --no-default-features</code>)</li>
+<li><a href="https://github.com/EmbarkStudios/rust-gpu/pull/1070">PR#1070</a> made panics (via the <code>abort</code> intrinsic)
+early-exit (i.e. <code>return</code> from) the shader entry-point, instead of looping infinitely</li>
+<li><a href="https://github.com/EmbarkStudios/rust-gpu/pull/1071">PR#1071</a> updated toolchain to <code>nightly-2023-05-27</code></li>
+</ul>
+<h2 id="0-8-0">[0.8.0]</h2>
+<h3 id="added-1">Added ⭐</h3>
+<ul>
+<li><a href="https://github.com/EmbarkStudios/rust-gpu/pull/1064">PR#1064</a> added a Rust-GPU-private
+"extended instruction set" (to allow us to have custom <code>OpExtInst</code>s), with the
+initial custom <code>OpExtInst</code>s being used to improve debuginfo source locations
+(using ranges instead of just the starting position, and tracking inlined calls)</li>
+</ul>
+<h3 id="changed-tools-2">Changed 🛠</h3>
+<ul>
+<li><a href="https://github.com/EmbarkStudios/rust-gpu/pull/1067">PR#1067</a> updated toolchain to <code>nightly-2023-04-15</code></li>
+<li><a href="https://github.com/EmbarkStudios/rust-gpu/pull/1038">PR#1038</a> relaxed <code>glam</code> version requirements (from only <code>0.22</code>, to <code>&gt;=0.22, &lt;=0.24</code>)</li>
+</ul>
+<h3 id="removed-fire">Removed 🔥</h3>
+<ul>
+<li><a href="https://github.com/EmbarkStudios/rust-gpu/pull/1052">PR#1052</a> removed <code>--no-spirt</code>,
+committing to SPIR-T as a mandatory part of the Rust-GPU compiler backend,
+to reduce the cost of maintenance, testing and further feature development
+<ul>
+<li>Note: if you were using <code>--no-spirt</code> to work around <a href="https://github.com/gfx-rs/naga/issues/1977"><code>naga</code> issue #1977</a><br />
+(valid loops causing <code>The 'break' is used outside of a 'loop' or 'switch' context</code>),<br />
+you may be able to <code>cargo update -p naga</code> to update to a fixed <code>naga</code> version<br />
+(<code>0.11.1</code> for <code>wgpu 0.15</code>, <code>0.12.1</code> for <code>wgpu 0.16</code>, and any later versions)</li>
+</ul>
+</li>
+</ul>
+<h3 id="fixed-adhesive-bandage-1">Fixed 🩹</h3>
+<ul>
+<li><a href="https://github.com/EmbarkStudios/rust-gpu/pull/1059">PR#1059</a> fixed the <code>inline</code> pass not copying <code>OpDecorate</code>s in the callee (which led to their loss).</li>
+</ul>
+<h2 id="0-7-0">[0.7.0]</h2>
+<h3 id="added-2">Added ⭐</h3>
+<ul>
+<li><a href="https://github.com/EmbarkStudios/rust-gpu/pull/1020">PR#1020</a> added SPIR-T <code>qptr</code>
+support in the form of <code>--spirt-passes=qptr</code>, a way to turn off "Storage Class inference",
+and reporting for SPIR-T diagnostics - to test <code>qptr</code> fully, you can use:<br />
+<code>RUSTGPU_CODEGEN_ARGS="--no-infer-storage-classes --spirt-passes=qptr"</code><br />
+(see also <a href="https://github.com/EmbarkStudios/spirt/pull/24">the SPIR-T <code>qptr</code> PR</a> for more details about the <code>qptr</code> experiment)</li>
+<li><a href="https://github.com/EmbarkStudios/rust-gpu/pull/1039">PR#1039</a> added new experimental <code>sample_with</code> to <code>Image</code> API to set additional image operands</li>
+<li><a href="https://github.com/EmbarkStudios/rust-gpu/pull/1031">PR#1031</a> added <code>Components</code> generic parameter to <code>Image</code> type, allowing images to return lower dimensional vectors and even scalars from the sampling API</li>
+</ul>
+<h3 id="changed-tools-3">Changed 🛠</h3>
+<ul>
+<li><a href="https://github.com/EmbarkStudios/rust-gpu/pull/1040">PR#1040</a> refactored "zombie" (delayed error) reporting to use SPIR-V <code>OpSource</code>, be more helpful, and added <code>--no-early-report-zombies</code> to delay it even further<br />
+(see also <a href="https://rust-gpu.github.io/changelog/docs/src/codegen-args.md#--no-early-report-zombies">the <code>--no-early-report-zombies</code> codegen args docs</a>)</li>
+<li><a href="https://github.com/EmbarkStudios/rust-gpu/pull/1035">PR#1035</a> reduced the number of CGUs ("codegen units") used by <code>spirv-builder</code> to just <code>1</code></li>
+<li><a href="https://github.com/EmbarkStudios/rust-gpu/pull/1011">PR#1011</a> made <code>NonWritable</code> all read-only storage buffers (i.e. those typed <code>&amp;T</code>, where <code>T</code> doesn't have interior mutability)</li>
+<li><a href="https://github.com/EmbarkStudios/rust-gpu/pull/1029">PR#1029</a> fixed <code>SampledImage::sample</code> <code>fn</code>s being unnecessarily marked as <code>unsafe</code></li>
+<li><a href="https://github.com/EmbarkStudios/rust-gpu/pull/1005">PR#1005</a> updated toolchain to <code>nightly-2023-03-04</code></li>
+</ul>
+<h3 id="fixed-adhesive-bandage-2">Fixed 🩹</h3>
+<ul>
+<li><a href="https://github.com/EmbarkStudios/rust-gpu/pull/1041">PR#1041</a> fixed <code>Image::gather()</code> not always returning a <code>Vec4</code>.</li>
+<li><a href="https://github.com/EmbarkStudios/rust-gpu/pull/1025">PR#1025</a> fixed <a href="https://github.com/EmbarkStudios/rust-gpu/issues/1024">#1024</a> by keeping checked arithmetic "zombie" <code>bool</code>s disjoint from normal <code>bool</code> (<code>false</code>) consts</li>
+<li><a href="https://github.com/EmbarkStudios/rust-gpu/pull/1023">PR#1023</a> fixed <a href="https://github.com/EmbarkStudios/rust-gpu/issues/1021">#1021</a> by always inlining calls with "not obviously legal" pointer args (instead of only inlining calls with "obviously illegal" pointer args)</li>
+<li><a href="https://github.com/EmbarkStudios/rust-gpu/pull/1009">PR#1009</a> fixed <a href="https://github.com/EmbarkStudios/rust-gpu/issues/1008">#1008</a> by reinstating mutability checks for entry-point parameters pointing into read-only storage classes (e.g. <code>#[spirv(uniform)] x: &amp;mut u32</code> is now again an error)</li>
+<li><a href="https://github.com/EmbarkStudios/rust-gpu/pull/995">PR#995</a> fixed <a href="https://github.com/EmbarkStudios/rust-gpu/issues/994">#994</a> by using <code>OpAtomicFAddEXT</code> instead of <code>OpAtomicFMaxEXT</code> in <code>atomic_f_add</code></li>
+</ul>
+<h2 id="0-6-1">[0.6.1]</h2>
+<h3 id="fixed-adhesive-bandage-3">Fixed 🩹</h3>
+<ul>
+<li><a href="https://github.com/EmbarkStudios/rust-gpu/pull/1006">PR#1006</a> fixed <a href="https://github.com/EmbarkStudios/rust-gpu/issues/1002">#1002</a> by rewriting away all <code>spirv-std</code> uses of <code>asm!("OpReturnValue %result")</code> and disallowing <code>OpReturn</code>/<code>OpReturnValue</code> from inline <code>asm!</code> (as it's always UB to leave <code>asm!</code> blocks in any way other than falling through their end)</li>
+</ul>
+<h2 id="0-6-0">[0.6.0]</h2>
+<h3 id="added-3">Added ⭐</h3>
+<ul>
+<li><a href="https://github.com/EmbarkStudios/rust-gpu/pull/998">PR#998</a> added <code>extra_arg()</code> SpirvBuilder API to be able to set codegen args otherwise not supported by the API (for example, to set <code>--spirv-passes</code>)</li>
+</ul>
+<h3 id="changed-tools-4">Changed 🛠</h3>
+<ul>
+<li><a href="https://github.com/EmbarkStudios/rust-gpu/pull/999">PR#999</a> made the <a href="https://github.com/rust-gpu/spirt"><code>SPIR-🇹</code> shader IR framework</a> the default (you can opt out via <code>RUSTGPU_CODEGEN_ARGS=--no-spirt</code>)</li>
+<li><a href="https://github.com/EmbarkStudios/rust-gpu/pull/992">PR#992</a> renamed <code>rust-toolchain</code> to <code>rust-toolchain.toml</code></li>
+<li><a href="https://github.com/EmbarkStudios/rust-gpu/pull/991">PR#991</a> updated toolchain to <code>nightly-2023-01-21</code></li>
+<li><a href="https://github.com/EmbarkStudios/rust-gpu/pull/990">PR#990</a> removed return type inference from <code>Image</code> API and made <code>glam</code> usage mandatory</li>
+</ul>
+<h2 id="0-5-0">[0.5.0]</h2>
+<h3 id="added-4">Added ⭐</h3>
+<ul>
+<li><a href="https://github.com/EmbarkStudios/rust-gpu/pull/988">PR#988</a> added a couple of (highly experimental)
+<code>SPIR-🇹</code> optimization passes, and <code>--spirt-passes=...</code> codegen args as a way to enable them<br />
+(see also <a href="https://rust-gpu.github.io/changelog/docs/src/codegen-args.md#--spirt-passes-PASSES">the <code>--spirt-passes</code> codegen args docs</a>)</li>
+</ul>
+<h3 id="changed-tools-5">Changed 🛠️</h3>
+<ul>
+<li><a href="https://github.com/EmbarkStudios/rust-gpu/pull/982">PR#982</a> updated toolchain to <code>nightly-2022-12-18</code></li>
+<li><a href="https://github.com/EmbarkStudios/rust-gpu/pull/953">PR#953</a> migrated to the Rust 2021 edition, and fixed Rust 2021 support for shader crates to be on par with Rust 2018 (discrepancies having been limited to/caused by <code>panic!</code> changes in Rust 2021)</li>
+</ul>
+<h2 id="0-4-0">[0.4.0]</h2>
+<h3 id="added-5">Added ⭐</h3>
+<ul>
+<li><a href="https://github.com/EmbarkStudios/rust-gpu/pull/959">PR#959</a> added two <code>spirv-builder</code> environment variables to customize <em>only</em> the <code>rustc</code> invocations for shader crates and their dependencies:
+<ul>
+<li><code>RUSTGPU_RUSTFLAGS="..."</code> for shader <code>RUSTFLAGS="..."</code></li>
+<li><code>RUSTGPU_CODEGEN_ARGS="..."</code> for shader "codegen args" (i.e. <code>RUSTFLAGS=-Cllvm-args="..."</code>)<br />
+(check out <a href="https://rust-gpu.github.io/changelog/docs/src/codegen-args.md">the "codegen args" docs</a>, or run with <code>RUSTGPU_CODEGEN_ARGS=--help</code> to see the full list of options)</li>
+</ul>
+</li>
+<li><a href="https://github.com/EmbarkStudios/rust-gpu/pull/940">PR#940</a> integrated the experimental <a href="https://github.com/rust-gpu/spirt"><code>SPIR-🇹</code> shader IR framework</a> into the linker<br />
+(opt-in via <code>RUSTGPU_CODEGEN_ARGS=--spirt</code>, see also <a href="https://rust-gpu.github.io/changelog/docs/src/codegen-args.md#--spirt">the <code>--spirt</code> docs</a>, for more details)</li>
+</ul>
+<h3 id="changed-tools-6">Changed 🛠️</h3>
+<ul>
+<li><a href="https://github.com/EmbarkStudios/rust-gpu/pull/958">PR#958</a> updated toolchain to <code>nightly-2022-10-29</code></li>
+<li><a href="https://github.com/EmbarkStudios/rust-gpu/pull/941">PR#941</a> applied workspace inheritance to <code>Cargo.toml</code> files</li>
+<li><a href="https://github.com/EmbarkStudios/rust-gpu/pull/959">PR#959</a> moved <code>rustc_codegen_spirv</code> debugging functionality from environment variables to "codegen args" options/flags (see <a href="https://rust-gpu.github.io/changelog/docs/src/codegen-args.md">the updated docs</a> for more details)</li>
+<li><a href="https://github.com/EmbarkStudios/rust-gpu/pull/967">PR#967</a> made <code>--dump-*</code> <a href="https://rust-gpu.github.io/changelog/docs/src/codegen-args.md">"codegen args"</a> include identifying information (e.g. crate names) in the names of files they emit</li>
+</ul>
+<h3 id="removed-fire-1">Removed 🔥</h3>
+<ul>
+<li><a href="https://github.com/EmbarkStudios/rust-gpu/pull/946">PR#946</a> removed the <code>fn</code>/closure <code>#[spirv(unroll_loops)]</code> attribute, as it has no users, is becoming non-trivial to support, and requires redesign for better ergonomics (e.g. <code>#[spirv(unroll)]</code> applied to individual loops, not the whole <code>fn</code>/closure)</li>
+</ul>
+<h2 id="0-4-0-alpha-17">[0.4.0-alpha.17]</h2>
+<h3 id="fixed-adhesive-bandage-4">Fixed 🩹</h3>
+<ul>
+<li><a href="https://github.com/EmbarkStudios/rust-gpu/pull/937">PR#937</a> fixed Rust-GPU crates not referring to each-other by exact version</li>
+<li><a href="https://github.com/EmbarkStudios/rust-gpu/pull/937">PR#937</a> fixed <code>spirv-std</code> referring to an older version of <code>spirv-std-macros</code></li>
+</ul>
+<h2 id="0-4-0-alpha-16">[0.4.0-alpha.16]</h2>
+<h3 id="added-6">Added ⭐</h3>
+<ul>
+<li><a href="https://github.com/EmbarkStudios/rust-gpu/pull/935">PR#935</a> added check for environment variable <code>RUSTGPU_SKIP_TOOLCHAIN_CHECK</code> to prevent toolchain check</li>
+</ul>
+<h3 id="changed-tools-7">Changed 🛠️</h3>
+<ul>
+<li>🚨BREAKING🚨 <a href="https://github.com/EmbarkStudios/rust-gpu/pull/926">#926</a> migrated from <code>register_attr</code> to <code>register_tool</code>. <a href="https://rust-gpu.github.io/changelog/docs/src/migration-to-register-tool.md">More information</a>.</li>
+<li><a href="https://github.com/EmbarkStudios/rust-gpu/pull/935">PR#935</a> updated toolchain to <code>nightly-2022-10-01</code></li>
+<li><a href="https://github.com/EmbarkStudios/rust-gpu/pull/934">PR#934</a> updated <code>glam</code> to <code>0.22</code></li>
+<li><a href="https://github.com/EmbarkStudios/rust-gpu/pull/928">PR#928</a> updated <code>spirv-tools</code> to <code>0.9</code> (SPIRV-Tools <code>2022.4</code>)</li>
+</ul>
+<h3 id="removed-fire-2">Removed 🔥</h3>
+<ul>
+<li><a href="https://github.com/EmbarkStudios/rust-gpu/pull/934">PR#934</a> Removed <code>glam::BVec</code> support (they are no longer <code>#[repl(simd)]</code> in <code>glam</code>, as Rust doesn't support SIMD vectors with <code>bool</code> elements)</li>
+</ul>
+<h3 id="fixed-adhesive-bandage-5">Fixed 🩹</h3>
+<ul>
+<li><a href="https://github.com/EmbarkStudios/rust-gpu/pull/927">PR#927</a> re-taught Cargo to rebuild shader crates when <code>rustc_codegen_spirv</code> is rebuilt, via <a href="https://github.com/rust-lang/rust/pull/93969"><code>-Zbinary-dep-depinfo</code></a> (broken since a toolchain update in <code>0.4.0-alpha.13</code>, and has been causing spurious build failures ever since)</li>
+</ul>
+<h2 id="0-4-0-alpha-15">[0.4.0-alpha.15]</h2>
+<h3 id="added-7">Added ⭐</h3>
+<ul>
+<li><a href="https://github.com/EmbarkStudios/rust-gpu/pull/919">PR#919</a> added a build-time check for the nightly toolchain version, to provide user-friendly error messages</li>
+</ul>
+<h3 id="changed-tools-8">Changed 🛠️</h3>
+<ul>
+<li><a href="https://github.com/EmbarkStudios/rust-gpu/pull/918">PR#918</a> updated toolchain to <code>nightly-2022-08-29</code></li>
+</ul>
+<h2 id="0-4-0-alpha-14">[0.4.0-alpha.14]</h2>
+<h3 id="changed-tools-9">Changed 🛠</h3>
+<ul>
+<li><a href="https://github.com/EmbarkStudios/rust-gpu/pull/904">PR#904</a> renamed helper <code>spirv-types</code> crate to <code>spirv-std-types</code></li>
+</ul>
+<h2 id="0-4-0-alpha-13">[0.4.0-alpha.13]</h2>
+<h3 id="added-8">Added ⭐</h3>
+<ul>
+<li><a href="https://github.com/EmbarkStudios/rust-gpu/pull/717">PR#717</a> added <code>noreturn</code> support to inline <code>asm!</code></li>
+<li><a href="https://github.com/EmbarkStudios/rust-gpu/pull/742">PR#742</a> added a <code>spirv-builder</code> option to include all debug info</li>
+<li><a href="https://github.com/EmbarkStudios/rust-gpu/pull/787">PR#787</a> documented <code>Cargo.toml</code> <code>[profile.⋯.build-override]</code> setting for avoiding slow builds</li>
+<li><a href="https://github.com/EmbarkStudios/rust-gpu/pull/830">PR#830</a> added a <code>spirv-builder</code> option to preserve unused descriptor bindings</li>
+<li><a href="https://github.com/EmbarkStudios/rust-gpu/pull/875">PR#875</a> added warnings for <code>#[inline(never)]</code>s the inliner doesn't respect (for legalization reasons)</li>
+<li><a href="https://github.com/EmbarkStudios/rust-gpu/pull/848">PR#848</a> added <code>#[spirv(subgroup_local_invocation_id)]</code> built-in (and an <code>examples/shaders/reduce</code> compute shader)</li>
+<li>new <code>spirv-std</code> APIs: <code>ByteAddressableBuffer</code><sup><a href="https://github.com/EmbarkStudios/rust-gpu/pull/735">#735</a></sup>, <code>SampledImage::sample_by_lod</code><sup><a href="https://github.com/EmbarkStudios/rust-gpu/pull/755">#755</a></sup>, <code>arch::read_clock_khr</code><sup><a href="https://github.com/EmbarkStudios/rust-gpu/pull/757">#757</a></sup>, <code>arch::{signed,unsigned}_{min,max}</code><sup><a href="https://github.com/EmbarkStudios/rust-gpu/pull/763">#763</a></sup>, <code>debug_printf!</code><sup><a href="https://github.com/EmbarkStudios/rust-gpu/pull/768">#768</a></sup>, <code>arch::*memory_barrier*</code><sup><a href="https://github.com/EmbarkStudios/rust-gpu/pull/769">#769</a></sup>, <code>arch::IndexUnchecked</code><sup><a href="https://github.com/EmbarkStudios/rust-gpu/pull/805">#805</a></sup>, <code>RayQuery::confirm_intersection</code><sup><a href="https://github.com/EmbarkStudios/rust-gpu/pull/822">#822</a></sup>, <code>arch::atomic_i_increment</code><sup><a href="https://github.com/EmbarkStudios/rust-gpu/pull/839">#839</a></sup>, <code>arch::atomic</code><sup><a href="https://github.com/EmbarkStudios/rust-gpu/pull/877">#877</a></sup></li>
+</ul>
+<h3 id="changed-tools-10">Changed 🛠</h3>
+<ul>
+<li><a href="https://github.com/EmbarkStudios/rust-gpu/pull/743">PR#743</a> set the SPIR-V "generator magic number" to <a href="https://github.com/KhronosGroup/SPIRV-Headers/pull/174">the value reserved for Rust-GPU</a></li>
+<li><a href="https://github.com/EmbarkStudios/rust-gpu/pull/761">PR#761</a> made <code>spirv-std</code> build on stable Rust by avoiding <code>enum</code>s in <code>const</code>-generics</li>
+<li><a href="https://github.com/EmbarkStudios/rust-gpu/pull/784">PR#784</a> documented <code>spirv-std</code> throughout</li>
+<li><a href="https://github.com/EmbarkStudios/rust-gpu/pull/862">PR#862</a> updated toolchain to <code>nightly-2022-04-11</code></li>
+<li><a href="https://github.com/EmbarkStudios/rust-gpu/pull/846">PR#846</a> updated <code>spirv-tools</code> to <code>0.8</code> (SPIRV-Tools <code>2022.1</code>)</li>
+<li><a href="https://github.com/EmbarkStudios/rust-gpu/pull/888">PR#888</a> widened the supported <code>glam</code> version range to <code>0.17</code>-<code>0.21</code></li>
+</ul>
+<h3 id="fixed-adhesive-bandage-6">Fixed 🩹</h3>
+<ul>
+<li><a href="https://github.com/EmbarkStudios/rust-gpu/pull/729">PR#729</a> fixed <a href="https://github.com/EmbarkStudios/rust-gpu/issues/723">#723</a> by explicitly allowing unused shader inputs/outputs in storage class inference</li>
+<li><a href="https://github.com/EmbarkStudios/rust-gpu/pull/732">PR#732</a> fixed <code>rustc</code> ICE messages being truncated with <code>rustc_codegen_spirv</code> (broken since a toolchain update in <code>0.4.0-alpha.12</code>)</li>
+<li><a href="https://github.com/EmbarkStudios/rust-gpu/pull/737">PR#737</a> fixed <a href="https://github.com/EmbarkStudios/rust-gpu/issues/642">#642</a> by re-adding <code>-Zsymbol-mangling-version=v0</code> (for generic parameters in <code>fn</code> names)</li>
+<li><a href="https://github.com/EmbarkStudios/rust-gpu/pull/766">PR#766</a> fixed <a href="https://github.com/EmbarkStudios/rust-gpu/issues/373">#373</a> and <a href="https://github.com/EmbarkStudios/rust-gpu/issues/731">#731</a> by hooking <code>rustc</code> to limit function call ABIs to what Rust-GPU supports</li>
+<li><a href="https://github.com/EmbarkStudios/rust-gpu/pull/793">PR#793</a> fixed <a href="https://github.com/EmbarkStudios/rust-gpu/issues/748">#748</a> by supporting SPIR-V <code>1.4</code>'s changed entry-point rules</li>
+<li><a href="https://github.com/EmbarkStudios/rust-gpu/pull/844">PR#844</a> fixed <a href="https://github.com/EmbarkStudios/rust-gpu/issues/836">#836</a> by making newtypes (e.g. single-field structs) wrapping <code>ScalarPair</code>s (e.g. <code>(u32, u32)</code> or <code>&amp;[T]</code>) have the same SPIR-V type as their inner field</li>
+</ul>
+<h2 id="0-4-0-alpha-12">[0.4.0-alpha.12]</h2>
+<h3 id="added-9">Added ⭐</h3>
+<ul>
+<li><a href="https://github.com/EmbarkStudios/rust-gpu/pull/704">PR#704</a> added <code>Image::gather</code> and <code>Image::sample_bias</code> to <code>spirv-std</code></li>
+<li><a href="https://github.com/EmbarkStudios/rust-gpu/pull/709">PR#709</a> added float packing/unpacking operations to <code>spirv-std</code></li>
+</ul>
+<h3 id="changed-tools-11">Changed 🛠</h3>
+<ul>
+<li><a href="https://github.com/EmbarkStudios/rust-gpu/pull/716">PR#716</a> updated toolchain to <code>nightly-2021-08-10</code></li>
+</ul>
+<h3 id="removed-fire-3">Removed 🔥</h3>
+<ul>
+<li><a href="https://github.com/EmbarkStudios/rust-gpu/pull/710">PR#710</a> removed "implicit bindless" and kernel modes</li>
+</ul>
+<h2 id="0-4-0-alpha-11">[0.4.0-alpha.11]</h2>
+<h3 id="changed-tools-12">Changed 🛠</h3>
+<ul>
+<li><a href="https://github.com/EmbarkStudios/rust-gpu/pull/702">PR#702</a> updated <code>glam</code> to <code>0.17</code></li>
+</ul>
+<h2 id="0-4-0-alpha-10">[0.4.0-alpha.10]</h2>
+<h3 id="added-10">Added ⭐</h3>
+<ul>
+<li><a href="https://github.com/EmbarkStudios/rust-gpu/pull/655">PR#655</a> added a <code>watch</code> feature to <code>spirv-builder</code> for hot reloading shaders</li>
+<li><a href="https://github.com/EmbarkStudios/rust-gpu/pull/652">PR#652</a> documented <code>Image!</code> in the Rust-GPU book</li>
+<li><a href="https://github.com/EmbarkStudios/rust-gpu/pull/660">PR#660</a> added a <code>spirv-builder</code> option to name global <code>OpVariables</code></li>
+<li><a href="https://github.com/EmbarkStudios/rust-gpu/pull/662">PR#662</a> added type aliases for common uses of <code>Image!</code></li>
+<li><a href="https://github.com/EmbarkStudios/rust-gpu/pull/683">PR#683</a> added a <code>spirv-builder</code> option to treat warnings as errors</li>
+</ul>
+<h3 id="changed-tools-13">Changed 🛠</h3>
+<ul>
+<li><a href="https://github.com/EmbarkStudios/rust-gpu/pull/672">PR#672</a> updated toolchain to <code>nightly-2021-06-09</code></li>
+<li><a href="https://github.com/EmbarkStudios/rust-gpu/pull/674">PR#674</a> updated <code>glam</code> to <code>0.16</code></li>
+</ul>
+<h3 id="removed-fire-4">Removed 🔥</h3>
+<ul>
+<li><a href="https://github.com/EmbarkStudios/rust-gpu/pull/666">PR#666</a> removed <code>arch::arithmetic</code> from <code>spirv-std</code></li>
+</ul>
+<h2 id="0-4-0-alpha-9">[0.4.0-alpha.9]</h2>
+<h3 id="fixed-adhesive-bandage-7">Fixed 🩹</h3>
+<ul>
+<li>fixed miscompilation in peephole optimizations (see <a href="https://github.com/EmbarkStudios/rust-gpu/pull/646">PR#646</a>)</li>
+</ul>
+<h2 id="0-4-0-alpha-8">[0.4.0-alpha.8]</h2>
+<h3 id="added-11">Added ⭐</h3>
+<ul>
+<li><a href="https://github.com/EmbarkStudios/rust-gpu/pull/608">PR#608</a> added <code>Image::query_*</code> operations to <code>spirv-std</code></li>
+<li><a href="https://github.com/EmbarkStudios/rust-gpu/pull/610">PR#610</a> added <code>spirv-builder</code> support for enabling extra extensions and/or capabilities</li>
+<li><a href="https://github.com/EmbarkStudios/rust-gpu/pull/612">PR#612</a> added <code>is_helper_invocation</code> to <code>spirv-std</code></li>
+<li><a href="https://github.com/EmbarkStudios/rust-gpu/pull/624">PR#624</a> added <code>OpTypeSampler</code> and <code>OpTypeAccelerationStructureKHR</code> support to inline <code>asm!</code></li>
+<li><a href="https://github.com/EmbarkStudios/rust-gpu/pull/622">PR#622</a> added the ability to query entry-point names from <code>spirv-builder</code></li>
+<li><a href="https://github.com/EmbarkStudios/rust-gpu/pull/630">PR#630</a> added a more convenient API to <code>spirv-builder</code>, for requesting extensions and/or capabilties</li>
+<li><a href="https://github.com/EmbarkStudios/rust-gpu/pull/629">PR#629</a> added an optimization to convert N identical scalar (e.g. arithmetic) ops, into one N-wide vector op (as e.g. <code>glam</code> only emits the former)</li>
+<li><a href="https://github.com/EmbarkStudios/rust-gpu/pull/596">PR#596</a> added a <code>RuntimeArray</code> type to <code>spirv-val</code>, to represent SPIR-V <code>OpRuntimeArray</code>s</li>
+<li><a href="https://github.com/EmbarkStudios/rust-gpu/pull/635">PR#635</a> added several <code>spirv-builder</code> options for controlling <code>spirv-val</code> flags</li>
+<li><a href="https://github.com/EmbarkStudios/rust-gpu/pull/643">PR#643</a> added <code>Image::read_subpass</code> to <code>spirv-std</code></li>
+</ul>
+<h3 id="changed-tools-14">Changed 🛠</h3>
+<ul>
+<li><a href="https://github.com/EmbarkStudios/rust-gpu/pull/616">PR#616</a> updated <code>spirv-tools</code> to <code>0.6.1</code> and turned on emission of line-based debug info</li>
+<li><a href="https://github.com/EmbarkStudios/rust-gpu/pull/631">PR#631</a> updated toolchain to <code>nightly-2021-05-24</code></li>
+<li><a href="https://github.com/EmbarkStudios/rust-gpu/pull/641">PR#641</a> made <code>spirv-std</code> depend on <code>glam</code> (<code>0.15.2</code>), instead of the other way around</li>
+</ul>
+<h2 id="0-4-0-alpha-7">[0.4.0-alpha.7]</h2>
+<h3 id="fixed-adhesive-bandage-8">Fixed 🩹</h3>
+<ul>
+<li><a href="https://github.com/EmbarkStudios/rust-gpu/pull/607">PR#607</a> removed accidental use of <code>feature(or_patterns)</code> (recently stabilized, only on nightly)</li>
+</ul>
+<h2 id="0-4-0-alpha-6">[0.4.0-alpha.6]</h2>
+<h3 id="added-12">Added ⭐</h3>
+<ul>
+<li><a href="https://github.com/EmbarkStudios/rust-gpu/pull/586">PR#586</a> added support for constant memory (<code>&amp;'static _</code> references), within the limits of SPIR-V</li>
+<li><a href="https://github.com/EmbarkStudios/rust-gpu/pull/559">PR#559</a> added the ability to set a Rust "target triple" in <code>spirv-builder</code> (e.g. <code>"spirv-unknown-vulkan1.1"</code> for Vulkan <code>1.1</code>)</li>
+<li><a href="https://github.com/EmbarkStudios/rust-gpu/pull/563">PR#563</a> added <code>SPV_KHR_ray_tracing</code> APIs to <code>spirv-std</code></li>
+<li><a href="https://github.com/EmbarkStudios/rust-gpu/pull/572">PR#572</a> added <code>SPV_KHR_ray_query</code> APIs to <code>spirv-std</code></li>
+<li><a href="https://github.com/EmbarkStudios/rust-gpu/pull/359">PR#359</a> added a <code>const</code>-generic <code>Image</code> type, and <code>Image!</code> macro wrapping it (to add "named parameters"), to <code>spirv-std</code></li>
+</ul>
+<h3 id="changed-tools-15">Changed 🛠</h3>
+<ul>
+<li><a href="https://github.com/EmbarkStudios/rust-gpu/pull/587">PR#587</a> updated <code>glam</code> to <code>0.14</code></li>
+<li><a href="https://github.com/EmbarkStudios/rust-gpu/pull/605">PR#605</a> updated toolchain to <code>nightly-2021-04-25</code></li>
+</ul>
+<h3 id="fixed-adhesive-bandage-9">Fixed 🩹</h3>
+<ul>
+<li><a href="https://github.com/EmbarkStudios/rust-gpu/pull/594">PR#594</a> fixed <a href="https://github.com/EmbarkStudios/rust-gpu/issues/585">#585</a> by explicitly banning <code>Image</code>/<code>Sampler</code>/<code>SampledImage</code> entry-point parameters not behind references</li>
+<li><a href="https://github.com/EmbarkStudios/rust-gpu/pull/598">PR#598</a> fixed <a href="https://github.com/EmbarkStudios/rust-gpu/issues/581">#581</a> by switching <code>memory::Semantics</code> from an <code>enum</code> to a <code>bitflags!</code>, in <code>spirv-std</code></li>
+</ul>
+<h2 id="0-4-0-alpha-5">[0.4.0-alpha.5]</h2>
+<h3 id="removed-fire-5">Removed 🔥</h3>
+<ul>
+<li><a href="https://github.com/EmbarkStudios/rust-gpu/pull/583">PR#583</a> removed <code>memcmp</code> from <code>spirv-std</code></li>
+</ul>
+<h2 id="0-4-0-alpha-4">[0.4.0-alpha.4]</h2>
+<h3 id="added-13">Added ⭐</h3>
+<ul>
+<li><a href="https://github.com/EmbarkStudios/rust-gpu/pull/519">PR#519</a> added <code>memory_barrier</code> and <code>control_barrier</code> to <code>spirv-std</code></li>
+</ul>
+<h3 id="changed-tools-16">Changed 🛠</h3>
+<ul>
+<li><a href="https://github.com/EmbarkStudios/rust-gpu/pull/567">PR#567</a> removed the need to manually specify the storage class for <code>Image</code>/<code>Sampler</code>/<code>ImageSampler</code> entry-point parameters</li>
+</ul>
+<h3 id="deprecated-construction">Deprecated 🚧</h3>
+<ul>
+<li><a href="https://github.com/EmbarkStudios/rust-gpu/pull/576">PR#576</a> deprecated <code>#[spirv(block)]</code> in favor of automatically wrapping the user types in "interface blocks"</li>
+</ul>
+<h2 id="0-4-0-alpha-3">[0.4.0-alpha.3]</h2>
+<h3 id="added-14">Added ⭐</h3>
+<ul>
+<li><a href="https://github.com/EmbarkStudios/rust-gpu/pull/551">PR#551</a> added multi-module (one SPIR-V module per entry-point) support to <code>spirv-builder</code></li>
+<li><a href="https://github.com/EmbarkStudios/rust-gpu/pull/504">PR#504</a> added basic support for unsized <code>struct</code>s (e.g. ending with a <code>[T]</code> field)</li>
+<li><a href="https://github.com/EmbarkStudios/rust-gpu/pull/545">PR#545</a> added <code>Image</code> methods for sampling depth reference and/or with project coordinate, to <code>spirv-std</code></li>
+</ul>
+<h2 id="0-4-0-alpha-2">[0.4.0-alpha.2]</h2>
+<h3 id="added-15">Added ⭐</h3>
+<ul>
+<li><a href="https://github.com/EmbarkStudios/rust-gpu/pull/541">PR#541</a> added <code>#[spirv(invariant)]</code> (like the <code>invariant</code> keyword in GLSL)</li>
+</ul>
+<h3 id="fixed-adhesive-bandage-10">Fixed 🩹</h3>
+<ul>
+<li>made <code>arch::derivative</code> functions public, in <code>spirv-std</code></li>
+</ul>
+<h2 id="0-4-0-alpha-1">[0.4.0-alpha.1]</h2>
+<h3 id="added-16">Added ⭐</h3>
+<ul>
+<li><a href="https://github.com/EmbarkStudios/rust-gpu/pull/498">PR#498</a> added <code>sample_by_lod</code>/<code>sample_by_gradient</code> image methods to <code>spirv-std</code></li>
+<li><a href="https://github.com/EmbarkStudios/rust-gpu/pull/521">PR#521</a> added <code>Cubemap</code> to <code>spirv-std</code></li>
+<li><a href="https://github.com/EmbarkStudios/rust-gpu/pull/520">PR#520</a> added <code>arch::primitive</code> functions to <code>spirv-std</code></li>
+</ul>
+<h3 id="changed-tools-17">Changed 🛠</h3>
+<ul>
+<li><a href="https://github.com/EmbarkStudios/rust-gpu/pull/496">PR#496</a> updated <code>spirv-tools</code> to <code>0.5.0</code></li>
+<li><a href="https://github.com/EmbarkStudios/rust-gpu/pull/516">PR#516</a> updated toolchain to <code>nightly-2021-03-21</code></li>
+<li><a href="https://github.com/EmbarkStudios/rust-gpu/pull/443">PR#443</a> replaced <code>spirv_std::storage_class</code> "named pointer types" with <code>#[spirv(...)] &amp;T</code> entry-point parameters</li>
+</ul>
+<h2 id="0-3-1">[0.3.1]</h2>
+<h3 id="added-17">Added ⭐</h3>
+<ul>
+<li><a href="https://github.com/EmbarkStudios/rust-gpu/pull/480">PR#480</a> added a <code>fetch</code> image method to <code>spirv-std</code></li>
+<li><a href="https://github.com/EmbarkStudios/rust-gpu/pull/446">PR#446</a> added <code>arch::*</code> functions for all SPIR-V arithmetic operations (not involving matrices), to <code>spirv-std</code></li>
+</ul>
+<h3 id="removed-fire-6">Removed 🔥</h3>
+<ul>
+<li><a href="https://github.com/EmbarkStudios/rust-gpu/pull/476">PR#476</a> removed <code>glam</code> as a dependency of <code>spirv-std</code></li>
+</ul>
+<h2 id="0-3-0">[0.3.0]</h2>
+<h3 id="added-18">Added ⭐</h3>
+<ul>
+<li><a href="https://github.com/EmbarkStudios/rust-gpu/pull/414">PR#414</a> added storage class type inference</li>
+<li><a href="https://github.com/EmbarkStudios/rust-gpu/pull/469">PR#469</a> added initial support for Algebraic Data Type enums (e.g. <code>Option&lt;T&gt;</code>)</li>
+<li><a href="https://github.com/EmbarkStudios/rust-gpu/pull/421">PR#421</a> added ability to provide <code>const</code> arguments to <code>asm!</code></li>
+<li><a href="https://github.com/EmbarkStudios/rust-gpu/pull/458">PR#458</a> added ability to set <code>entry_point_name</code> in entry point attributes to change the final name of an entry point</li>
+<li><a href="https://github.com/EmbarkStudios/rust-gpu/pull/337">PR#337</a> added <code>#[spirv(unroll_loops)]</code> attribute to functions, which tells <code>rustc_codegen_spirv</code> to annotate all loops inside with <code>Unroll</code></li>
+<li><a href="https://github.com/EmbarkStudios/rust-gpu/pull/394">PR#394</a> added a new [<code>arch</code>] module which provides an abstraction some basic SPIR-V instructions as free functions.</li>
+<li><a href="https://github.com/EmbarkStudios/rust-gpu/pull/340">PR#340</a> added the <code>spirv-std-macros</code> crate for holding the <code>spirv</code> proc macro</li>
+<li><a href="https://github.com/EmbarkStudios/rust-gpu/pull/392">PR#392</a> added the <code>gpu_only</code> proc macro</li>
+<li><a href="https://github.com/EmbarkStudios/rust-gpu/pull/377">PR#377</a> <code>Derivative</code> is now implemented for <code>glam::{Vec2, Vec3, Vec3A, Vec4}</code></li>
+<li><a href="https://github.com/EmbarkStudios/rust-gpu/pull/401">PR#401</a> added ability to build shaders in <code>release</code> mode</li>
+<li>new <code>spirv-std</code> APIs: <code>vector_extract_dynamic</code><sup><a href="https://github.com/EmbarkStudios/rust-gpu/pull/394">PR#394</a></sup>, <code>vector_insert_dynamic</code><sup><a href="https://github.com/EmbarkStudios/rust-gpu/pull/411">PR#411</a></sup>, <code>textures::StorageImage2d</code><sup><a href="https://github.com/EmbarkStudios/rust-gpu/pull/434">PR#434</a></sup>, <code>any</code>/<code>all</code><sup><a href="https://github.com/EmbarkStudios/rust-gpu/pull/441">PR#380</a></sup>, <code>discard</code><sup><a href="https://github.com/EmbarkStudios/rust-gpu/pull/380">PR#441</a></sup>, <code>demote_to_helper_invocation</code><sup><a href="https://github.com/EmbarkStudios/rust-gpu/pull/380">PR#380</a></sup>, <code>SampledImage</code><sup><a href="https://github.com/EmbarkStudios/rust-gpu/pull/320">PR#320</a></sup></li>
+</ul>
+<h3 id="changed-tools-18">Changed 🛠</h3>
+<ul>
+<li><a href="https://github.com/EmbarkStudios/rust-gpu/pull/461">PR#461</a> removed requirement of <code>#[allow(unused_attributes)]</code> in front of <code>#[spirv]</code> attributes to remove warnings</li>
+<li><a href="https://github.com/EmbarkStudios/rust-gpu/pull/398">PR#398</a> <code>rustc_codegen_spirv</code> now removes different <code>OpName</code>s that target the same ID</li>
+<li><a href="https://github.com/EmbarkStudios/rust-gpu/pull/396">PR#396</a> <code>rustc_codegen_spirv</code> now tries to deduplicate generated <code>OpVariable</code>s</li>
+</ul>
+<h2 id="0-2-0">[0.2.0]</h2>
+<h3 id="added-19">Added ⭐</h3>
+<ul>
+<li><a href="https://github.com/EmbarkStudios/rust-gpu/pull/287">PR#287</a> added a new structurizer, which means that you can now use <code>match</code> expressions and <code>continue</code>s</li>
+<li><a href="https://github.com/EmbarkStudios/rust-gpu/pull/317">PR#317</a> added the <code>#[spirv(flat)]</code> attribute that matches SPIR-V's "Flat" decorator.</li>
+<li><a href="https://github.com/EmbarkStudios/rust-gpu/pull/276">PR#276</a> added support for textures.</li>
+<li><a href="https://github.com/EmbarkStudios/rust-gpu/pull/305">PR#305</a> added support for <code>panic!</code></li>
+<li><a href="https://github.com/EmbarkStudios/rust-gpu/pull/165">PR#165</a> added support for SPIR-V <code>1.0</code></li>
+<li><a href="https://github.com/EmbarkStudios/rust-gpu/pull/268">PR#268</a> added support for procedural macros</li>
+<li><a href="https://github.com/EmbarkStudios/rust-gpu/pull/195">PR#195</a> added initial support for  compute shaders</li>
+<li><a href="https://github.com/EmbarkStudios/rust-gpu/pull/254">PR#254</a> added initial support in Rust and <code>rust-gpu</code> for inline SPIR-V with the <code>asm!</code> nightly feature</li>
+</ul>
+<h3 id="changed-tools-19">Changed 🛠</h3>
+<ul>
+<li><a href="https://github.com/EmbarkStudios/rust-gpu/pull/219">PR#219</a> improvements to error messages regarding constant pointers</li>
+<li><a href="https://github.com/EmbarkStudios/rust-gpu/pull/280">PR#280</a> all Storage Classes (e.g. <code>Input</code>/<code>Output</code>) are now defined in <code>spirv_std::storage_class</code></li>
+<li><a href="https://github.com/EmbarkStudios/rust-gpu/pull/275">PR#275</a> Rust's language items such <code>rust_eh_personality</code> and <code>panic_handler</code> are now defined in <code>spirv-std</code> for SPIR-V targets</li>
+</ul>
+<h2 id="0-1-0">[0.1.0]</h2>
+<p>Initial release.</p>
+
+
+        </div>
+
+        
+
+    </main>
+
+    
+
+</body>
+<script>
+    const scrollHandler = entries => {
+        // Find the first entry which intersecting and ratio > 0.9 to highlight.
+        let entry = entries.find(entry => {
+            return entry.isIntersecting && entry.intersectionRatio > 0.9;
+        });
+        if (!entry) return;
+
+        document.querySelectorAll(".toc a").forEach((item) => {
+            item.classList.remove("active");
+        });
+
+        // let url = new URL(`#${entry.target.id}`);
+        let link = document.querySelector(`.toc a[href$="${decodeURIComponent(`#${entry.target.id}`)}"]`)
+        if (link) {
+            link.classList.add("active");
+            link.scrollIntoView({ behavior: "auto", block: "nearest" });
+        }
+    };
+    // Set -100px root margin to improve highlight experience.
+    const observer = new IntersectionObserver(scrollHandler, { threshold: 1 });
+    let items = document.querySelectorAll('h1,h2,h3,h4,h5,h6');
+    items.forEach(item => observer.observe(item));
+</script>
+
+</html>

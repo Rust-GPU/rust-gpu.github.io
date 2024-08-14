@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    
+    <link rel="icon" type="image/png" href="/favicon.ico">
+    
+    <style>
+    :root {
+      /* Primary theme color */
+      --primary-color: #fff; /* GitHub green for buttons and highlights */
+      /* Primary theme text color */
+      --primary-text-color: #24292e; /* GitHub dark gray for primary text */
+      --primary-text-color-over: #0056b3; /* White text over primary color */
+      /* Primary theme link color */
+      --primary-link-color: #0366d6; /* GitHub blue for links */
+      /* Secondary color: the background body color */
+      --secondary-color: #f6f8fa; /* GitHub light gray background */
+      --secondary-text-color: #586069; /* GitHub medium gray for secondary text */
+      /* Highlight text color for table of contents */
+      --toc-highlight-text-color: #a66cdc; /* GitHub red for warnings */
+      /* Table of contents background color */
+      --toc-background-color: #ffffff; /* White background for table of contents */
+      /* Code block text color */
+      --code-color: #24292e; /* Dark gray for code text */
+      /* Code block background color */
+      --code-background-color: #eeeeee; /* Light gray background for code */
+      /* Shadow color for elements */
+      --shadow-color: rgba(27, 31, 35, 0.15); /* Subtle shadow */
+      /* Font used for headers (h1 & h2) */
+      --header-font-family: "Fira Sans", sans-serif;
+      /* Font used for text */
+      --text-font-family: "Fira Sans", sans-serif;
+      /* Link hover and active states */
+      --link-hover-color: #0056b3; /* Darker blue on hover */
+      --link-active-color: #0056b3; /* Same color for active state */
+      /* Border and focus states */
+      --border-color: #e1e4e8; /* Light gray borders */
+      --focus-border-color: #0366d6; /* Blue border for focus */
+    }
+</style>
+
+
+    
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Fira+Sans:400,500,600&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="/normalize.css">
+    <link rel="stylesheet" href="https://rust-gpu.github.io/juice.css">
+    
+<link rel="stylesheet" href="https://rust-gpu.github.io/custom.css">
+<link rel="alternate" type="application/atom+xml" title="RSS" href="https://rust-gpu.github.io/atom.xml">
+
+</head>
+
+<body>
+    
+
+    <header class="pos-absolute" style="background-color: transparent">
+        
+
+<a href="https://rust-gpu.github.io/">
+    <div class="logo">
+        <img src="https://rust-gpu.github.io" alt="logo">
+        Rust GPU
+    </div>
+</a>
+
+<nav>
+    
+    
+    
+    
+    
+    
+    
+    
+        
+        <a class="nav-item subtitle-text" href="https://rust-gpu.github.io/rust-gpu/book/">Docs</a>
+        
+        <a class="nav-item subtitle-text" href="/blog/">Blog</a>
+        
+        <a class="nav-item subtitle-text" href="/ecosystem/">Ecosystem</a>
+        
+        <a class="nav-item subtitle-text" href="/changelog/">Changelog</a>
+        
+        <a class="nav-item subtitle-text" href="https://github.com/Rust-GPU/rust-gpu">GitHub</a>
+        
+    
+</nav>
+
+    </header>
+
+    <div class="hero">
+        
+<script async defer src="https://buttons.github.io/buttons.js"></script>
+
+<style>
+    .logo {
+        display: none;
+    }
+</style>
+
+<style>
+  .hero section {
+    padding: 0 5rem;
+  }
+  @media screen and (max-width: 768px) {
+    .hero section {
+      padding: 0 2rem;
+    }
+
+    .hero-image {
+      display: none;
+    }
+  }
+</style>
+
+<section class="text-center welcome">
+  <h1 class="heading-text" style="font-size: 50px; font-family: 'Inter', serif;">Rust GPU</h1>
+  <h3 class="title-text" style="font-family: 'Inter', serif;">
+   <p>The future of GPU programming</p>
+  </h3>
+</section>
+<div class="hero-image"  style="width: 40%; height: 75%; background-color: black; border-radius: 15px; overflow: hidden; text-align: left;">
+    <img class="hero-image" style="width: 100%; height: 100%; display: block; margin: 0;" src="https://rust-gpu.github.io/fizzbuzz.svg">
+</div>
+
+<div
+  class="explore-more text"
+  onclick="document.getElementById('features').scrollIntoView({behavior: 'smooth'})"
+>Learn More ⇣</div>
+
+    </div>
+
+    
+
+    <main>
+        
+        
+        
+        
+        
+        <div class="toc">
+            <div class="toc-sticky">
+                
+                <div class="toc-item">
+                    <a class="subtext" href="https://rust-gpu.github.io/#multi-vendor">Multi-Vendor</a>
+                </div>
+                
+                
+                <div class="toc-item">
+                    <a class="subtext" href="https://rust-gpu.github.io/#modern-and-unified">Modern and Unified</a>
+                </div>
+                
+                
+                <div class="toc-item">
+                    <a class="subtext" href="https://rust-gpu.github.io/#fearless-concurrency">Fearless Concurrency</a>
+                </div>
+                
+                
+                <div class="toc-item">
+                    <a class="subtext" href="https://rust-gpu.github.io/#powerful-abstractions">Powerful Abstractions</a>
+                </div>
+                
+                
+                <div class="toc-item">
+                    <a class="subtext" href="https://rust-gpu.github.io/#existing-ecosystem">Existing Ecosystem</a>
+                </div>
+                
+                
+            </div>
+        </div>
+        
+        
+
+        <div class="content text">
+            
+<div id="features" class="heading-text">Finally, a modern language for GPUs</div>
+<p>Rust GPU makes it possible to write and run GPU software in Rust, leveraging the
+language's powerful safety and concurrency features to enhance performance and
+reliability. With Rust GPU, you can seamlessly develop for both CPU and GPU using a
+unified codebase, all while benefiting from Rust’s existing ecosystem.</p>
+<h2 id="multi-vendor">Multi-Vendor</h2>
+<p>The Rust GPU compiler backend emits code compatible with
+<a href="https://www.vulkan.org">Vulkan</a>, ensuring your code runs across a wide range of devices
+and vendors.</p>
+<p>If instead you wish to stick to the NVIDIA ecosystem, stay tuned as the <a href="https://github.com/rust-gpu/rust-cuda">Rust
+CUDA</a> project is in the process of being rebooted
+and possibly integrated with Rust GPU.</p>
+<h2 id="modern-and-unified">Modern and Unified</h2>
+<p>There is no longer a need to learn a GPU-specific programming language. You can write
+both CPU and GPU code in Rust, leveraging your existing Rust knowledge and maintaining a
+consistent development experience. Furthermore, the <em>same code can run on both the CPU
+and GPU</em>, with divergent behavior gated behind <code>cfg</code> attributes and macros where
+necessary.</p>
+<p>Even if your current codebase isn't written in Rust, choosing Rust for the GPU parts
+gives you more widely applicable skills in one of the <a href="https://octoverse.github.com/2022/top-programming-languages">fastest-growing languages on
+GitHub</a>. Rust is also one
+of the <a href="https://github.blog/developer-skills/programming-languages-and-frameworks/why-rust-is-the-most-admired-language-among-developers/">most admired programming
+languages</a>
+while GPU-specific languages are considered a necessary evil.</p>
+<h2 id="fearless-concurrency">Fearless Concurrency</h2>
+<p>Rust's ownership model and type system guarantee memory
+safety, minimizing bugs and undefined behavior. Rust's borrow checker also enables
+fearless concurrency, which is essential for maximizing performance on massively
+parallel GPUs.</p>
+<h2 id="powerful-abstractions">Powerful Abstractions</h2>
+<p>Programming in GPU-specific languages can often feel like <a href="https://xol.io/blah/death-to-shading-languages/">taking a step back to the
+90s</a>, where primitive tools and sharp
+edges abound. Because of this, code written for GPUs is simplistic with low cyclomatic
+complexity. Rust has an expressive type system and zero-cost abstractions that enable
+writing high-level, reusable code without sacrificing performance. This approach leads
+to more maintainable and sophisticated GPU programs, streamlining the development
+process and enhancing productivity.</p>
+<h2 id="existing-ecosystem">Existing Ecosystem</h2>
+<p>The state-of-the-art for sharing GPU code is copy
+and pasting. With Rust GPU we are excited to bring the excellent <code>cargo</code> and
+crates.io ecosystem to GPU programming and provide some sanity.</p>
+<p>Additionally, Rust's <code>no_std</code> ecosystem offers a wide array of libraries that can be
+used in environments without the standard library. Traditionally this has meant
+embedded devices, but a lot of the same assumptions apply to GPUs! As a
+consequence, you can reuse <a href="https://crates.io/categories/no-std::no-alloc">existing <code>no_std</code> libraries from
+crates.io</a> in your GPU code <em>without
+the authors explicitly adding GPU support</em>. This is uniquely enabled by Rust GPU's
+implementation choices and Rust's
+<a href="https://without.boats/blog/the-registers-of-rust/">registers</a>. Sharing and reusing
+code from the greater Rust ecosystem is a superpower when writing GPU programs that
+will massively compound over time.</p>
+
+
+        </div>
+
+        
+
+    </main>
+
+    
+
+</body>
+<script>
+    const scrollHandler = entries => {
+        // Find the first entry which intersecting and ratio > 0.9 to highlight.
+        let entry = entries.find(entry => {
+            return entry.isIntersecting && entry.intersectionRatio > 0.9;
+        });
+        if (!entry) return;
+
+        document.querySelectorAll(".toc a").forEach((item) => {
+            item.classList.remove("active");
+        });
+
+        // let url = new URL(`#${entry.target.id}`);
+        let link = document.querySelector(`.toc a[href$="${decodeURIComponent(`#${entry.target.id}`)}"]`)
+        if (link) {
+            link.classList.add("active");
+            link.scrollIntoView({ behavior: "auto", block: "nearest" });
+        }
+    };
+    // Set -100px root margin to improve highlight experience.
+    const observer = new IntersectionObserver(scrollHandler, { threshold: 1 });
+    let items = document.querySelectorAll('h1,h2,h3,h4,h5,h6');
+    items.forEach(item => observer.observe(item));
+</script>
+
+</html>

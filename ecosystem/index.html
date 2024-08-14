@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Ecosystem |  </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    
+    <link rel="icon" type="image/png" href="/favicon.ico">
+    
+    <style>
+    :root {
+      /* Primary theme color */
+      --primary-color: #fff; /* GitHub green for buttons and highlights */
+      /* Primary theme text color */
+      --primary-text-color: #24292e; /* GitHub dark gray for primary text */
+      --primary-text-color-over: #0056b3; /* White text over primary color */
+      /* Primary theme link color */
+      --primary-link-color: #0366d6; /* GitHub blue for links */
+      /* Secondary color: the background body color */
+      --secondary-color: #f6f8fa; /* GitHub light gray background */
+      --secondary-text-color: #586069; /* GitHub medium gray for secondary text */
+      /* Highlight text color for table of contents */
+      --toc-highlight-text-color: #a66cdc; /* GitHub red for warnings */
+      /* Table of contents background color */
+      --toc-background-color: #ffffff; /* White background for table of contents */
+      /* Code block text color */
+      --code-color: #24292e; /* Dark gray for code text */
+      /* Code block background color */
+      --code-background-color: #eeeeee; /* Light gray background for code */
+      /* Shadow color for elements */
+      --shadow-color: rgba(27, 31, 35, 0.15); /* Subtle shadow */
+      /* Font used for headers (h1 & h2) */
+      --header-font-family: "Fira Sans", sans-serif;
+      /* Font used for text */
+      --text-font-family: "Fira Sans", sans-serif;
+      /* Link hover and active states */
+      --link-hover-color: #0056b3; /* Darker blue on hover */
+      --link-active-color: #0056b3; /* Same color for active state */
+      /* Border and focus states */
+      --border-color: #e1e4e8; /* Light gray borders */
+      --focus-border-color: #0366d6; /* Blue border for focus */
+    }
+</style>
+
+
+    
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Fira+Sans:400,500,600&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="/normalize.css">
+    <link rel="stylesheet" href="https://rust-gpu.github.io/juice.css">
+    
+<link rel="stylesheet" href="https://rust-gpu.github.io/custom.css">
+<link rel="alternate" type="application/atom+xml" title="RSS" href="https://rust-gpu.github.io/atom.xml">
+
+</head>
+
+<body>
+    
+<header class="box-shadow">
+    
+
+<a href="https://rust-gpu.github.io/">
+    <div class="logo">
+        <img src="https://rust-gpu.github.io" alt="logo">
+        Rust GPU
+    </div>
+</a>
+
+<nav>
+    
+    
+    
+    
+    
+    
+    
+    
+        
+        <a class="nav-item subtitle-text" href="https://rust-gpu.github.io/rust-gpu/book/">Docs</a>
+        
+        <a class="nav-item subtitle-text" href="/blog/">Blog</a>
+        
+        <a class="nav-item subtitle-text" href="/ecosystem/">Ecosystem</a>
+        
+        <a class="nav-item subtitle-text" href="/changelog/">Changelog</a>
+        
+        <a class="nav-item subtitle-text" href="https://github.com/Rust-GPU/rust-gpu">GitHub</a>
+        
+    
+</nav>
+
+</header>
+
+
+    <main>
+        
+        
+        
+        
+        
+        <div class="toc">
+            <div class="toc-sticky">
+                
+                <div class="toc-item">
+                    <a class="subtext" href="https://rust-gpu.github.io/ecosystem/#rust-gpu">rust-gpu</a>
+                </div>
+                
+                
+                <div class="toc-item">
+                    <a class="subtext" href="https://rust-gpu.github.io/ecosystem/#rust-cuda">rust-cuda</a>
+                </div>
+                
+                
+                <div class="toc-item">
+                    <a class="subtext" href="https://rust-gpu.github.io/ecosystem/#nvptx-backend-in-rustc">nvptx backend in rustc</a>
+                </div>
+                
+                
+                <div class="toc-item">
+                    <a class="subtext" href="https://rust-gpu.github.io/ecosystem/#cubecl">CubeCL</a>
+                </div>
+                
+                
+                <div class="toc-item">
+                    <a class="subtext" href="https://rust-gpu.github.io/ecosystem/#krnl">krnl</a>
+                </div>
+                
+                
+                <div class="toc-item">
+                    <a class="subtext" href="https://rust-gpu.github.io/ecosystem/#cudarc">cudarc</a>
+                </div>
+                
+                
+                <div class="toc-item">
+                    <a class="subtext" href="https://rust-gpu.github.io/ecosystem/#wgpu">wgpu</a>
+                </div>
+                
+                
+                <div class="toc-item">
+                    <a class="subtext" href="https://rust-gpu.github.io/ecosystem/#naga">naga</a>
+                </div>
+                
+                
+                <div class="toc-item">
+                    <a class="subtext" href="https://rust-gpu.github.io/ecosystem/#zluda">ZLUDA</a>
+                </div>
+                
+                
+                <div class="toc-item">
+                    <a class="subtext" href="https://rust-gpu.github.io/ecosystem/#asahi-linux-gpu-drivers">Asahi Linux GPU drivers</a>
+                </div>
+                
+                
+            </div>
+        </div>
+        
+        
+
+        <div class="content text">
+            
+<div class="heading-text">Ecosystem</div>
+
+<p>The GPU ecosystem in Rust is nascent and complex. It can be challenging to understand
+why projects exist and how they compare to others in the space. This section is a
+decoder ring for key projects that relate to both Rust and GPUs in some way.</p>
+<h1 id="rust-gpu"><a href="https://github.com/EmbarkStudios/rust-gpu">rust-gpu</a></h1>
+<p>Compiles unmodified Rust code to
+<a href="https://www.khronos.org/spir/">SPIR-V</a> (Vulkan) so that it can run on the GPU.</p>
+<h1 id="rust-cuda"><a href="https://github.com/Rust-GPU/Rust-CUDA">rust-cuda</a></h1>
+<p>Compiles unmodified Rust code to
+<a href="https://docs.nvidia.com/cuda/nvvm-ir-spec/index.html">NVVM</a> (CUDA) so that it can run
+on the GPU. <em>Currently unmaintained but stay tuned!</em></p>
+<h1 id="nvptx-backend-in-rustc"><a href="https://doc.rust-lang.org/rustc/platform-support/nvptx64-nvidia-cuda.html">nvptx backend in rustc</a></h1>
+<p>Compiles unmodified Rust code to
+<a href="https://docs.nvidia.com/cuda/parallel-thread-execution/index.html">PTX</a> (CUDA) so that
+it can run on the GPU.</p>
+<h1 id="cubecl"><a href="https://github.com/tracel-ai/cubecl">CubeCL</a></h1>
+<p>Compute language extension for Rust. Enables annotated Rust code to run on the GPU.</p>
+<h1 id="krnl"><a href="https://github.com/charles-r-earp/krnl">krnl</a></h1>
+<p>Safe, portable, high performance compute (GPGPU) kernels. Enables annotated Rust code to
+run on the GPU (via Rust GPU).</p>
+<h1 id="cudarc"><a href="https://github.com/coreylowman/cudarc">cudarc</a></h1>
+<p>Minimal and safe api over the CUDA toolkit. Enables calling CUDA from Rust running on
+the CPU.</p>
+<h1 id="wgpu"><a href="https://wgpu.rs/">wgpu</a></h1>
+<p>A safe and portable graphics library for Rust based on the WebGPU API. Enables
+communicating with the GPU from Rust running on the CPU.</p>
+<h1 id="naga"><a href="https://github.com/gfx-rs/wgpu/tree/trunk/naga">naga</a></h1>
+<p>A source code translator written in Rust that converts between various GPU-specific
+shader languages (<a href="https://www.w3.org/TR/WGSL/">WGSL</a>,
+<a href="https://en.wikipedia.org/wiki/OpenGL_Shading_Language">GLSL</a>,
+<a href="https://en.wikipedia.org/wiki/High-Level_Shader_Language">HLSL</a>, and
+<a href="https://developer.apple.com/metal/">MSL</a>). These shaders ultimately run on the GPU.</p>
+<h1 id="zluda"><a href="https://github.com/vosen/ZLUDA">ZLUDA</a></h1>
+<p>A drop-in replacement for CUDA written in Rust. Enables using tools and libraries
+targeted at CUDA on non-NVIDIA hardware.</p>
+<h1 id="asahi-linux-gpu-drivers"><a href="https://asahilinux.org/2022/12/gpu-drivers-now-in-asahi-linux/">Asahi Linux GPU drivers</a></h1>
+<p>GPU drivers partially written in Rust to add Linux support for Apple GPUs.</p>
+
+
+        </div>
+
+        
+
+    </main>
+
+    
+
+</body>
+<script>
+    const scrollHandler = entries => {
+        // Find the first entry which intersecting and ratio > 0.9 to highlight.
+        let entry = entries.find(entry => {
+            return entry.isIntersecting && entry.intersectionRatio > 0.9;
+        });
+        if (!entry) return;
+
+        document.querySelectorAll(".toc a").forEach((item) => {
+            item.classList.remove("active");
+        });
+
+        // let url = new URL(`#${entry.target.id}`);
+        let link = document.querySelector(`.toc a[href$="${decodeURIComponent(`#${entry.target.id}`)}"]`)
+        if (link) {
+            link.classList.add("active");
+            link.scrollIntoView({ behavior: "auto", block: "nearest" });
+        }
+    };
+    // Set -100px root margin to improve highlight experience.
+    const observer = new IntersectionObserver(scrollHandler, { threshold: 1 });
+    let items = document.querySelectorAll('h1,h2,h3,h4,h5,h6');
+    items.forEach(item => observer.observe(item));
+</script>
+
+</html>

@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Rust GPU Transitions to Community Ownership |  </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    
+    <link rel="icon" type="image/png" href="/favicon.ico">
+    
+    <style>
+    :root {
+      /* Primary theme color */
+      --primary-color: #fff; /* GitHub green for buttons and highlights */
+      /* Primary theme text color */
+      --primary-text-color: #24292e; /* GitHub dark gray for primary text */
+      --primary-text-color-over: #0056b3; /* White text over primary color */
+      /* Primary theme link color */
+      --primary-link-color: #0366d6; /* GitHub blue for links */
+      /* Secondary color: the background body color */
+      --secondary-color: #f6f8fa; /* GitHub light gray background */
+      --secondary-text-color: #586069; /* GitHub medium gray for secondary text */
+      /* Highlight text color for table of contents */
+      --toc-highlight-text-color: #a66cdc; /* GitHub red for warnings */
+      /* Table of contents background color */
+      --toc-background-color: #ffffff; /* White background for table of contents */
+      /* Code block text color */
+      --code-color: #24292e; /* Dark gray for code text */
+      /* Code block background color */
+      --code-background-color: #eeeeee; /* Light gray background for code */
+      /* Shadow color for elements */
+      --shadow-color: rgba(27, 31, 35, 0.15); /* Subtle shadow */
+      /* Font used for headers (h1 & h2) */
+      --header-font-family: "Fira Sans", sans-serif;
+      /* Font used for text */
+      --text-font-family: "Fira Sans", sans-serif;
+      /* Link hover and active states */
+      --link-hover-color: #0056b3; /* Darker blue on hover */
+      --link-active-color: #0056b3; /* Same color for active state */
+      /* Border and focus states */
+      --border-color: #e1e4e8; /* Light gray borders */
+      --focus-border-color: #0366d6; /* Blue border for focus */
+    }
+</style>
+
+
+    
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Fira+Sans:400,500,600&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="/normalize.css">
+    <link rel="stylesheet" href="https://rust-gpu.github.io/juice.css">
+    
+<link rel="stylesheet" href="https://rust-gpu.github.io/custom.css">
+<link rel="alternate" type="application/atom+xml" title="RSS" href="https://rust-gpu.github.io/atom.xml">
+
+</head>
+
+<body>
+    
+<header class="box-shadow">
+    
+
+<a href="https://rust-gpu.github.io/">
+    <div class="logo">
+        <img src="https://rust-gpu.github.io" alt="logo">
+        Rust GPU
+    </div>
+</a>
+
+<nav>
+    
+    
+    
+    
+    
+    
+    
+    
+        
+        <a class="nav-item subtitle-text" href="https://rust-gpu.github.io/rust-gpu/book/">Docs</a>
+        
+        <a class="nav-item subtitle-text" href="/blog/">Blog</a>
+        
+        <a class="nav-item subtitle-text" href="/ecosystem/">Ecosystem</a>
+        
+        <a class="nav-item subtitle-text" href="/changelog/">Changelog</a>
+        
+        <a class="nav-item subtitle-text" href="https://github.com/Rust-GPU/rust-gpu">GitHub</a>
+        
+    
+</nav>
+
+</header>
+
+
+    <main>
+        
+        
+        
+        
+        
+        <div class="toc">
+            <div class="toc-sticky">
+                
+                <div class="toc-item">
+                    <a class="subtext" href="https://rust-gpu.github.io/blog/transition-announcement/#what-is-rust-gpu">What is Rust GPU?</a>
+                </div>
+                
+                
+                <div class="toc-item">
+                    <a class="subtext" href="https://rust-gpu.github.io/blog/transition-announcement/#why-rust-for-gpu-programming">Why Rust for GPU Programming?</a>
+                </div>
+                
+                
+                <div class="toc-item">
+                    <a class="subtext" href="https://rust-gpu.github.io/blog/transition-announcement/#a-heartfelt-thank-you-to-embark">A Heartfelt Thank You to Embark</a>
+                </div>
+                
+                
+                <div class="toc-item">
+                    <a class="subtext" href="https://rust-gpu.github.io/blog/transition-announcement/#transition-challenges-repository-transfer">Transition Challenges: Repository Transfer</a>
+                </div>
+                
+                
+                <div class="toc-item">
+                    <a class="subtext" href="https://rust-gpu.github.io/blog/transition-announcement/#new-focus-gpu-compute-and-gpgpu">New Focus: GPU Compute and GPGPU</a>
+                </div>
+                
+                
+                <div class="toc-item">
+                    <a class="subtext" href="https://rust-gpu.github.io/blog/transition-announcement/#addressing-stability-and-nightly-rust">Addressing Stability and Nightly Rust</a>
+                </div>
+                
+                
+                <div class="toc-item">
+                    <a class="subtext" href="https://rust-gpu.github.io/blog/transition-announcement/#short-term-roadmap">Short-Term Roadmap</a>
+                </div>
+                
+                
+                <div class="toc-item">
+                    <a class="subtext" href="https://rust-gpu.github.io/blog/transition-announcement/#long-term-vision-first-class-gpu-targets-in-rust">Long-Term Vision: First-Class GPU Targets in Rust</a>
+                </div>
+                
+                
+            </div>
+        </div>
+        
+        
+
+        <div class="content text">
+            
+<div class="heading-text">Rust GPU Transitions to Community Ownership</div>
+<small style="margin-top: -1.25em">Posted on <a href="https:&#x2F;&#x2F;rust-gpu.github.io&#x2F;blog&#x2F;transition-announcement&#x2F;" style="color: var(--primary-text-color)">2024-08-12</a></small>
+<p>We are excited to announce that as of today the <a
+href="https://rust-gpu.github.io">Rust GPU</a> project will be transitioning from
+<a href="https://www.embark-studios.com/">Embark Studios</a> to community ownership under the <a href="https://github.com/rust-gpu/rust-gpu">Rust
+GPU GitHub organization</a>. This move marks the
+beginning of a broader strategy aimed at revitalizing, unifying, and standardizing GPU
+programming in Rust. We are eager to share more details in the near future but in the
+meantime if you are a maintainer of a GPU-related Rust project, please reach out!</p>
+<h2 id="what-is-rust-gpu">What is Rust GPU?<a class="zola-anchor" href="#what-is-rust-gpu" aria-label="Anchor link for: what-is-rust-gpu">🔗</a></h2>
+<p><a href="https://rust-gpu.github.io">Rust GPU</a> makes it possible to write and run GPU
+software in Rust, leveraging the language's powerful safety and concurrency features to
+enhance performance and reliability. With Rust GPU, you can seamlessly develop for both
+CPU and GPU using a unified codebase, all while benefiting from Rust’s existing
+ecosystem.</p>
+<p>The Rust GPU compiler backend emits code compatible with
+<a href="https://www.vulkan.org">Vulkan</a>, ensuring your code runs across a wide range of devices
+and vendors.</p>
+<p>If instead you wish to stick to the NVIDIA ecosystem, stay tuned as the <a href="https://github.com/rust-gpu/rust-cuda">Rust
+CUDA</a> project is in the process of being rebooted
+and possibly integrated with Rust GPU.</p>
+<p>To put Rust GPU in context, here's an overview of the current landscape:</p>
+<ul>
+<li><a href="https://github.com/EmbarkStudios/rust-gpu">rust-gpu</a>: Compiles unmodified Rust code to
+<a href="https://www.khronos.org/spir/">SPIR-V</a> (Vulkan) so that it can run on the GPU.</li>
+<li><a href="https://github.com/Rust-GPU/Rust-CUDA">rust-cuda</a>: Compiles unmodified Rust code to
+<a href="https://docs.nvidia.com/cuda/nvvm-ir-spec/index.html">NVVM</a> (CUDA) so that it can run
+on the GPU. <em>Currently unmaintained but stay tuned!</em></li>
+<li><a href="https://doc.rust-lang.org/rustc/platform-support/nvptx64-nvidia-cuda.html">nvptx backend in
+rustc</a>:
+Compiles unmodified Rust code to
+<a href="https://docs.nvidia.com/cuda/parallel-thread-execution/index.html">PTX</a> (CUDA) so
+that it can run on the GPU.</li>
+<li><a href="https://github.com/tracel-ai/cubecl">CubeCL</a>: Compute language extension for Rust.
+Enables annotated Rust code to run on the GPU.</li>
+<li><a href="https://github.com/charles-r-earp/krnl">krnl</a>: Safe, portable, high performance
+compute (GPGPU) kernels. Enables annotated Rust code to run on the GPU (via Rust GPU).</li>
+<li><a href="https://github.com/coreylowman/cudarc">cudarc</a>: Minimal and safe api over the CUDA
+toolkit. Enables calling CUDA from Rust running on the CPU.</li>
+<li><a href="https://wgpu.rs/">wgpu</a>: A safe and portable graphics library for Rust based on the
+WebGPU API. Enables communicating with the GPU from Rust running on the CPU.</li>
+<li><a href="https://github.com/gfx-rs/wgpu/tree/trunk/naga">naga</a>: A source code translator
+written in Rust that converts between various GPU-specific shader languages
+(<a href="https://www.w3.org/TR/WGSL/">WGSL</a>,
+<a href="https://en.wikipedia.org/wiki/OpenGL_Shading_Language">GLSL</a>,
+<a href="https://en.wikipedia.org/wiki/High-Level_Shader_Language">HLSL</a>, and
+<a href="https://developer.apple.com/metal/">MSL</a>). These shaders ultimately run on the GPU.</li>
+<li><a href="https://github.com/vosen/ZLUDA">ZLUDA</a>: A drop-in replacement for CUDA written in
+Rust. Enables using tools and libraries targeted at CUDA on non-NVIDIA hardware.</li>
+<li><a href="https://asahilinux.org/2022/12/gpu-drivers-now-in-asahi-linux/">Asahi Linux GPU
+drivers</a>: GPU drivers
+partially written in Rust to add Linux support for Apple GPUs.</li>
+</ul>
+<h2 id="why-rust-for-gpu-programming">Why Rust for GPU Programming?<a class="zola-anchor" href="#why-rust-for-gpu-programming" aria-label="Anchor link for: why-rust-for-gpu-programming">🔗</a></h2>
+<ol>
+<li>
+<p><strong>Modern and Unified Experience:</strong> There is no longer a need to learn a GPU-specific
+programming language. You can write both CPU and GPU code in Rust, leveraging your
+existing Rust knowledge and maintaining a consistent development experience.
+Furthermore, the <em>same code can run on both the CPU and GPU</em>, with divergent behavior
+gated behind <code>cfg</code> attributes and macros where necessary.</p>
+<p>Even if your current codebase isn't written in Rust, choosing Rust for the GPU parts
+instead of GPU-specific languages gives you more widely applicable skills in one of
+the <a href="https://octoverse.github.com/2022/top-programming-languages">fastest-growing languages on
+GitHub</a>. Rust is also
+one of the <a href="https://github.blog/developer-skills/programming-languages-and-frameworks/why-rust-is-the-most-admired-language-among-developers/">most admired programming
+languages</a>
+while GPU-specific languages are considered a necessary evil.</p>
+</li>
+<li>
+<p><strong>Fearless Concurrency:</strong> Rust's ownership model and type system guarantee memory
+safety, minimizing bugs and undefined behavior. Rust's borrow checker also enables
+fearless concurrency, which is essential for maximizing performance on massively
+parallel GPUs.</p>
+</li>
+<li>
+<p><strong>Powerful Abstractions:</strong> Programming in GPU-specific languages can often feel like
+<a href="https://xol.io/blah/death-to-shading-languages/">taking a step back to the 90s</a>,
+where primitive tools and sharp edges abound. Because of this, code written for GPUs
+is simplistic with low cyclomatic complexity. Rust has an expressive type system and
+zero-cost abstractions that enable writing high-level, reusable code without
+sacrificing performance. This approach leads to more maintainable and sophisticated
+GPU programs, streamlining the development process and enhancing productivity.</p>
+</li>
+<li>
+<p><strong>Leverage Existing Ecosystem:</strong> The state-of-the-art for sharing GPU code is copy
+and pasting. With Rust GPU we are excited to bring the excellent <code>cargo</code> and
+crates.io ecosystem to GPU programming and provide some sanity.</p>
+<p>Additionally, Rust's <code>no_std</code> ecosystem offers a wide array of libraries that can be
+used in environments without the standard library. Traditionally this has meant
+embedded devices, but a lot of the same assumptions apply to GPUs! As a
+consequence, you can reuse <a href="https://crates.io/categories/no-std::no-alloc">existing <code>no_std</code> libraries from
+crates.io</a> in your GPU code <em>without
+the authors explicitly adding GPU support</em>. This is uniquely enabled by Rust GPU's
+implementation choices and Rust's
+<a href="https://without.boats/blog/the-registers-of-rust/">registers</a>. Sharing and reusing
+code from the greater Rust ecosystem is a superpower when writing GPU programs that
+will massively compound over time.</p>
+<p>Soon developers will write and share Rust libraries that <em>require</em> running on the
+GPU, similar to how some existing open source libraries require a specific OS or CPU
+architecture. We expect many innovative GPU-specific algorithms and projects to be
+built in Rust.</p>
+</li>
+</ol>
+<h2 id="a-heartfelt-thank-you-to-embark">A Heartfelt Thank You to Embark<a class="zola-anchor" href="#a-heartfelt-thank-you-to-embark" aria-label="Anchor link for: a-heartfelt-thank-you-to-embark">🔗</a></h2>
+<p>First and foremost, we extend our deepest gratitude to <a href="https://www.embark-studios.com/">Embark
+Studios</a> for their incredible work in kickstarting and
+supporting the Rust GPU project. Their dedication and contributions have been
+invaluable, laying a strong foundation for the future. The community is immensely
+grateful for all the resources and expertise Embark has poured into this project.</p>
+<h2 id="transition-challenges-repository-transfer">Transition Challenges: Repository Transfer<a class="zola-anchor" href="#transition-challenges-repository-transfer" aria-label="Anchor link for: transition-challenges-repository-transfer">🔗</a></h2>
+<p>Unfortunately, Embark has decided not to transfer the existing repository via <a href="https://docs.github.com/en/repositories/creating-and-managing-repositories/transferring-a-repository">GitHub's
+transfer
+tool</a>,
+which means we will lose all our stars, issues, and pull requests. Additionally,
+automatic GitHub redirects will not be added. All this causes avoidable churn.</p>
+<p>We have not fully transitioned to the new community-owned repository due to these
+downsides and we believe the best course of action is to encourage Embark to reconsider
+and simply press the GitHub transfer button, easing this transition for everyone
+involved. We appreciate the community's patience and understanding as we get things
+sorted out and we'd love your support encouraging Embark to reconsider the mechanics of
+the transfer.</p>
+<h2 id="new-focus-gpu-compute-and-gpgpu">New Focus: GPU Compute and GPGPU<a class="zola-anchor" href="#new-focus-gpu-compute-and-gpgpu" aria-label="Anchor link for: new-focus-gpu-compute-and-gpgpu">🔗</a></h2>
+<p>With the industry's growing emphasis on generative AI and LLMs, we are shifting our
+primary focus towards GPU compute and General-Purpose GPU (GPGPU) programming. This also
+aligns with the trend in GPU hardware to increasingly utilize the compute capabilities
+of GPUs to run graphics pipelines as software libraries rather than relying on
+specialized hardware. Even graphics-focused programs such as video games are moving away
+from solely relying on graphics pipelines and instead running as much of the engine as
+possible in GPU compute.</p>
+<p>In the past, the primary focus on graphics use-cases did not materialize the necessary
+contributors and community engagement to make the Rust GPU project sustainable. We hope
+our new focus will attract more contributors and users.</p>
+<p>However, it is important to note that graphics use-cases will continue to be supported,
+developed, and improved in Rust GPU! We appreciate our early graphics adopters and
+remain committed to enhancing the graphics capabilities of Rust GPU.</p>
+<h2 id="addressing-stability-and-nightly-rust">Addressing Stability and Nightly Rust<a class="zola-anchor" href="#addressing-stability-and-nightly-rust" aria-label="Anchor link for: addressing-stability-and-nightly-rust">🔗</a></h2>
+<p>Though Rust GPU requires the nightly version of Rust, Embark had unique stability goals
+which resulted in Rust GPU not tracking the <em>latest</em> nightly. This has been a hurdle for
+adoption, as most people experimenting with Rust GPU are likely already on nightly to
+get the latest and greatest, not use a randomly chosen nightly from months ago. To
+address this, we will be tracking the latest Rust nightly builds moving forward. For
+those concerned about stability, you can pin to a particular nightly version via <a
+href="https://rust-lang.github.io/rustup/overrides.html#the-toolchain-file"><code>rust-toolchain</code></a>,
+and there are ways to build your GPU code with nightly while keeping your CPU code on
+stable.</p>
+<p>With today's release we are closer to this goal but we aren't quite tracking the latest
+nightly yet as some newer <code>rustc</code> changes require more substantial changes to Rust GPU's
+compiler backend.</p>
+<h2 id="short-term-roadmap">Short-Term Roadmap<a class="zola-anchor" href="#short-term-roadmap" aria-label="Anchor link for: short-term-roadmap">🔗</a></h2>
+<p>Our immediate focus is on the following tasks:</p>
+<ul>
+<li><strong>Merge all outstanding work.</strong></li>
+<li><strong>Track the latest Rust nightly.</strong> Stay up-to-date with the latest developments in
+Rust and catch changes that break Rust GPU's compiler backend as soon as they land
+upstream.</li>
+<li><strong>Release more often.</strong> Increase our release cadence to deliver improvements and fixes
+more frequently, as well as aid in debugging issues.</li>
+<li><strong>Extend/update documentation, FAQ, and guides.</strong> Provide solutions to common problems
+and usage scenarios and document unsupported language constructs.</li>
+<li><strong>Better compatibility.</strong>
+<ul>
+<li>Fully switch to <a href="https://github.com/EmbarkStudios/spirt/pull/24">quasi-pointers</a> to
+support more advanced Rust constructs.</li>
+<li>Add <code>alloc</code> support. This will allow us to use even more <code>no_std</code> crates that also allocate memory.</li>
+</ul>
+</li>
+<li><strong>Better testing.</strong>
+<ul>
+<li>Develop our own crater-like tool to create a burndown list of <code>no_std</code> and <code>alloc</code>
+crates that don't work with Rust GPU.</li>
+<li>Implement a differential testing harness.</li>
+<li>Establish ecosystem CI similar to the <a href="https://github.com/swc-project/swc/tree/main/.github/swc-ecosystem-ci">SWC
+project</a>.</li>
+</ul>
+</li>
+</ul>
+<h2 id="long-term-vision-first-class-gpu-targets-in-rust">Long-Term Vision: First-Class GPU Targets in Rust<a class="zola-anchor" href="#long-term-vision-first-class-gpu-targets-in-rust" aria-label="Anchor link for: long-term-vision-first-class-gpu-targets-in-rust">🔗</a></h2>
+<p>Looking further ahead, one of our ambitious goals is to merge Rust GPU or its successor
+into the Rust compiler itself. We want to make GPUs (and TPUs and NPUs) first-class
+targets in Rust and make programming them as ergonomic as CPU programming. <strong>Hardware is
+shifting from scalar, serial processing to matrix, parallel processing—software must do
+the same.</strong> We are excited about the future of Rust GPU and the potential it holds.</p>
+<p>Thank you for your continued support and contributions. Stay tuned for more updates, and
+don't hesitate to reach out if you have any questions or want to get involved.</p>
+<p>Happy coding!</p>
+<p><em>LegNeato (<a href="https://github.com/LegNeato">GitHub</a>,
+<a href="https://twitter.com/legneato">Twitter</a>) and eddyb (<a href="https://github.com/eddyb">GitHub</a>)</em></p>
+<p><strong>Rust GPU Maintainers</strong></p>
+
+
+        </div>
+
+        
+
+    </main>
+
+    
+
+</body>
+<script>
+    const scrollHandler = entries => {
+        // Find the first entry which intersecting and ratio > 0.9 to highlight.
+        let entry = entries.find(entry => {
+            return entry.isIntersecting && entry.intersectionRatio > 0.9;
+        });
+        if (!entry) return;
+
+        document.querySelectorAll(".toc a").forEach((item) => {
+            item.classList.remove("active");
+        });
+
+        // let url = new URL(`#${entry.target.id}`);
+        let link = document.querySelector(`.toc a[href$="${decodeURIComponent(`#${entry.target.id}`)}"]`)
+        if (link) {
+            link.classList.add("active");
+            link.scrollIntoView({ behavior: "auto", block: "nearest" });
+        }
+    };
+    // Set -100px root margin to improve highlight experience.
+    const observer = new IntersectionObserver(scrollHandler, { threshold: 1 });
+    let items = document.querySelectorAll('h1,h2,h3,h4,h5,h6');
+    items.forEach(item => observer.observe(item));
+</script>
+
+</html>
