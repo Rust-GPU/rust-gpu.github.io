@@ -1,0 +1,54 @@
+{
+  "permalink": "/blog/transition-announcement",
+  "editUrl": "https://github.com/Rust-GPU/rust-gpu.github.io/tree/main/blog/2024-08-12-transition-announcement.md",
+  "source": "@site/blog/2024-08-12-transition-announcement.md",
+  "title": "Rust GPU Transitions to Community Ownership",
+  "description": "We are excited to announce that as of today the <a",
+  "date": "2024-08-12T00:00:00.000Z",
+  "tags": [
+    {
+      "inline": false,
+      "label": "announcement",
+      "permalink": "/blog/tags/announcements",
+      "description": "Announcements"
+    }
+  ],
+  "readingTime": 7.75,
+  "hasTruncateMarker": true,
+  "authors": [
+    {
+      "name": "Christian Legnitto",
+      "title": "Rust GPU maintainer",
+      "url": "https://github.com/LegNeato",
+      "socials": {
+        "x": "https://x.com/LegNeato",
+        "github": "https://github.com/LegNeato"
+      },
+      "imageURL": "/img/authors/LegNeato.png",
+      "key": "LegNeato",
+      "page": null
+    },
+    {
+      "name": "EddyB",
+      "title": "Rust GPU maintainer",
+      "socials": {
+        "github": "https://github.com/eddyb"
+      },
+      "imageURL": "/img/authors/eddyb.png",
+      "key": "eddyb",
+      "page": null
+    }
+  ],
+  "frontMatter": {
+    "title": "Rust GPU Transitions to Community Ownership",
+    "authors": [
+      "LegNeato",
+      "eddyb"
+    ],
+    "slug": "transition-announcement",
+    "tags": [
+      "announcement"
+    ]
+  },
+  "unlisted": false
+}

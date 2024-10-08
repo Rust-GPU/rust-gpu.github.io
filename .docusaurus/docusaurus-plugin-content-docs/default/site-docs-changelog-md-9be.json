@@ -1,0 +1,24 @@
+{
+  "id": "changelog",
+  "title": "Changelog",
+  "description": "All notable changes to this project will be documented in this file.",
+  "source": "@site/docs/changelog.md",
+  "sourceDirName": ".",
+  "slug": "/changelog",
+  "permalink": "/docs/changelog",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/Rust-GPU/rust-gpu.github.io/tree/main/docs/changelog.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {
+    "id": "changelog",
+    "title": "Changelog",
+    "sidebar_label": "Changelog"
+  },
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "Translate your site",
+    "permalink": "/docs/tutorial-extras/translate-your-site"
+  }
+}

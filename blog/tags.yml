@@ -1,0 +1,14 @@
+release:
+  label: release
+  permalink: /releases
+  description: New releases
+
+announcement:
+  label: announcement
+  permalink: /announcements
+  description: Announcements
+
+demo:
+  label: demo
+  permalink: /demos
+  description: Demos
