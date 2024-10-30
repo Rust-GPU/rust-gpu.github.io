@@ -21,7 +21,6 @@ eddyb:
 schell:
   name: Schell Carl Scivally
   title: Rust GPU and Renderling maintainer
-  url: https://github.com/schell
   image_url:
     ## Image URL managed by the fetchAuthorImages plugin. Changes may be overwritten.
     https://avatars.githubusercontent.com/u/24942
