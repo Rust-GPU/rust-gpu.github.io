@@ -23,7 +23,6 @@ schell:
   title: Rust GPU and Renderling maintainer
   image_url:
     ## Image URL managed by the fetchAuthorImages plugin. Changes may be overwritten.
-    https://avatars.githubusercontent.com/u/24942
+    /img/authors/schell.png
   socials:
     github: schell
-    instagram: schellsan
