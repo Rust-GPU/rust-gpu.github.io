@@ -1,0 +1,289 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: "Geist";
+  src: url("../../static/Geist.woff2");
+}
+
+@font-face {
+  font-family: "GeistMono";
+  src: url("../../static/GeistMono.woff2");
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply font-text !important;
+    @apply bg-secondary text-primary-text font-text leading-normal;
+  }
+
+  p:not(:last-child) {
+    @apply mb-6;
+  }
+
+  .heading-text {
+    @apply text-primary-text font-text font-bold;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply heading-text;
+  }
+
+  .h1 {
+    @apply text-2xl mt-[1.5em] mb-[1.5em];
+  }
+
+  h1 {
+    @apply h1;
+  }
+
+  .h2 {
+    @apply text-lg mt-[1.5em] mb-[1.5em];
+  }
+
+  h2 {
+    @apply h2;
+  }
+
+  .h3 {
+    @apply text-base mt-[1.25em] mb-[1.25em];
+  }
+
+  h3 {
+    @apply h3;
+  }
+
+  a {
+    @apply text-primary-link !important;
+  }
+
+  a:hover {
+    @apply text-primary-text-over underline !important;
+  }
+
+  .active {
+    @apply text-toc-highlight-text !important;
+  }
+
+  code {
+    @apply text-code bg-code-background;
+  }
+
+  hr {
+    @apply border-[#dddddd] !important;
+  }
+
+  svg {
+    @apply inline-block;
+  }
+
+  input:focus,
+  textarea:focus,
+  select:focus {
+    @apply border-focus-border;
+  }
+
+  #learn-more {
+    @apply text-primary-text !important;
+  }
+
+  #learn-more:hover {
+    @apply no-underline !important;
+  }
+}
+
+@layer content {
+  main h2 {
+    @apply text-2xl !important;
+  }
+
+  article header h1 {
+    @apply mt-0 !important;
+    @apply mb-8 !important;
+  }
+
+  article {
+    @apply bg-white !important;
+    @apply p-8 !important;
+    @apply rounded-lg !important;
+    @apply mb-8 !important;
+  }
+
+  #blog-list header h2,
+  #blog-list header h1,
+  #blog header h2,
+  #blog header h1 {
+    @apply mt-0 !important;
+    @apply mb-0 !important;
+  }
+
+  article header > h1,
+  article header > h1 a,
+  article header > h2,
+  article header > h2 > a {
+    @apply text-3xl !important;
+  }
+}
+
+@layer lists {
+  main ul {
+    @apply list-disc !important;
+  }
+
+  main ol {
+    @apply list-decimal !important;
+  }
+
+  main ul,
+  main ol {
+    @apply pl-16 space-y-[1em] !important;
+  }
+
+  ul.breadcrumbs {
+    @apply list-none !important;
+    @apply pl-0 !important;
+  }
+
+  main ol li {
+    @apply font-normal !important;
+    @apply pl-1 !important;
+  }
+
+  article footer div ul,
+  article footer ol,
+  ul.table-of-contents {
+    @apply list-none p-0 !important;
+  }
+
+  article footer div ul,
+  article footer ol {
+    @apply space-y-0 !important;
+  }
+}
+
+@layer blog {
+  article {
+    @apply bg-white !important;
+    @apply p-8 !important;
+    @apply rounded-lg !important;
+    @apply mb-8 !important;
+  }
+
+  article header div.avatar {
+    @apply mb-8 !important;
+  }
+
+  article header small {
+    @apply leading-relaxed !important;
+  }
+
+  article footer {
+    @apply mt-8 !important;
+  }
+
+  article a.theme-edit-this-page svg {
+    @apply inline-block !important;
+  }
+
+  main nav a {
+    @apply shadow-normal;
+    @apply text-primary-text !important;
+  }
+  main nav a {
+    @apply shadow-normal;
+    @apply text-primary-text !important;
+  }
+
+  main nav a:hover {
+    @apply shadow-link-hover;
+    @apply text-primary-link !important;
+  }
+
+  main nav a:hover .pagination-nav__label,
+  main nav a:hover .pagination-nav__sublabel {
+    @apply text-primary-link !important;
+  }
+
+  main nav a div.pagination-nav__label,
+  main nav a div.pagination-nav__sublabel {
+    @apply text-primary-text !important;
+  }
+
+  div.avatar__name span {
+    @apply text-primary-text font-bold !important;
+    @apply text-primary-text font-bold !important;
+  }
+
+  div.avatar__name a:hover {
+    @apply no-underline !important;
+  }
+}
+
+@layer navbar {
+  #topbar--home,
+  #topbar {
+    @apply bg-[#0000ff];
+    @apply bg-white text-primary-text font-bold text-lg !important;
+    @apply pt-2 pr-2 pl-4;
+  }
+
+  #topbar--home a,
+  #topbar a,
+  #topbar b {
+    @apply text-primary-text font-bold text-lg !important;
+  }
+
+  #topbar--home a:hover,
+  #topbar a:hover {
+    @apply no-underline !important;
+  }
+
+  #topbar {
+    @apply pb-2;
+    @apply shadow-normal !important;
+  }
+
+  #topbar--home {
+    @apply shadow-none !important;
+  }
+
+  .navbar__link--active {
+    @apply text-primary-text !important;
+  }
+}
+
+@layer sidebar {
+  aside a {
+    @apply text-primary-link !important;
+  }
+
+  aside a:hover {
+    @apply text-primary-text-over underline !important;
+  }
+
+  nav.menu {
+    @apply border-0 !important;
+    @apply shadow-none !important;
+  }
+
+  .theme-doc-sidebar-container {
+    @apply border-0 !important;
+  }
+}
+
+@layer toc {
+  ul.table-of-contents a {
+    @apply font-text text-secondary-text !important;
+    @apply text-xs !important;
+  }
+}
