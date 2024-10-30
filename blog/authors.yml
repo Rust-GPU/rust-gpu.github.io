@@ -1,5 +1,4 @@
 LegNeato:
-  ## Image URL managed by fetchAuthorImages plugin. Changes may be overwritten.
   name: Christian Legnitto
   title: Rust GPU maintainer
   url: https://github.com/LegNeato
@@ -11,7 +10,6 @@ LegNeato:
     github: LegNeato
 
 eddyb:
-  ## Image URL managed by fetchAuthorImages plugin. Changes may be overwritten.
   name: EddyB
   title: Rust GPU maintainer
   image_url:
