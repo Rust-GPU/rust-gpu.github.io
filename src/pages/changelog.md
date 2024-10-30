@@ -61,7 +61,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [PR#1081](https://github.com/EmbarkStudios/rust-gpu/pull/1081) added the ability
   to access SPIR-V specialization constants (`OpSpecConstant`) via entry-point
   inputs declared as `#[spirv(spec_constant(id = ..., default = ...))] x: u32`  
-  (see also [the `#[spirv(spec_constant)]` attribute documentation](docs/src/attributes.md#specialization-constants))
+  (see also [the `#[spirv(spec_constant)]` attribute documentation](https://rust-gpu.github.io/rust-gpu/book/attributes.html#specialization-constants))
 - [PR#1036](https://github.com/EmbarkStudios/rust-gpu/pull/1036) added a `--force-spirv-passthru` flag to `example-runner-wgpu`, to bypass Naga (`wgpu`'s shader translator),
   used it to test `debugPrintf` for `wgpu`,  and updated `ShaderPanicStrategy::DebugPrintfThenExit` docs to reflect what "enabling `debugPrintf`" looks like for `wgpu`  
   <sub><sup>(e.g. `VK_LOADER_LAYERS_ENABLE=VK_LAYER_KHRONOS_validation VK_LAYER_ENABLES=VK_VALIDATION_FEATURE_ENABLE_DEBUG_PRINTF_EXT DEBUG_PRINTF_TO_STDOUT=1`)</sup></sub>
@@ -116,7 +116,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed 🛠
 - [PR#1040](https://github.com/EmbarkStudios/rust-gpu/pull/1040) refactored "zombie" (delayed error) reporting to use SPIR-V `OpSource`, be more helpful, and added `--no-early-report-zombies` to delay it even further  
-  (see also [the `--no-early-report-zombies` codegen args docs](docs/src/codegen-args.md#--no-early-report-zombies))
+  (see also [the `--no-early-report-zombies` codegen args docs](https://rust-gpu.github.io/rust-gpu/book/codegen-args.html#--no-early-report-zombies))
 - [PR#1035](https://github.com/EmbarkStudios/rust-gpu/pull/1035) reduced the number of CGUs ("codegen units") used by `spirv-builder` to just `1`
 - [PR#1011](https://github.com/EmbarkStudios/rust-gpu/pull/1011) made `NonWritable` all read-only storage buffers (i.e. those typed `&T`, where `T` doesn't have interior mutability)
 - [PR#1029](https://github.com/EmbarkStudios/rust-gpu/pull/1029) fixed `SampledImage::sample` `fn`s being unnecessarily marked as `unsafe`
@@ -150,7 +150,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added ⭐
 - [PR#988](https://github.com/EmbarkStudios/rust-gpu/pull/988) added a couple of (highly experimental)
   `SPIR-🇹` optimization passes, and `--spirt-passes=...` codegen args as a way to enable them  
-  (see also [the `--spirt-passes` codegen args docs](docs/src/codegen-args.md#--spirt-passes-PASSES))
+  (see also [the `--spirt-passes` codegen args docs](https://rust-gpu.github.io/rust-gpu/book/codegen-args.html#--spirt-passes-PASSES))
 
 ### Changed 🛠️
 - [PR#982](https://github.com/EmbarkStudios/rust-gpu/pull/982) updated toolchain to `nightly-2022-12-18`
@@ -162,15 +162,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [PR#959](https://github.com/EmbarkStudios/rust-gpu/pull/959) added two `spirv-builder` environment variables to customize *only* the `rustc` invocations for shader crates and their dependencies:
   - `RUSTGPU_RUSTFLAGS="..."` for shader `RUSTFLAGS="..."`
   - `RUSTGPU_CODEGEN_ARGS="..."` for shader "codegen args" (i.e. `RUSTFLAGS=-Cllvm-args="..."`)  
-    (check out [the "codegen args" docs](docs/src/codegen-args.md), or run with `RUSTGPU_CODEGEN_ARGS=--help` to see the full list of options)
+    (check out [the "codegen args" docs](https://rust-gpu.github.io/rust-gpu/book/codegen-args.html), or run with `RUSTGPU_CODEGEN_ARGS=--help` to see the full list of options)
 - [PR#940](https://github.com/EmbarkStudios/rust-gpu/pull/940) integrated the experimental [`SPIR-🇹` shader IR framework](https://github.com/rust-gpu/spirt) into the linker  
-  (opt-in via `RUSTGPU_CODEGEN_ARGS=--spirt`, see also [the `--spirt` docs](docs/src/codegen-args.md#--spirt), for more details)
+  (opt-in via `RUSTGPU_CODEGEN_ARGS=--spirt`, see also [the `--spirt` docs](https://rust-gpu.github.io/rust-gpu/book/codegen-args.html#--spirt), for more details)
 
 ### Changed 🛠️
 - [PR#958](https://github.com/EmbarkStudios/rust-gpu/pull/958) updated toolchain to `nightly-2022-10-29`
 - [PR#941](https://github.com/EmbarkStudios/rust-gpu/pull/941) applied workspace inheritance to `Cargo.toml` files
-- [PR#959](https://github.com/EmbarkStudios/rust-gpu/pull/959) moved `rustc_codegen_spirv` debugging functionality from environment variables to "codegen args" options/flags (see [the updated docs](docs/src/codegen-args.md) for more details)
-- [PR#967](https://github.com/EmbarkStudios/rust-gpu/pull/967) made `--dump-*` ["codegen args"](docs/src/codegen-args.md) include identifying information (e.g. crate names) in the names of files they emit
+- [PR#959](https://github.com/EmbarkStudios/rust-gpu/pull/959) moved `rustc_codegen_spirv` debugging functionality from environment variables to "codegen args" options/flags (see [the updated docs](https://rust-gpu.github.io/rust-gpu/book/codegen-args.html) for more details)
+- [PR#967](https://github.com/EmbarkStudios/rust-gpu/pull/967) made `--dump-*` ["codegen args"](https://rust-gpu.github.io/rust-gpu/book/codegen-args.html) include identifying information (e.g. crate names) in the names of files they emit
 
 ### Removed 🔥
 - [PR#946](https://github.com/EmbarkStudios/rust-gpu/pull/946) removed the `fn`/closure `#[spirv(unroll_loops)]` attribute, as it has no users, is becoming non-trivial to support, and requires redesign for better ergonomics (e.g. `#[spirv(unroll)]` applied to individual loops, not the whole `fn`/closure)
@@ -187,7 +187,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [PR#935](https://github.com/EmbarkStudios/rust-gpu/pull/935) added check for environment variable `RUSTGPU_SKIP_TOOLCHAIN_CHECK` to prevent toolchain check
 
 ### Changed 🛠️
-- 🚨BREAKING🚨 [#926](https://github.com/EmbarkStudios/rust-gpu/pull/926) migrated from `register_attr` to `register_tool`. [More information](docs/src/migration-to-register-tool.md).
+- 🚨BREAKING🚨 [#926](https://github.com/EmbarkStudios/rust-gpu/pull/926) migrated from `register_attr` to `register_tool`. [More information](https://rust-gpu.github.io/rust-gpu/book/migration-to-register-tool.html).
 - [PR#935](https://github.com/EmbarkStudios/rust-gpu/pull/935) updated toolchain to `nightly-2022-10-01`
 - [PR#934](https://github.com/EmbarkStudios/rust-gpu/pull/934) updated `glam` to `0.22`
 - [PR#928](https://github.com/EmbarkStudios/rust-gpu/pull/928) updated `spirv-tools` to `0.9` (SPIRV-Tools `2022.4`)
