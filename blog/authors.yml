@@ -17,3 +17,12 @@ eddyb:
     /img/authors/eddyb.png
   socials:
     github: eddyb
+
+schell:
+  name: Schell Carl Scivally
+  title: Rust GPU and Renderling maintainer
+  image_url:
+    ## Image URL managed by the fetchAuthorImages plugin. Changes may be overwritten.
+    /img/authors/schell.png
+  socials:
+    github: schell
