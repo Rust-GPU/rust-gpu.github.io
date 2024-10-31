@@ -40,7 +40,7 @@
   }
 
   .h1 {
-    @apply text-2xl mt-[1.5em] mb-[1.5em];
+    @apply text-xl lg:text-2xl mt-[1.5em] mb-[1.5em];
   }
 
   h1 {
@@ -48,7 +48,7 @@
   }
 
   .h2 {
-    @apply text-lg mt-[1.5em] mb-[1.5em];
+    @apply text-base lg:text-lg mt-[1.5em] mb-[1.5em];
   }
 
   h2 {
@@ -103,9 +103,6 @@
 }
 
 @layer content {
-  main h2 {
-    @apply text-2xl !important;
-  }
 
   article header h1 {
     @apply mt-0 !important;
@@ -131,7 +128,7 @@
   article header > h1 a,
   article header > h2,
   article header > h2 > a {
-    @apply text-3xl !important;
+    @apply text-xl lg:text-3xl !important;
   }
 }
 
