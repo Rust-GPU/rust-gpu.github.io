@@ -44,7 +44,7 @@ export default function HomeLayout(props: Props): JSX.Element {
         className={clsx(ThemeClassNames.wrapper.main, wrapperClassName)}
       >
         <ErrorBoundary fallback={(params) => <ErrorPageContent {...params} />}>
-          <div className="bg-white justify-center flex flex-col w-full h-screen max-h-[1600px]">
+          <div className="bg-white flex flex-col w-full h-screen max-h-[1600px]">
             <div className="w-full">
               <Navbar />
             </div>
