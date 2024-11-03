@@ -26,3 +26,12 @@ schell:
     /img/authors/schell.png
   socials:
     github: schell
+
+firestar99:
+  name: Firestar99
+  title: Rust GPU maintainer finishing his master thesis
+  image_url:
+    ## Image URL managed by the fetchAuthorImages plugin. Changes may be overwritten.
+    /img/authors/firestar99.png
+  socials:
+    github: firestar99
