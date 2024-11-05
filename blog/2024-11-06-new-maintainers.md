@@ -1,13 +1,13 @@
 ---
-title: "Welcoming two new rust-gpu maintainers"
+title: "Welcoming two new Rust GPU maintainers"
 authors: [schell, firestar99]
 tags: ["announcement", "leadership"]
 ---
 
-# Welcoming two new rust-gpu maintainers
+# Welcoming two new Rust GPU maintainers
 
 We’re thrilled to introduce two new maintainers for the
-[rust-gpu](https://github.com/Rust-GPU/rust-gpu) project: **[Schell
+[Rust GPU](https://github.com/Rust-GPU/rust-gpu) project: **[Schell
 Scivally](https://github.com/schell/)** and **[Firestar99](https://github.com/Firestar99)**.
 
 Both bring experience in graphics programming, a deep understanding of Rust, and a
@@ -65,9 +65,9 @@ Here’s a bit more about each of them in their own words:
 
 <br/>
 
-Please join us in welcoming them to the team! Thanks to our new maintainers, `rust-gpu`
+Please join us in welcoming them to the team! Thanks to our new maintainers, Rust GPU
 now has four official maintainers.
 
-We’re eager to add more users and contributors to `rust-gpu` and will be working on
+We’re eager to add more users and contributors to Rust GPU and will be working on
 revamping the onboarding and documentation soon. **To follow along or get involved,
-check out `rust-gpu` on [GitHub](https://github.com/rust-gpu/rust-gpu).**
+check out the `rust-gpu` repo on [GitHub](https://github.com/rust-gpu/rust-gpu).**
