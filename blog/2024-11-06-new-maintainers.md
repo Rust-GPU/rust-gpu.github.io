@@ -15,7 +15,7 @@ passion for advancing GPU computing.
 
 <!-- truncate -->
 
-Here’s a bit more about each of them, in their own words:
+Here’s a bit more about each of them in their own words:
 
 ## Meet Schell Scivally
 
