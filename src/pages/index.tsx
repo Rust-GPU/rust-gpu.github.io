@@ -144,8 +144,8 @@ function Features() {
           Rust GPU makes it possible to write and run GPU software in Rust,
           leveraging the language's powerful safety and concurrency features to
           enhance performance and reliability. With Rust GPU, you can seamlessly
-          develop for both CPU and GPU using a unified codebase, all while
-          benefiting from Rust’s existing ecosystem.
+          develop for both CPU and GPU using a unified codebase while benefiting
+          from Rust's existing ecosystem.
         </p>
         <h2 id="multi-vendor">
           <FcMultipleDevices className="inline-block  mb-1 mr-2" /> Multi-Vendor
