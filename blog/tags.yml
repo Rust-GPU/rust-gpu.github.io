@@ -8,6 +8,11 @@ announcement:
   permalink: /announcements
   description: Announcements
 
+leadership:
+  label: leadership
+  permalink: /leadership
+  description: Leadership
+
 demo:
   label: demo
   permalink: /demos
