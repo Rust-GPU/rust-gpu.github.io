@@ -74,7 +74,11 @@ const config: Config = {
       //   src: 'img/logo.svg',
       // },
       items: [
-        { href: "https://rust-gpu.github.io/rust-gpu/book/", label: "Docs", position: "right" },
+        {
+          href: "https://rust-gpu.github.io/rust-gpu/book/",
+          label: "Docs",
+          position: "right",
+        },
         { to: "/blog", label: "Blog", position: "right" },
         { to: "/ecosystem", label: "Ecosystem", position: "right" },
         { to: "/changelog", label: "Changelog", position: "right" },
@@ -89,6 +93,14 @@ const config: Config = {
       theme: githubDark,
       darkTheme: githubDark,
       defaultLanguage: "rust",
+      additionalLanguages: ["wgsl"],
+      magicComments: [
+        {
+          className: "theme-code-line",
+          line: "highlight-next-line",
+          block: { start: "highlight-start", end: "highlight-end" },
+        },
+      ],
     },
     colorMode: {
       disableSwitch: true,

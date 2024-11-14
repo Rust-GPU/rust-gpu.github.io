@@ -1,0 +1,10 @@
+[package]
+name = "compiled_naive"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+crate-type = ["lib", "cdylib"]
+
+[build-dependencies]
+spirv-builder = { git = "https://github.com/rust-gpu/rust-gpu", rev = "0da80f8a61867590a0824873fa45dc8983e49da8" }

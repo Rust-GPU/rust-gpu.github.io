@@ -1,0 +1,66 @@
+[workspace]
+members = [
+    #
+    # ---- The rust code that runs on the GPU. ----
+    # Often called "shaders" (in graphics) or "kernels" (in compute).
+    #
+    "crates/gpu/naive",
+    "crates/gpu/workgroup_256",
+    "crates/gpu/workgroup_2d",
+    "crates/gpu/tiling_1d",
+    "crates/gpu/tiling_2d_simd",
+    #
+    # ---- The rust code that runs both on the GPU and the CPU. ----
+    # It "knows" what platform it is being compiled for and can conditionally change
+    # logic and dependencies using standard rust idioms.
+    #
+    # 1) Shared constants and settins used by both the CPU and GPU.
+    "crates/shared/settings",
+    # 2) An example of a program that can run unmodified on both the CPU and the GPU.
+    "crates/shared/isomorphic",
+    #
+    # ---- The rust code that runs on the CPU. ----
+    #
+    # 1) The CPU library that contains the matrix multiplication implementation. It
+    #    loads the compiled GPU program, sends it to the GPU, pushes data to the GPU,
+    #    tells the GPU to execute, then reads the results back.
+    "crates/cpu/matmul",
+    # 2) The compiled GPU program that the CPU loads and sends to the GPU to execute.
+    "crates/cpu/compiled_for_gpu/naive",
+    "crates/cpu/compiled_for_gpu/workgroup_256",
+    "crates/cpu/compiled_for_gpu/workgroup_2d",
+    "crates/cpu/compiled_for_gpu/tiling_1d",
+    "crates/cpu/compiled_for_gpu/tiling_2d_simd",
+    "crates/cpu/compiled_for_gpu/isomorphic",
+    # 3) A binary that runs on the CPU. It configures the `matmul` library on the CPU
+    #    and then tells it to run the matrix multiplication.
+    "bin/blog",
+    # 4) A binary that runs on the CPU. It compiles other libraries that run on the CPU
+    #    and benchmarks them.
+    "benches"
+]
+resolver = "2"
+
+[workspace.dependencies]
+spirv-std = { git = "https://github.com/rust-gpu/rust-gpu", rev = "0da80f8a61867590a0824873fa45dc8983e49da8" }
+futures = "0.3"
+glam = { version = "0.29.2", features = ["cuda", "bytemuck"] }
+tracing = "0.1.40"
+
+# Enable incremental by default in release mode.
+[profile.release]
+incremental = true
+# This is the default but without explicitly specifying it, Cargo
+# will treat the identical settings in `[profile.release.build-override]` below
+# as different sets of `rustc` flags and will not reuse artifacts between them.
+codegen-units = 256
+
+# Compile build-dependencies in release mode with the same settings as regular
+# dependencies (including the incremental enabled above).
+#
+# We need this to templorarily work around
+# https://github.com/Rust-GPU/rust-gpu/issues/29.
+[profile.release.build-override]
+opt-level = 3
+incremental = true
+codegen-units = 256

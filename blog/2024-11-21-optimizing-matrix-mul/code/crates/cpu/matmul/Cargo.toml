@@ -1,0 +1,27 @@
+[package]
+name = "matmul"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+crate-type = ["lib", "cdylib"]
+
+[dependencies]
+settings = { path = "../../shared/settings" }
+bytemuck = { version = "1.9", features = ["derive"] }
+wgpu = { version = "23.0", features = ["spirv"] }
+ash = { version = "0.37" }
+rayon = "1.10"
+futures.workspace = true
+tracing.workspace = true
+glam.workspace = true
+
+# The following dependencies are used to link to the compiled shaders.
+compiled_naive = { path = "../compiled_for_gpu/naive" }
+compiled_workgroup_256 = { path = "../compiled_for_gpu/workgroup_256" }
+compiled_workgroup_2d = { path = "../compiled_for_gpu/workgroup_2d" }
+compiled_tiling_1d = { path = "../compiled_for_gpu/tiling_1d" }
+compiled_tiling_2d_simd = { path = "../compiled_for_gpu/tiling_2d_simd" }
+compiled_isomorphic = { path = "../compiled_for_gpu/isomorphic" }
+# The CPU side of the isomophic implementation.
+isomorphic = { path = "../../shared/isomorphic" }

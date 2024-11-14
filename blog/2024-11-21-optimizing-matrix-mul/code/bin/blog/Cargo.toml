@@ -1,0 +1,15 @@
+[package]
+name = "blog"
+version = "0.1.0"
+edition = "2021"
+
+[[bin]]
+name = "blog"
+path = "src/bin.rs"
+
+[dependencies]
+matmul = { path = "../../crates/cpu/matmul" }
+settings = { path = "../../crates/shared/settings" }
+futures.workspace = true
+tracing.workspace = true
+tracing-subscriber = { version = "0.3.18", features = ["env-filter", "std"] }

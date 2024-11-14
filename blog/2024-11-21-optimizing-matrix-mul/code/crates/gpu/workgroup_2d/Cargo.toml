@@ -1,0 +1,11 @@
+[package]
+name = "workgroup_2d"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+crate-type = ["dylib", "lib"]
+
+[dependencies]
+settings = { path = "../../shared/settings" }
+spirv-std.workspace = true
