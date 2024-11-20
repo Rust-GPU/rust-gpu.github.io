@@ -81,7 +81,7 @@ impl Gpu for Workgroup2d {
 
 impl GridComputation for Workgroup2d {
     fn workgroup(&self) -> UVec3 {
-        UVec3::new(8, 8, 1)
+        UVec3::new(16, 16, 1)
     }
 
     fn dispatch_count(&self, m: u32, n: u32) -> UVec3 {

@@ -88,6 +88,22 @@ platforms, including Windows, Linux, macOS, iOS[^1], Android, and the web[^2].
 By using Rust GPU and `wgpu`, we have a clean, portable setup with everything written in
 Rust.
 
+## GPU program basics
+
+The smallest unit of execution is a thread, which executes the GPU program.
+
+Workgroups are groups of threads: they are grouped together and run in parallel (they’re
+called [thread blocks in
+CUDA](<https://en.wikipedia.org/wiki/Thread_block_(CUDA_programming)>)). They can access
+the same shared memory.
+
+We can dispatch many of these workgroups at once. CUDA calls this a grid (which is made
+of thread blocks).
+
+Workgroups and dispatching workgroups are defined in 3D. The size of a workgroup is
+defined by `compute(threads((x, y, z)))` where the number of threads per workgroup is
+x \* y \* z.
+
 ## Writing the kernel
 
 ### Kernel 1: Naive kernel
@@ -159,6 +175,35 @@ examples.
 
 :::
 
+#### Dispatching workgroups
+
+Each workgroup, since it’s only one thread (`#[spirv(compute(threads(1)))]`), processes
+one `result[i, j]`.
+
+To calculate the full matrix, we need to launch as many entries as there are in the
+matrix. Here we specify that (`Uvec3::new(m * n, 1, 1`) on the CPU:
+
+import { RustNaiveWorkgroupCount } from './snippets/naive.tsx';
+
+<RustNaiveWorkgroupCount/>
+
+The `dispatch_count()` function runs on the CPU and is used by the CPU-to-GPU API (in
+our case `wgpu`) to configure and dispatch work to the GPU:
+
+import { RustNaiveDispatch } from './snippets/naive.tsx';
+
+<RustNaiveDispatch />
+
+:::warning
+
+This code appears more complicated than it needs to be. I abstracted the CPU-side code
+that talks to the GPU using generics and traits so I could easily slot in different
+kernels and their settings while writing the blog post.
+
+You could just hardcode the value for simplicity.
+
+:::
+
 ### Kernel 2: Moarrr threads!
 
 With the first kernel, we're only able to compute small square matrices due to limits on
@@ -187,33 +232,19 @@ import { RustWorkgroup256WorkgroupCount } from './snippets/workgroup_256.tsx';
 
 <RustWorkgroup256WorkgroupCount/>
 
-The `dispatch_count()` function runs on the CPU and is used by the CPU-to-GPU API (in
-our case `wgpu`) to configure and dispatch to the GPU:
-
-import { RustWorkgroup256WgpuDispatch } from './snippets/workgroup_256.tsx';
-
-<RustWorkgroup256WgpuDispatch />
-
-:::warning
-
-This code appears more complicated than it needs to be. I abstracted the CPU-side code
-that talks to the GPU using generics and traits so I could easily slot in different
-kernels and their settings while writing the blog post.
-
-You could just hardcode a value for simplicity.
-
-:::
+With these two small changes we can handle larger matrices without hitting hardware
+workgroup limits.
 
 ### Kernel 3: Calculating with 2D workgroups
 
-However doing all the computation in "1 dimension" limits the matrix size we can
+However, doing all the computation in "1 dimension" still limits the matrix size we can
 calculate.
 
 Although we don't change much about our code, if we distribute our work in 2 dimensions
 we're able to bypass these limits and launch more workgroups that are larger. This
 allows us to calculate a 4096x4096 matmul.
 
-We update our `compute(threads(256)))` to `compute(threads((8, 8)))`, and make the small
+We update our `compute(threads(256)))` to `compute(threads((16, 16)))`, and make the small
 change to `row` and `col` from Zach's post to increase speed:
 
 import { RustWorkgroup2d } from './snippets/workgroup_2d.tsx';
@@ -257,24 +288,29 @@ import { RustTiling2dSimd } from './snippets/tiling_2d_simd.tsx';
 Each thread now calculates a 4x4 grid of the output matrix and we see a slight
 improvement over the last kernel.
 
+To stay true to the spirit of Zach's original blog post, we'll wrap things up here and
+leave the "fancier" experiments for another time.
+
 ## Reflections on porting to Rust GPU
 
 Porting to Rust GPU went quickly, as the kernels Zach used were fairly simple. Most of
 the time was spent with concerns that were not specifically about writing GPU code. For
 example, deciding how much to abstract vs how much to make the code easy to follow, if
 everything should be available at runtime or if each kernel should be a compilation
-target, etc. The code is not _great_ as it is still blog post code!
+target, etc. [The
+code](https://github.com/Rust-GPU/rust-gpu.github.io/tree/main/blog/2024-11-21-optimizing-matrix-mul/code)
+is not _great_ as it is still blog post code!
 
 My background is not in GPU programming, but I do have Rust experience. I joined the
 Rust GPU project because I tried to use standard GPU languages and knew there must be a
 better way. Writing these GPU kernels felt like writing any other Rust code (other than
-debugging, more on that later) which is a huge win to me. Not only the language itself,
+debugging, more on that later) which is a huge win to me. Not just the language itself,
 but the entire development experience.
 
 ## Rust-specific party tricks
 
 Rust lets us write code for both the CPU and GPU in ways that are often impossible—or at
-least less elegant—with other languages. I'm going to highlight some benefits of Rust I
+least less elegant—with other languages. I'm going to highlight some benefits I
 experienced while working on this blog post.
 
 ### Shared code across GPU and CPU
@@ -351,8 +387,9 @@ Testing the kernel in isolation is useful, but it does not reflect how the GPU e
 it with multiple invocations across workgroups and dispatches. To test the kernel
 end-to-end, I needed a test harness that simulated this behavior on the CPU.
 
-Building the harness was straightforward. By enforcing the same invariants as the GPU I
-could validate the kernel under the same conditions the GPU would run it:
+Building the harness was straightforward due to the borrow checker. By enforcing the
+same invariants as the GPU I could validate the kernel under the same conditions the GPU
+would run it:
 
 import { RustCpuBackendHarness } from './snippets/party.tsx';
 
@@ -484,10 +521,9 @@ future.
 This kernel doesn't use conditional compilation, but it's a key feature of Rust that
 works with Rust GPU. With `#[cfg(...)]`, you can adapt kernels to different hardware or
 configurations without duplicating code. GPU languages like WGSL or GLSL offer
-preprocessor directives, but these tools lack standardization across ecosystems. Rust
-GPU leverages the existing Cargo ecosystem, so conditional compilation follows the same
-standards all Rust developers already know. This makes adapting kernels for different
-targets easier and more maintainable.
+preprocessor directives, but these tools lack standardization across projects. Rust GPU
+leverages the existing Cargo ecosystem, so conditional compilation follows the same
+standards all Rust developers already know.
 
 ## Come join us!
 
