@@ -59,7 +59,7 @@ export const RustNaiveWorkgroupCount: React.FC = () => (
     language="rust"
     className="text-xs"
     lines="26-34"
-    title="Calculating how many workgroup dispatches are needed on the CPU"
+    title="Calculating on the CPU how many workgroup dispatches are needed"
   >
     {RustWorkgroupCount}
   </Snippet>
@@ -71,7 +71,7 @@ export const RustNaiveDispatch: React.FC = () => (
     className="text-xs"
     lines="145,147"
     strip_leading_spaces
-    title="Using wgpu on the CPU to dispatch to the GPU"
+    title="Using wgpu on the CPU to dispatch workgroups to the GPU"
   >
     {RustWgpuBackend}
   </Snippet>

@@ -175,7 +175,10 @@ examples.
 
 :::
 
-Each workgroup, since it’s only one thread, processes one `result[i, j]`.
+#### Dispatching workgroups
+
+Each workgroup, since it's only one thread (`#[spirv(compute(threads(1)))]`), processes
+one `result[i, j]`.
 
 To calculate the full matrix, we need to launch as many entries as there are in the
 matrix. Here we specify that (`Uvec3::new(m * n, 1, 1`) on the CPU:
@@ -241,7 +244,7 @@ Although we don't change much about our code, if we distribute our work in 2 dim
 we're able to bypass these limits and launch more workgroups that are larger. This
 allows us to calculate a 4096x4096 matmul.
 
-We update our `compute(threads(256)))` to `compute(threads((8, 8)))`, and make the small
+We update our `compute(threads(256)))` to `compute(threads((16, 16)))`, and make the small
 change to `row` and `col` from Zach's post to increase speed:
 
 import { RustWorkgroup2d } from './snippets/workgroup_2d.tsx';
