@@ -260,13 +260,13 @@ Porting to Rust GPU went quickly, as the kernels Zach used were fairly simple. M
 the time was spent with concerns that were not specifically about writing GPU code. For
 example, deciding how much to abstract vs how much to make the code easy to follow, if
 everything should be available at runtime or if each kernel should be a compilation
-target, etc. The code is still not _great_ as it is still blog post code!
+target, etc. The code is not _great_ as it is still blog post code!
 
 My background is not in GPU programming, but I do have Rust experience. I joined the
 Rust GPU project because I tried to use standard GPU languages and knew there must be a
 better way. Writing these GPU kernels felt like writing any other Rust code (other than
-debugging, more later) which is a huge win to me. Not only the language itself, but the
-entire development experience.
+debugging, more on that later) which is a huge win to me. Not only the language itself,
+but the entire development experience.
 
 ## Rust-specific party tricks
 
