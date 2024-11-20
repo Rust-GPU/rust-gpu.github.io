@@ -2,6 +2,8 @@ import React from "react";
 import CodeBlock from "@theme/CodeBlock";
 import Snippet from "@site/src/components/Snippet";
 import RustKernelSource from "!!raw-loader!../code/crates/gpu/naive/src/lib.rs";
+import RustWorkgroupCount from "!!raw-loader!../code/crates/cpu/matmul/src/variants.rs";
+import RustWgpuBackend from "!!raw-loader!../code/crates/cpu/matmul/src/backends/wgpu.rs";
 
 export const WebGpuInputs: React.FC = () => (
   <CodeBlock language="wgsl" title="WGSL" className="text-xs">
@@ -49,6 +51,29 @@ export const RustNaiveInputs: React.FC = () => (
     title="Naive kernel with Rust GPU"
   >
     {RustKernelSource}
+  </Snippet>
+);
+
+export const RustNaiveWorkgroupCount: React.FC = () => (
+  <Snippet
+    language="rust"
+    className="text-xs"
+    lines="26-34"
+    title="Calculating how many workgroup dispatches are needed on the CPU"
+  >
+    {RustWorkgroupCount}
+  </Snippet>
+);
+
+export const RustNaiveDispatch: React.FC = () => (
+  <Snippet
+    language="rust"
+    className="text-xs"
+    lines="145,147"
+    strip_leading_spaces
+    title="Using wgpu on the CPU to dispatch to the GPU"
+  >
+    {RustWgpuBackend}
   </Snippet>
 );
 
