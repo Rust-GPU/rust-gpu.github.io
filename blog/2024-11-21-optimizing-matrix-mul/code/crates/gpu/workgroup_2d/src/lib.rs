@@ -4,7 +4,7 @@ use settings::Dimensions;
 use spirv_std::glam::UVec3;
 use spirv_std::spirv;
 
-#[spirv(compute(threads(8, 8)))]
+#[spirv(compute(threads(16, 16)))]
 pub fn matmul(
     #[spirv(global_invocation_id)] global_id: UVec3,
     #[spirv(uniform, descriptor_set = 0, binding = 0)] dimensions: &Dimensions,
