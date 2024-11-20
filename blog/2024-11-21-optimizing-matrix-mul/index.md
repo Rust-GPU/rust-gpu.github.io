@@ -177,7 +177,7 @@ examples.
 
 #### Dispatching workgroups
 
-Each workgroup, since it’s only one thread (`#[spirv(compute(threads(1)))]`), processes
+Each workgroup, since it's only one thread (`#[spirv(compute(threads(1)))]`), processes
 one `result[i, j]`.
 
 To calculate the full matrix, we need to launch as many entries as there are in the
