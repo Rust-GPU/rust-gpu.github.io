@@ -54,6 +54,7 @@ const config: Config = {
             xslt: true,
           },
           editUrl: "https://github.com/Rust-GPU/rust-gpu.github.io/tree/main/",
+          exclude: ["*/code/**"],
           onInlineTags: "throw",
           onInlineAuthors: "throw",
           onUntruncatedBlogPosts: "throw",
