@@ -130,6 +130,10 @@
   article header > h2 > a {
     @apply text-xl lg:text-3xl !important;
   }
+
+  article code {
+    @apply text-xs !important;
+  }
 }
 
 @layer lists {

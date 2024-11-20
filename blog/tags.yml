@@ -17,3 +17,13 @@ demo:
   label: demo
   permalink: /demos
   description: Demos
+
+code:
+  label: code
+  permalink: /code
+  description: Posts that include code
+
+performance:
+  label: performance
+  permalink: /performance
+  description: Performance measuring and tuning

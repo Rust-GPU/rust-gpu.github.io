@@ -1,0 +1,19 @@
+[package]
+name = "isomorphic"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+crate-type = ["dylib", "lib"]
+
+# Dependencies when run on either the CPU or GPU
+[dependencies]
+settings = { path = "../../shared/settings" }
+
+# Dependencies when run on the CPU
+[target.'cfg(not(target_arch = "spirv"))'.dependencies]
+glam.workspace = true
+
+# Dependencies when run on the GPU
+[target.'cfg(target_arch = "spirv")'.dependencies]
+spirv-std.workspace = true
