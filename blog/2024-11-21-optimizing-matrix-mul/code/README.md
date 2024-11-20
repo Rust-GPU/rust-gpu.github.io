@@ -1,7 +1,5 @@
 The Rust code that accompanies the blog post.
 
-<!-- truncate -->
-
 You will find:
 
 1. A binary (`blog`) that you can run with `cargo run`
