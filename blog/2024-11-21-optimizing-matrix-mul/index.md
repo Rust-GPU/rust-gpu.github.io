@@ -7,9 +7,9 @@ draft: true
 ---
 
 I read the excellent post [Optimizing a WebGPU Matmul Kernel for 1TFLOP+
-Performance](https://www.nuss-and-bolts.com/p/optimizing-a-webgpu-matmul-kernel) by Zach
-Nussbaum and thought it might be fun to reimplement it with [Rust
-GPU](https://Rust-gpu.github.io/).
+Performance](https://www.nuss-and-bolts.com/p/optimizing-a-webgpu-matmul-kernel) by
+[Zach Nussbaum](https://x.com/zach_nussbaum) and thought it might be fun to reimplement
+it with [Rust GPU](https://Rust-gpu.github.io/).
 
 We'll follow Zach's original post closely, comparing and contrasting using Rust vs the
 WGSL and Typescript from his post.
@@ -18,6 +18,9 @@ At the end, I'll show some additional fun things that are enabled by using Rust 
 GPU.
 
 <!-- truncate -->
+
+A big thank you to [Zach](https://x.com/zach_nussbaum) for allowing me to reimplement
+his blog post!
 
 :::tip
 
