@@ -86,7 +86,7 @@ pub mod tiling_1d_loop {
     }
 }
 
-pub mod tiling_2d_simd {
+pub mod tiling_2d {
     use super::*;
     use crate::backends::wgpu::MatrixMultiplier;
 

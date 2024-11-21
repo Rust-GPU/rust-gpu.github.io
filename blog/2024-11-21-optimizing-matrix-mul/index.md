@@ -291,7 +291,7 @@ We can take this a step further and calculate 2D results per thread! Instead of
 calculating 4 elements per single row, we can calculate 4 elements for 4 rows (e.g. a 2D
 tile).
 
-import { RustTiling2dSimd } from './snippets/tiling_2d_simd.tsx';
+import { RustTiling2d } from './snippets/tiling_2d.tsx';
 
 <RustTiling2dSimd />
 

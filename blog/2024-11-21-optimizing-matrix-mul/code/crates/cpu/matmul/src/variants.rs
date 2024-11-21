@@ -158,13 +158,13 @@ pub struct Tiling2dSimd;
 
 impl Display for Tiling2dSimd {
     fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result {
-        write!(f, "tiling_2d_simd")
+        write!(f, "tiling_2d")
     }
 }
 
 impl Gpu for Tiling2dSimd {
     fn compiled_shader(&self) -> &[u8] {
-        compiled_tiling_2d_simd::SHADER_BINARY
+        compiled_tiling_2d::SHADER_BINARY
     }
 }
 

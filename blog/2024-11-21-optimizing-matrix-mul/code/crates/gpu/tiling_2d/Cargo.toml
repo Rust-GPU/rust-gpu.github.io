@@ -1,5 +1,5 @@
 [package]
-name = "tiling_2d_simd"
+name = "tiling_2d"
 version = "0.1.0"
 edition = "2021"
 

@@ -303,7 +303,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "compiled_tiling_2d_simd"
+name = "compiled_tiling_2d"
 version = "0.1.0"
 dependencies = [
  "spirv-builder",
@@ -942,7 +942,7 @@ dependencies = [
  "compiled_naive",
  "compiled_tiling_1d",
  "compiled_tiling_1d_loop",
- "compiled_tiling_2d_simd",
+ "compiled_tiling_2d",
  "compiled_workgroup_256",
  "compiled_workgroup_2d",
  "futures",
@@ -1676,7 +1676,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "tiling_2d_simd"
+name = "tiling_2d"
 version = "0.1.0"
 dependencies = [
  "settings",
