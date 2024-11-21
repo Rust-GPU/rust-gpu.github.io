@@ -31,6 +31,10 @@ const config: Config = {
     locales: ["en"],
   },
 
+  // https://docusaurus.io/blog/releases/3.6#adoption-strategy
+  future: {
+    experimental_faster: true,
+  },
   plugins: [
     fetchAuthorImages,
     fetchChangelogPlugin,
