@@ -293,7 +293,7 @@ tile).
 
 import { RustTiling2d } from './snippets/tiling_2d.tsx';
 
-<RustTiling2dSimd />
+<RustTiling2d />
 
 Each thread now calculates a 4x4 grid of the output matrix and we see a slight
 improvement over the last kernel.

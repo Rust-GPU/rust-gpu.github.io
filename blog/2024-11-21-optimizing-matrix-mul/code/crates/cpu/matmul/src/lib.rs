@@ -91,8 +91,8 @@ pub mod tiling_2d {
     use super::*;
     use crate::backends::wgpu::MatrixMultiplier;
 
-    pub fn wgpu() -> MatrixMultiplier<variants::Tiling2dSimd> {
-        futures::executor::block_on(MatrixMultiplier::new(variants::Tiling2dSimd))
+    pub fn wgpu() -> MatrixMultiplier<variants::Tiling2d> {
+        futures::executor::block_on(MatrixMultiplier::new(variants::Tiling2d))
     }
 }
 

@@ -154,21 +154,21 @@ impl GridComputation for Tiling1dLoop {
 }
 
 /// GPU implementation of matrix multiplication with two-dimensional tiling.
-pub struct Tiling2dSimd;
+pub struct Tiling2d;
 
-impl Display for Tiling2dSimd {
+impl Display for Tiling2d {
     fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result {
         write!(f, "tiling_2d")
     }
 }
 
-impl Gpu for Tiling2dSimd {
+impl Gpu for Tiling2d {
     fn compiled_shader(&self) -> &[u8] {
         compiled_tiling_2d::SHADER_BINARY
     }
 }
 
-impl GridComputation for Tiling2dSimd {
+impl GridComputation for Tiling2d {
     fn workgroup(&self) -> UVec3 {
         UVec3::new(16, 16, 1)
     }
