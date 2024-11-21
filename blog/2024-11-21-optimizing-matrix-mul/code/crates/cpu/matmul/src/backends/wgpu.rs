@@ -9,7 +9,7 @@ use std::fmt::Formatter;
 use tracing::trace;
 use wgpu::{self, util::DeviceExt};
 
-/// Struct responsible for performing matrix multiplication on the GPU.
+/// Matrix multiplication on the GPU using `wgpu`.
 pub struct MatrixMultiplier<T> {
     device: wgpu::Device,
     queue: wgpu::Queue,

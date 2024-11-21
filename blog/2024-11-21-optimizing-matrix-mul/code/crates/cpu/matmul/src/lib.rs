@@ -8,6 +8,7 @@ use std::future::Future;
 mod backends;
 pub mod variants;
 
+/// The trait that defines how to multiply two matrices.
 pub trait MatrixMultiply<T>: Display {
     fn new(variant: T) -> impl Future<Output = Self> + Send;
     fn multiply(&self, a: &[f32], b: &[f32], m: u32, k: u32, n: u32) -> Vec<f32>;
@@ -25,7 +26,7 @@ pub trait Cpu {
     );
 }
 
-/// Matrix multiplication logic that can be run on the CPU.
+/// Matrix multiplication logic that can be run on the GPU.
 pub trait Gpu {
     fn compiled_shader(&self) -> &[u8];
     fn entry_point(&self) -> &'static str {
