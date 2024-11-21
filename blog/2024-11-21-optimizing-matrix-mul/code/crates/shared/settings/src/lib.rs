@@ -65,24 +65,4 @@ impl BufferLayout {
     };
 }
 
-pub const NUM_BUFFERS: usize = 3;
-
 pub const SHADER_ENTRY_POINT: &str = "matmul";
-
-// Helper functions for index calculations
-#[inline]
-pub fn get_matrix_index(row: u32, col: u32, stride: u32) -> usize {
-    (row * stride + col) as usize
-}
-
-pub fn validate_dimensions(a_dims: (u32, u32), b_dims: (u32, u32)) -> bool {
-    a_dims.1 == b_dims.0
-}
-
-pub fn get_output_dimensions(a_dims: (u32, u32), b_dims: (u32, u32)) -> Option<(u32, u32)> {
-    if validate_dimensions(a_dims, b_dims) {
-        Some((a_dims.0, b_dims.1))
-    } else {
-        None
-    }
-}
