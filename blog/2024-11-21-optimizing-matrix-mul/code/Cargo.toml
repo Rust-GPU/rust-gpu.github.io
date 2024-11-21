@@ -9,7 +9,7 @@ members = [
     "crates/gpu/workgroup_2d",
     "crates/gpu/tiling_1d",
     "crates/gpu/tiling_1d_loop",
-    "crates/gpu/tiling_2d_simd",
+    "crates/gpu/tiling_2d",
     #
     # ---- The rust code that runs both on the GPU and the CPU. ----
     # It "knows" what platform it is being compiled for and can conditionally change
@@ -31,7 +31,8 @@ members = [
     "crates/cpu/compiled_for_gpu/workgroup_256",
     "crates/cpu/compiled_for_gpu/workgroup_2d",
     "crates/cpu/compiled_for_gpu/tiling_1d",
-    "crates/cpu/compiled_for_gpu/tiling_2d_simd",
+    "crates/cpu/compiled_for_gpu/tiling_1d_loop",
+    "crates/cpu/compiled_for_gpu/tiling_2d",
     "crates/cpu/compiled_for_gpu/isomorphic",
     # 3) A binary that runs on the CPU. It configures the `matmul` library on the CPU
     #    and then tells it to run the matrix multiplication.

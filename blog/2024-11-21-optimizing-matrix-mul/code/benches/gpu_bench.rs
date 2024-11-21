@@ -38,7 +38,7 @@ fn bench_all_variants(c: &mut Criterion) {
     let multiplier_workgroup_2d = matmul::workgroup_2d::wgpu();
     let multiplier_tiling_1d = matmul::tiling_1d::wgpu();
     let multiplier_tiling_1d_loop = matmul::tiling_1d_loop::wgpu();
-    let multiplier_tiling_2d_simd = matmul::tiling_2d_simd::wgpu();
+    let multiplier_tiling_2d = matmul::tiling_2d::wgpu();
     let multiplier_isomorphic_gpu = matmul::isomorphic::wgpu();
 
     for &(m, k, n) in SIZES {
@@ -126,17 +126,11 @@ fn bench_all_variants(c: &mut Criterion) {
         );
 
         group.bench_with_input(
-            BenchmarkId::new("tiling_2d_simd:wgpu", format!("{}x{}x{}", m, k, n)),
+            BenchmarkId::new("tiling_2d:wgpu", format!("{}x{}x{}", m, k, n)),
             &(m, k, n),
             |bench, &(m, k, n)| {
                 bench.iter(|| {
-                    black_box(multiplier_tiling_2d_simd.multiply(
-                        black_box(&a),
-                        black_box(&b),
-                        m,
-                        k,
-                        n,
-                    ))
+                    black_box(multiplier_tiling_2d.multiply(black_box(&a), black_box(&b), m, k, n))
                 });
             },
         );
