@@ -37,6 +37,7 @@ fn bench_all_variants(c: &mut Criterion) {
     let multiplier_workgroup_256 = matmul::workgroup_256::wgpu();
     let multiplier_workgroup_2d = matmul::workgroup_2d::wgpu();
     let multiplier_tiling_1d = matmul::tiling_1d::wgpu();
+    let multiplier_tiling_1d_loop = matmul::tiling_1d_loop::wgpu();
     let multiplier_tiling_2d_simd = matmul::tiling_2d_simd::wgpu();
     let multiplier_isomorphic_gpu = matmul::isomorphic::wgpu();
 
@@ -104,6 +105,22 @@ fn bench_all_variants(c: &mut Criterion) {
             |bench, &(m, k, n)| {
                 bench.iter(|| {
                     black_box(multiplier_tiling_1d.multiply(black_box(&a), black_box(&b), m, k, n))
+                });
+            },
+        );
+
+        group.bench_with_input(
+            BenchmarkId::new("tiling_1d_loop:wgpu", format!("{}x{}x{}", m, k, n)),
+            &(m, k, n),
+            |bench, &(m, k, n)| {
+                bench.iter(|| {
+                    black_box(multiplier_tiling_1d_loop.multiply(
+                        black_box(&a),
+                        black_box(&b),
+                        m,
+                        k,
+                        n,
+                    ))
                 });
             },
         );

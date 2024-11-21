@@ -77,6 +77,15 @@ pub mod tiling_1d {
     }
 }
 
+pub mod tiling_1d_loop {
+    use super::*;
+    use crate::backends::wgpu::MatrixMultiplier;
+
+    pub fn wgpu() -> MatrixMultiplier<variants::Tiling1dLoop> {
+        futures::executor::block_on(MatrixMultiplier::new(variants::Tiling1dLoop))
+    }
+}
+
 pub mod tiling_2d_simd {
     use super::*;
     use crate::backends::wgpu::MatrixMultiplier;

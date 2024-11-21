@@ -8,6 +8,7 @@ members = [
     "crates/gpu/workgroup_256",
     "crates/gpu/workgroup_2d",
     "crates/gpu/tiling_1d",
+    "crates/gpu/tiling_1d_loop",
     "crates/gpu/tiling_2d_simd",
     #
     # ---- The rust code that runs both on the GPU and the CPU. ----

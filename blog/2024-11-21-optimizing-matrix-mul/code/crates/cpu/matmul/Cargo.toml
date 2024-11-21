@@ -21,6 +21,7 @@ compiled_naive = { path = "../compiled_for_gpu/naive" }
 compiled_workgroup_256 = { path = "../compiled_for_gpu/workgroup_256" }
 compiled_workgroup_2d = { path = "../compiled_for_gpu/workgroup_2d" }
 compiled_tiling_1d = { path = "../compiled_for_gpu/tiling_1d" }
+compiled_tiling_1d_loop = { path = "../compiled_for_gpu/tiling_1d_loop" }
 compiled_tiling_2d_simd = { path = "../compiled_for_gpu/tiling_2d_simd" }
 compiled_isomorphic = { path = "../compiled_for_gpu/isomorphic" }
 # The CPU side of the isomophic implementation.
