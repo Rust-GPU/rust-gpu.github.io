@@ -123,6 +123,36 @@ impl GridComputation for Tiling1d {
     }
 }
 
+/// GPU implementation of matrix multiplication with one-dimensional tiling (using loops).
+pub struct Tiling1dLoop;
+
+impl Display for Tiling1dLoop {
+    fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result {
+        write!(f, "tiling_1d_loop")
+    }
+}
+
+impl Gpu for Tiling1dLoop {
+    fn compiled_shader(&self) -> &[u8] {
+        compiled_tiling_1d_loop::SHADER_BINARY
+    }
+}
+
+impl GridComputation for Tiling1dLoop {
+    fn workgroup(&self) -> UVec3 {
+        UVec3::new(16, 16, 1)
+    }
+
+    fn dispatch_count(&self, m: u32, n: u32) -> UVec3 {
+        let workgroup = self.workgroup();
+        UVec3::new(
+            (m + workgroup.x - 1) / workgroup.x,
+            (n + workgroup.y - 1) / workgroup.y,
+            1,
+        )
+    }
+}
+
 /// GPU implementation of matrix multiplication with two-dimensional tiling.
 pub struct Tiling2dSimd;
 

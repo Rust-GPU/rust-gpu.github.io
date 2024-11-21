@@ -278,6 +278,15 @@ The kernel looks roughly the same as before except we've unrolled the computatio
 are calculating `TILE_SIZE` results per thread. We also need some error checking for
 when our matrices don't fit nicely.
 
+But this code is kinda gross...it looks like the opaque GPU code we are used to. Let's
+make it nice!
+
+import { RustTiling1dLoop } from './snippets/tiling_1d_loop.tsx';
+
+<RustTiling1dLoop />
+
+Much better.
+
 We can take this a step further and calculate 2D results per thread! Instead of
 calculating 4 elements per single row, we can calculate 4 elements for 4 rows (e.g. a 2D
 tile).
