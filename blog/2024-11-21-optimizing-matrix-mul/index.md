@@ -275,7 +275,8 @@ import { RustTiling1d } from './snippets/tiling_1d.tsx';
 <RustTiling1d />
 
 The kernel looks roughly the same as before except we've unrolled the computation and
-are calculating `TILE_SIZE` results per thread.
+are calculating `TILE_SIZE` results per thread. We also need some error checking for
+when our matrices don't fit nicely.
 
 We can take this a step further and calculate 2D results per thread! Instead of
 calculating 4 elements per single row, we can calculate 4 elements for 4 rows (e.g. a 2D

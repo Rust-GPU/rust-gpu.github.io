@@ -30,7 +30,7 @@ fn main() {
     run_tests(matmul::naive::wgpu(), &sizes);
     run_tests(matmul::workgroup_256::wgpu(), &sizes);
     run_tests(matmul::workgroup_2d::wgpu(), &sizes);
-    //run_tests(matmul::tiling_1d::wgpu(), &sizes);
+    run_tests(matmul::tiling_1d::wgpu(), &sizes);
     run_tests(matmul::tiling_2d_simd::wgpu(), &sizes);
 
     run_tests(matmul::isomorphic::wgpu(), &sizes);

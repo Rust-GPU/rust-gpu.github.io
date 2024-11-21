@@ -172,6 +172,37 @@ mod tests {
     }
 
     #[test]
+    fn test_single_threaded_matmul_4x4() {
+        let m = 4;
+        let k = 4;
+        let n = 4;
+
+        // Define matrix `a` (4x4) in row-major order
+        let a = vec![
+            1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0, 11.0, 12.0, 13.0, 14.0, 15.0, 16.0,
+        ];
+
+        // Define matrix `b` (4x4) in row-major order
+        let b = vec![
+            17.0, 18.0, 19.0, 20.0, 21.0, 22.0, 23.0, 24.0, 25.0, 26.0, 27.0, 28.0, 29.0, 30.0,
+            31.0, 32.0,
+        ];
+
+        // Expected result (4x4) after multiplying `a` and `b`
+        let expected = vec![
+            250.0, 260.0, 270.0, 280.0, 618.0, 644.0, 670.0, 696.0, 986.0, 1028.0, 1070.0, 1112.0,
+            1354.0, 1412.0, 1470.0, 1528.0,
+        ];
+
+        let variant = crate::variants::Isomorphic;
+        let matrix_multiplier = futures::executor::block_on(SingleThreadedMatMul::new(variant));
+
+        let result = matrix_multiplier.multiply(&a, &b, m, k, n);
+
+        assert_eq!(result, expected);
+    }
+
+    #[test]
     fn test_multithreaded_matmul_2x1x1() {
         let m = 2;
         let k = 1;

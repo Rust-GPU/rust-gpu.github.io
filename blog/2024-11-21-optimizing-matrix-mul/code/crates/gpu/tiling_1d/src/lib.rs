@@ -27,14 +27,30 @@ pub fn matmul(
 
     for i in 0..dimensions.k as usize {
         let a_elem = a[row * dimensions.k as usize + i];
-        sum00 += a_elem * b[i * dimensions.n as usize + col];
-        sum01 += a_elem * b[i * dimensions.n as usize + col + 1];
-        sum02 += a_elem * b[i * dimensions.n as usize + col + 2];
-        sum03 += a_elem * b[i * dimensions.n as usize + col + 3];
+        if col < dimensions.n as usize {
+            sum00 += a_elem * b[i * dimensions.n as usize + col];
+        }
+        if col + 1 < dimensions.n as usize {
+            sum01 += a_elem * b[i * dimensions.n as usize + col + 1];
+        }
+        if col + 2 < dimensions.n as usize {
+            sum02 += a_elem * b[i * dimensions.n as usize + col + 2];
+        }
+        if col + 3 < dimensions.n as usize {
+            sum03 += a_elem * b[i * dimensions.n as usize + col + 3];
+        }
     }
 
-    result[row * dimensions.n as usize + col] = sum00;
-    result[row * dimensions.n as usize + col + 1] = sum01;
-    result[row * dimensions.n as usize + col + 2] = sum02;
-    result[row * dimensions.n as usize + col + 3] = sum03;
+    if col < dimensions.n as usize {
+        result[row * dimensions.n as usize + col] = sum00;
+    }
+    if col + 1 < dimensions.n as usize {
+        result[row * dimensions.n as usize + col + 1] = sum01;
+    }
+    if col + 2 < dimensions.n as usize {
+        result[row * dimensions.n as usize + col + 2] = sum02;
+    }
+    if col + 3 < dimensions.n as usize {
+        result[row * dimensions.n as usize + col + 3] = sum03;
+    }
 }
