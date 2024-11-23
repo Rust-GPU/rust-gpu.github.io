@@ -1,0 +1,68 @@
+name: Rust
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  test:
+    name: Works on ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      # Checkout the code
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # Set up Rust toolchain
+      - name: Setup Rust toolchain
+        uses: actions-rust-lang/setup-rust-toolchain@v1
+        with:
+          toolchain: stable
+
+      # Install Rust toolchains for each `blog/*/code` directory
+      - name: Installing specific Rust toolchains
+        shell: bash
+        run: |
+          for dir in blog/*/code; do
+            if [ -f "$dir/Cargo.toml" ]; then
+              echo "Installing toolchain for $dir"
+              (cd "$dir" && cargo version)
+            else
+              echo "Skipping $dir as it does not contain a Cargo.toml file"
+            fi
+          done
+
+      # Run rustfmt and confirm no changes for each `blog/*/code` directory
+      - name: Check formatting
+        shell: bash
+        run: |
+          for dir in blog/*/code; do
+            if [ -f "$dir/Cargo.toml" ]; then
+              echo "Checking formatting in $dir"
+              (cd "$dir" && cargo fmt --check)
+            else
+              echo "Skipping $dir as it does not contain a Cargo.toml file"
+            fi
+          done
+
+      # Run builds and tests for each `blog/*/code` directory
+      - name: Build and test
+        shell: bash
+        run: |
+          for dir in blog/*/code; do
+            if [ -f "$dir/Cargo.toml" ]; then
+              cd "$dir"
+              echo "Running build in $dir"
+              cargo build --release
+              echo "Running tests in $dir"
+              cargo test --release
+            else
+              echo "Skipping $dir as it does not contain a Cargo.toml file"
+            fi
+          done
