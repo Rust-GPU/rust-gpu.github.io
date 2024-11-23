@@ -83,7 +83,7 @@ To handle communication between our code on the CPU and GPU, we'll use
 implements the WebGPU API. On the web, it works directly with the browser's WebGPU
 implementation. On native platforms, it translates API calls to the platform's GPU API
 (Vulkan, DirectX, or Metal). This lets us run the same code on a wide range of
-platforms, including Windows, Linux, macOS, iOS[^1], Android, and the web[^2].
+platforms, including Windows, Linux, macOS[^1], iOS[^2], Android, and the web[^3].
 
 By using Rust GPU and `wgpu`, we have a clean, portable setup with everything written in
 Rust.
@@ -147,9 +147,9 @@ There are a couple of things to note about the Rust implementation:
 4. The inner loop (`for i in 0..dimensions.k`) uses Rust's `for` syntax with a range.
    This is a higher-level abstraction compared to manually iterating with an index in
    other shader languages like WGSL, GLSL, or HLSL.
-5. Read-only inputs are immutable references (`&Dimensions` / `&[f32]`) and writeable outputs are
-   mutable references (`&mut [f32]`). This feels very familiar to anyone used to writing
-   Rust.
+5. Read-only inputs are immutable references (`&Dimensions` / `&[f32]`) and writable
+   outputs are mutable references (`&mut [f32]`). This feels very familiar to anyone
+   used to writing Rust.
 
 #### What's with all the `usize`?
 
@@ -181,7 +181,7 @@ Each workgroup, since it's only one thread (`#[spirv(compute(threads(1)))]`), pr
 one `result[i, j]`.
 
 To calculate the full matrix, we need to launch as many entries as there are in the
-matrix. Here we specify that (`Uvec3::new(m * n, 1, 1`) on the CPU:
+`m * n` matrix. Here we specify that (`Uvec3::new(m * n, 1, 1`) on the CPU:
 
 import { RustNaiveWorkgroupCount } from './snippets/naive.tsx';
 
@@ -308,6 +308,14 @@ complete runnable code can be [found on
 GitHub](https://github.com/Rust-GPU/rust-gpu.github.io/tree/main/blog/2024-11-21-optimizing-matrix-mul/code)
 and you can run the benchmarks yourself with `cargo bench`.
 
+:::tip
+
+You can also check out real-world projects using Rust GPU such as
+[`autograph`](https://github.com/charles-r-earp/autograph) and
+[`rederling`](https://renderling.xyz/).
+
+:::
+
 ## Reflections on porting to Rust GPU
 
 Porting to Rust GPU went quickly, as the kernels Zach used were fairly simple. Most of
@@ -320,9 +328,11 @@ is not _great_ as it is still blog post code!
 
 My background is not in GPU programming, but I do have Rust experience. I joined the
 Rust GPU project because I tried to use standard GPU languages and knew there must be a
-better way. Writing these GPU kernels felt like writing any other Rust code (other than
-debugging, more on that later) which is a huge win to me. Not just the language itself,
-but the entire development experience.
+better way.
+
+Writing these GPU kernels felt like writing any other Rust code (other than debugging,
+more on that later) which is a huge win to me. Not just the language itself, but the
+entire development experience.
 
 ## Rust-specific party tricks
 
@@ -372,10 +382,10 @@ bug I couldn't figure out. GPU debugging tools are limited and `printf`-style de
 often isn't available. But what if we could run the GPU kernel _on the CPU_, where we
 have access to tools like standard debuggers and good ol' `printf`/`println`?
 
-With Rust GPU, this was straightforward. By using `cfg()` directives I made the
-GPU-specific annotations (`#[spirv(...)]`) disappear when compiling for the CPU. The
-result? The kernel became a regular Rust function. On the GPU, it behaves like a shader.
-On the CPU, it's just a function you can call directly.
+With Rust GPU, this was straightforward. By using standard Rust `cfg()` directives I
+made the GPU-specific annotations (`#[spirv(...)]`) disappear when compiling for the
+CPU. The result? The kernel became a regular Rust function. On the GPU, it behaves like
+a shader. On the CPU, it's just a function you can call directly.
 
 Here's what it looks like in practice using the 2D tiling kernel from before:
 
@@ -404,7 +414,7 @@ Testing the kernel in isolation is useful, but it does not reflect how the GPU e
 it with multiple invocations across workgroups and dispatches. To test the kernel
 end-to-end, I needed a test harness that simulated this behavior on the CPU.
 
-Building the harness was straightforward due to the borrow checker. By enforcing the
+Building the harness was straightforward due to due to Rust. By enforcing the
 same invariants as the GPU I could validate the kernel under the same conditions the GPU
 would run it:
 
@@ -450,7 +460,7 @@ other Rust project.
 
 This required no new tools or workflows. The tools I already knew worked seamlessly.
 More importantly, this approach benefits anyone working on the project. Any Rust
-engineer can run these benchmarks with no additional setup--`cargo bench` is a standard
+engineer can run these benchmarks with no additional setup—cargo bench` is a standard
 part of the Rust ecosystem.
 
 ### Lint
@@ -517,9 +527,9 @@ and `f64` without duplicating code, all while maintaining type safety and perfor
 ### Error handling with `Result`
 
 Rust GPU also supports error handling using `Result`. Encoding errors in the type system
-makes it clear where things can go wrong and forces developers to handle those cases.
-This is particularly useful for validating kernel inputs or handling the many edge cases
-in GPU logic.
+makes it clear where things can go wrong and forces you to handle those cases. This is
+particularly useful for validating kernel inputs or handling the many edge cases in GPU
+logic.
 
 ### Iterators
 
@@ -535,12 +545,13 @@ future.
 
 ### Conditional compilation
 
-This kernel doesn't use conditional compilation, but it's a key feature of Rust that
-works with Rust GPU. With `#[cfg(...)]`, you can adapt kernels to different hardware or
-configurations without duplicating code. GPU languages like WGSL or GLSL offer
-preprocessor directives, but these tools lack standardization across projects. Rust GPU
-leverages the existing Cargo ecosystem, so conditional compilation follows the same
-standards all Rust developers already know.
+While I briefly touched on it a couple of times, this kernel doesn't really show the
+full power of conditional compilation. With `#[cfg(...)]` and [cargo
+"features"](https://doc.rust-lang.org/cargo/reference/features.html), you can adapt
+kernels to different hardware or configurations without duplicating code. GPU languages
+like WGSL or GLSL offer preprocessor directives, but these tools lack standardization
+across projects. Rust GPU leverages the existing Cargo ecosystem, so conditional
+compilation follows the same standards all Rust developers already know.
 
 ## Come join us!
 
@@ -551,7 +562,8 @@ or get involved, check out the [`rust-gpu` repo on
 GitHub](https://github.com/rust-gpu/rust-gpu).
 <br/>
 
-[^1]: Via [MoltenVK](https://github.com/KhronosGroup/MoltenVK)
-[^2]:
-    Technically `wgpu` translates SPIR-V to GLSL or WGSL via
-    [naga](https://github.com/gfx-rs/wgpu/tree/trunk/naga)
+[^1]: Technically `wgpu` uses [MoltenVK](https://github.com/KhronosGroup/MoltenVK) or translates to Metal on macOS
+[^2]: Technically `wgpu` uses [MoltenVK](https://github.com/KhronosGroup/MoltenVK) or translates to Metal on iOS
+[^3]:
+    Technically `wgpu` translates SPIR-V to GLSL (WebGL) or WGSL (WebGPU) via
+    [naga](https://github.com/gfx-rs/wgpu/tree/trunk/naga) on the web
