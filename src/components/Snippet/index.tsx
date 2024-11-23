@@ -105,20 +105,17 @@ const Snippet: React.FC<SnippetProps> = ({
     }, Infinity);
 
     lines.forEach((line, index) => {
-      if (index > 0 && lines[index - 1] < line - 1) {
-        includedContent.push(omitted_placeholder); // Add placeholder for omitted lines
-      }
-
       const rawLine = allLines[line - 1] || "";
       const trimmedLine =
         rawLine.trim().length > 0 ? rawLine.slice(minIndent) : rawLine;
+
+      if (index > 0 && lines[index - 1] < line - 1) {
+        // Add placeholder for omitted lines only if within range
+        includedContent.push(omitted_placeholder);
+      }
+
       includedContent.push(trimmedLine);
     });
-
-    // Add placeholder if lines at the end are omitted
-    if (lines[lines.length - 1] < allLines.length) {
-      includedContent.push(omitted_placeholder);
-    }
 
     return includedContent.join("\n");
   };
