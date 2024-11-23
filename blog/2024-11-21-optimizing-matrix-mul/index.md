@@ -312,14 +312,14 @@ and you can run the benchmarks yourself with `cargo bench`.
 
 You can also check out real-world projects using Rust GPU such as
 [`autograph`](https://github.com/charles-r-earp/autograph) and
-[`rederling`](https://renderling.xyz/).
+[`renderling`](https://renderling.xyz/).
 
 :::
 
 ## Reflections on porting to Rust GPU
 
 Porting to Rust GPU went quickly, as the kernels Zach used were fairly simple. Most of
-the time was spent with concerns that were not specifically about writing GPU code. For
+my time was spent with concerns that were not specifically about writing GPU code. For
 example, deciding how much to abstract vs how much to make the code easy to follow, if
 everything should be available at runtime or if each kernel should be a compilation
 target, etc. [The
@@ -460,15 +460,23 @@ other Rust project.
 
 This required no new tools or workflows. The tools I already knew worked seamlessly.
 More importantly, this approach benefits anyone working on the project. Any Rust
-engineer can run these benchmarks with no additional setup—cargo bench` is a standard
+engineer can run these benchmarks with no additional setup—`cargo bench` is a standard
 part of the Rust ecosystem.
+
+### Formatting
+
+Rust GPU code is formatted with `rustfmt`, following the same standards as all Rust
+code. This not only ensured my GPU code looked identical to my CPU code, it made my GPU
+code consistent with the _entire Rust ecosystem_. Leveraging standard tools like
+`rustfmt` minimizes cognitive overhead and avoids the hassle of configuring third-party
+formatters of varying quality.
 
 ### Lint
 
 Linting GPU code in Rust works the same way as for CPU code. Running `cargo clippy`
-highlighted issues and enforced consistent code quality. Any custom lint configurations
-are also applied to Rust GPU kernels. Lints ensure that GPU code is held to the same
-high standards as the rest of the project.
+highlighted issues and enforced consistent code quality. Though I didn't have any,
+custom lint configurations are applied to Rust GPU kernels as well. Lints ensure that
+GPU code is held to the same high standards as the rest of the project.
 
 ### Documentation
 
