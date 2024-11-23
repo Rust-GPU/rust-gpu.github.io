@@ -42,11 +42,10 @@ fn main(@builtin(global_invocation_id) global_id: vec3<u32>) {
   </CodeBlock>
 );
 
-export const RustNaiveInputs: React.FC = () => (
+export const RustNaiveKernel: React.FC = () => (
   <Snippet
     language="rust"
     className="text-xs"
-    metastring="1-5,7"
     showLineNumbers
     title="Naive kernel with Rust GPU"
   >
@@ -59,6 +58,7 @@ export const RustNaiveWorkgroupCount: React.FC = () => (
     language="rust"
     className="text-xs"
     lines="26-34"
+    hash="8abb43d"
     title="Calculating on the CPU how many workgroup dispatches are needed"
   >
     {RustWorkgroupCount}
@@ -69,7 +69,8 @@ export const RustNaiveDispatch: React.FC = () => (
   <Snippet
     language="rust"
     className="text-xs"
-    lines="145,147"
+    lines="152,154"
+    hash="cbb5295"
     strip_leading_spaces
     title="Using wgpu on the CPU to dispatch workgroups to the GPU"
   >
@@ -78,7 +79,7 @@ export const RustNaiveDispatch: React.FC = () => (
 );
 
 export const RustNaiveWorkgroup: React.FC = () => (
-  <Snippet language="rust" className="text-xs" lines="7">
+  <Snippet language="rust" className="text-xs" lines="7" hash="7762339">
     {RustKernelSource}
   </Snippet>
 );

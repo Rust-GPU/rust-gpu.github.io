@@ -7,7 +7,7 @@ import RustWgpuBackend from "!!raw-loader!../code/crates/cpu/matmul/src/backends
 import RustCpuBackendSource from "!!raw-loader!../code/crates/cpu/matmul/src/backends/cpu.rs";
 
 export const RustPartySettings: React.FC = () => (
-  <Snippet language="rust" className="text-xs" lines="3,9,11">
+  <Snippet language="rust" className="text-xs" lines="3,9,11" hash="47bb656">
     {RustKernelSource}
   </Snippet>
 );
@@ -19,13 +19,19 @@ export const RustIsomorphic: React.FC = () => (
 );
 
 export const RustIsomorphicGlam: React.FC = () => (
-  <Snippet language="rust" lines="15-19" className="text-xs">
+  <Snippet language="rust" lines="15-19" hash="a3dbf2f" className="text-xs">
     {RustIsomorphicSource}
   </Snippet>
 );
 
 export const RustIsomorphicDeps: React.FC = () => (
-  <Snippet language="rust" lines="9-20" className="text-xs" title="Cargo.toml">
+  <Snippet
+    language="rust"
+    lines="9-20"
+    hash="72c14d7"
+    className="text-xs"
+    title="Cargo.toml"
+  >
     {RustIsomorphicCargoToml}
   </Snippet>
 );
@@ -33,7 +39,8 @@ export const RustIsomorphicDeps: React.FC = () => (
 export const RustWgpuDimensions: React.FC = () => (
   <Snippet
     language="rust"
-    lines="98-111"
+    lines="108-118"
+    hash="cbb5295"
     className="text-xs"
     title="Creating the Dimensions struct on the CPU and writing it to the GPU"
   >
@@ -42,13 +49,13 @@ export const RustWgpuDimensions: React.FC = () => (
 );
 
 export const RustCpuBackendHarness: React.FC = () => (
-  <Snippet language="rust" className="text-xs" lines="30-72">
+  <Snippet language="rust" className="text-xs" lines="30-79" hash="7ad7cab">
     {RustCpuBackendSource}
   </Snippet>
 );
 
 export const RustCpuBackendTest: React.FC = () => (
-  <Snippet language="rust" className="text-xs" lines="155-172">
+  <Snippet language="rust" className="text-xs" lines="174-194" hash="7ad7cab">
     {RustCpuBackendSource}
   </Snippet>
 );

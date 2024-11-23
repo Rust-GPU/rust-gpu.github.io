@@ -128,9 +128,9 @@ import { WebGpuKernel } from './snippets/naive.tsx';
 With Rust GPU, we specify the inputs as arguments to the kernel and configure them with
 [procedural macros](https://doc.Rust-lang.org/reference/procedural-macros.html):
 
-import { RustNaiveInputs } from './snippets/naive.tsx';
+import { RustNaiveKernel } from './snippets/naive.tsx';
 
-<RustNaiveInputs/>
+<RustNaiveKernel/>
 
 This code looks like normal Rust code but _runs entirely on the GPU._
 
@@ -300,6 +300,13 @@ improvement over the last kernel.
 
 To stay true to the spirit of Zach's original blog post, we'll wrap things up here and
 leave the "fancier" experiments for another time.
+
+### A note on performance
+
+I didn't include performance numbers as I have a different machine than Zach. The
+complete runnable code can be [found on
+GitHub](https://github.com/Rust-GPU/rust-gpu.github.io/tree/main/blog/2024-11-21-optimizing-matrix-mul/code)
+and you can run the benchmarks yourself with `cargo bench`.
 
 ## Reflections on porting to Rust GPU
 
