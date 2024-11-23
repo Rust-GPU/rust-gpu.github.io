@@ -6,7 +6,6 @@ use rand::Rng;
 use std::time::Duration;
 
 const WARMUP_TIME: Duration = Duration::from_secs(2);
-const MEASUREMENT_TIME: Duration = Duration::from_secs(5 * 60);
 const SAMPLE_SIZE: usize = 10;
 
 /// Matrix sizes to benchmark
@@ -34,19 +33,18 @@ const SIZES: &[(u32, u32, u32)] = &[
 
 fn bench_isomorphic_variants(c: &mut Criterion) {
     // Initialize isomorphic variants
-    let multiplier_isomorphic_gpu = matmul::isomorphic::wgpu();
-    let multiplier_isomorphic_cpu_single = matmul::isomorphic::cpu::single_threaded();
-    let multiplier_isomorphic_cpu_multi = matmul::isomorphic::cpu::multi_threaded();
+    let multiplier_isomorphic_gpu = matmul::isomorphic::wgpu().unwrap();
+    let multiplier_isomorphic_cpu_single = matmul::isomorphic::cpu::single_threaded().unwrap();
+    let multiplier_isomorphic_cpu_multi = matmul::isomorphic::cpu::multi_threaded().unwrap();
 
     for &(m, k, n) in SIZES {
-        // Calculate FLOPs for this size
-        let flops = 2.0 * (m as f64 * n as f64 * k as f64);
-
-        let mut group = c.benchmark_group(format!("isomorphic_matmul{}x{}x{}", m, k, n));
+        let mut group = c.benchmark_group("isomorphic");
         group.sampling_mode(SamplingMode::Flat);
         group.warm_up_time(WARMUP_TIME);
-        //group.measurement_time(MEASUREMENT_TIME);
         group.sample_size(SAMPLE_SIZE);
+
+        // Calculate FLOPs for this size
+        let flops = 2.0 * (m as f64 * n as f64 * k as f64);
         group.throughput(Throughput::Elements(flops as u64));
 
         // Create matrices for the given size
