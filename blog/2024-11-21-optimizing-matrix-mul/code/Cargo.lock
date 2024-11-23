@@ -149,6 +149,7 @@ dependencies = [
  "settings",
  "tracing",
  "tracing-subscriber",
+ "wgpu",
 ]
 
 [[package]]
