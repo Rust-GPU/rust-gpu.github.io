@@ -1,4 +1,4 @@
-use crate::{Cpu, GridComputation, MatrixMultiply};
+use crate::{Cpu, GridComputation, MatrixMultiply, MatrixMultiplyError};
 use glam::UVec3;
 use rayon::prelude::*;
 use settings::Dimensions;
@@ -23,11 +23,18 @@ impl<T> MatrixMultiply<T> for SingleThreadedMatMul<T>
 where
     T: Cpu + GridComputation + Display + Send + Sync,
 {
-    fn new(variant: T) -> impl Future<Output = Self> + Send {
-        async move { SingleThreadedMatMul { variant } }
+    fn new(variant: T) -> impl Future<Output = Result<Self, MatrixMultiplyError>> + Send {
+        async move { Ok(SingleThreadedMatMul { variant }) }
     }
 
-    fn multiply(&self, a: &[f32], b: &[f32], m: u32, k: u32, n: u32) -> Vec<f32> {
+    fn multiply(
+        &self,
+        a: &[f32],
+        b: &[f32],
+        m: u32,
+        k: u32,
+        n: u32,
+    ) -> Result<Vec<f32>, MatrixMultiplyError> {
         // Initialize the result vector with zeros as that is what the GPU does.
         let mut result = vec![0.0; (m * n) as usize];
 
@@ -68,7 +75,7 @@ where
             }
         }
 
-        result
+        Ok(result)
     }
 }
 
@@ -87,11 +94,18 @@ impl<T> MatrixMultiply<T> for MultiThreadedMatMul<T>
 where
     T: Cpu + GridComputation + Display + Send + Sync,
 {
-    fn new(variant: T) -> impl Future<Output = Self> + Send {
-        async move { MultiThreadedMatMul { variant } }
+    fn new(variant: T) -> impl Future<Output = Result<Self, MatrixMultiplyError>> + Send {
+        async move { Ok(MultiThreadedMatMul { variant }) }
     }
 
-    fn multiply(&self, a: &[f32], b: &[f32], m: u32, k: u32, n: u32) -> Vec<f32> {
+    fn multiply(
+        &self,
+        a: &[f32],
+        b: &[f32],
+        m: u32,
+        k: u32,
+        n: u32,
+    ) -> Result<Vec<f32>, MatrixMultiplyError> {
         // Initialize the result vector with zeros
         let result = vec![0.0; (m * n) as usize];
         let result = Mutex::new(result);
@@ -123,12 +137,14 @@ where
             .collect();
 
         // Process each (x, y) pair in parallel
-        tasks.par_iter().for_each(|&(x, y)| {
+        tasks.par_iter().try_for_each(|&(x, y)| {
             // Define global_id (adjust z if necessary)
             let global_id = UVec3::new(x as u32, y as u32, 0); // Changed z to 0 for consistency
 
             // Lock the mutex to get mutable access to the result vector
-            let mut result_lock = result.lock().unwrap();
+            let mut result_lock = result
+                .lock()
+                .map_err(|_| MatrixMultiplyError::CpuLockError)?;
 
             // Perform the matmul operation for element (x, y)
             <T as Cpu>::call(
@@ -139,18 +155,21 @@ where
                 &b,
                 &mut result_lock,
             );
-        });
+
+            Ok(())
+        })?;
 
         // Extract the result vector from the Mutex
-        let result = Mutex::into_inner(result).unwrap();
+        let result = Mutex::into_inner(result).map_err(|_| MatrixMultiplyError::CpuLockError)?;
 
-        result
+        Ok(result)
     }
 }
 
 #[cfg(test)]
 mod tests {
     use super::*;
+    use futures::executor::block_on;
 
     #[test]
     fn test_single_threaded_matmul_2x1x1() {
@@ -164,9 +183,12 @@ mod tests {
         let expected = vec![3.0, 6.0];
 
         let variant = crate::variants::Isomorphic;
-        let matrix_multiplier = futures::executor::block_on(SingleThreadedMatMul::new(variant));
+        let matrix_multiplier =
+            block_on(SingleThreadedMatMul::new(variant)).expect("Failed to create");
 
-        let result = matrix_multiplier.multiply(&a, &b, m, k, n);
+        let result = matrix_multiplier
+            .multiply(&a, &b, m, k, n)
+            .expect("Matrix multiplication failed");
 
         assert_eq!(result, expected);
     }
@@ -195,9 +217,12 @@ mod tests {
         ];
 
         let variant = crate::variants::Isomorphic;
-        let matrix_multiplier = futures::executor::block_on(SingleThreadedMatMul::new(variant));
+        let matrix_multiplier =
+            block_on(SingleThreadedMatMul::new(variant)).expect("Failed to create");
 
-        let result = matrix_multiplier.multiply(&a, &b, m, k, n);
+        let result = matrix_multiplier
+            .multiply(&a, &b, m, k, n)
+            .expect("Matrix multiplication failed");
 
         assert_eq!(result, expected);
     }
@@ -214,9 +239,46 @@ mod tests {
         let expected = vec![3.0, 6.0];
 
         let variant = crate::variants::Isomorphic;
-        let matrix_multiplier = futures::executor::block_on(MultiThreadedMatMul::new(variant));
+        let matrix_multiplier =
+            block_on(MultiThreadedMatMul::new(variant)).expect("Failed to create");
 
-        let result = matrix_multiplier.multiply(&a, &b, m, k, n);
+        let result = matrix_multiplier
+            .multiply(&a, &b, m, k, n)
+            .expect("Matrix multiplication failed");
+
+        assert_eq!(result, expected);
+    }
+
+    #[test]
+    fn test_multithreaded_matmul_4x4() {
+        let m = 4;
+        let k = 4;
+        let n = 4;
+
+        // Define matrix `a` (4x4) in row-major order
+        let a = vec![
+            1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0, 11.0, 12.0, 13.0, 14.0, 15.0, 16.0,
+        ];
+
+        // Define matrix `b` (4x4) in row-major order
+        let b = vec![
+            17.0, 18.0, 19.0, 20.0, 21.0, 22.0, 23.0, 24.0, 25.0, 26.0, 27.0, 28.0, 29.0, 30.0,
+            31.0, 32.0,
+        ];
+
+        // Expected result (4x4) after multiplying `a` and `b`
+        let expected = vec![
+            250.0, 260.0, 270.0, 280.0, 618.0, 644.0, 670.0, 696.0, 986.0, 1028.0, 1070.0, 1112.0,
+            1354.0, 1412.0, 1470.0, 1528.0,
+        ];
+
+        let variant = crate::variants::Isomorphic;
+        let matrix_multiplier =
+            block_on(MultiThreadedMatMul::new(variant)).expect("Failed to create");
+
+        let result = matrix_multiplier
+            .multiply(&a, &b, m, k, n)
+            .expect("Matrix multiplication failed");
 
         assert_eq!(result, expected);
     }

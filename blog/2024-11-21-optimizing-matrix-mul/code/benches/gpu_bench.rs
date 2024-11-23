@@ -29,17 +29,17 @@ const SIZES: &[(u32, u32, u32)] = &[
     (64, 32, 128),      // A: 64x32, B: 32x128, Result: 64x128
     (1024, 512, 2048),  // A: 1024x512, B: 512x2048, Result: 1024x2048
     (2048, 1024, 4096), // A: 2048x1024, B: 1024x4096, Result: 2048x4096
+    */
 ];
 
 fn bench_all_variants(c: &mut Criterion) {
     // Initialize all variants outside the loop
-    let multiplier_naive = matmul::naive::wgpu();
-    let multiplier_workgroup_256 = matmul::workgroup_256::wgpu();
-    let multiplier_workgroup_2d = matmul::workgroup_2d::wgpu();
-    let multiplier_tiling_1d = matmul::tiling_1d::wgpu();
-    let multiplier_tiling_1d_loop = matmul::tiling_1d_loop::wgpu();
-    let multiplier_tiling_2d = matmul::tiling_2d::wgpu();
-    let multiplier_isomorphic_gpu = matmul::isomorphic::wgpu();
+    let multiplier_naive = matmul::naive::wgpu().unwrap();
+    let multiplier_workgroup_256 = matmul::workgroup_256::wgpu().unwrap();
+    let multiplier_workgroup_2d = matmul::workgroup_2d::wgpu().unwrap();
+    let multiplier_tiling_1d = matmul::tiling_1d::wgpu().unwrap();
+    let multiplier_tiling_1d_loop = matmul::tiling_1d_loop::wgpu().unwrap();
+    let multiplier_tiling_2d = matmul::tiling_2d::wgpu().unwrap();
 
     for &(m, k, n) in SIZES {
         // Calculate FLOPs for this size
@@ -131,22 +131,6 @@ fn bench_all_variants(c: &mut Criterion) {
             |bench, &(m, k, n)| {
                 bench.iter(|| {
                     black_box(multiplier_tiling_2d.multiply(black_box(&a), black_box(&b), m, k, n))
-                });
-            },
-        );
-
-        group.bench_with_input(
-            BenchmarkId::new("isomorphic:wgpu", format!("{}x{}x{}", m, k, n)),
-            &(m, k, n),
-            |bench, &(m, k, n)| {
-                bench.iter(|| {
-                    black_box(multiplier_isomorphic_gpu.multiply(
-                        black_box(&a),
-                        black_box(&b),
-                        m,
-                        k,
-                        n,
-                    ))
                 });
             },
         );

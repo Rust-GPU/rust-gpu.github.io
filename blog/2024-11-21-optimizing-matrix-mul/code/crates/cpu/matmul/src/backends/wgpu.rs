@@ -1,4 +1,4 @@
-use crate::{Gpu, GridComputation, MatrixMultiply};
+use crate::{Gpu, GridComputation, MatrixMultiply, MatrixMultiplyError};
 use bytemuck;
 use futures::channel::oneshot;
 use futures::executor::block_on;
@@ -11,7 +11,7 @@ use wgpu::{self, util::DeviceExt};
 
 /// Matrix multiplication on the GPU using `wgpu`.
 pub struct MatrixMultiplier<T> {
-    device: wgpu::Device,
+    pub device: wgpu::Device,
     queue: wgpu::Queue,
     pipeline: wgpu::ComputePipeline,
     bind_group_layout: wgpu::BindGroupLayout,
@@ -29,7 +29,7 @@ where
     T: Gpu + GridComputation + Display + Send,
 {
     /// Initializes a new `MatrixMultiplier` with necessary GPU resources.
-    async fn new(variant: T) -> Self {
+    async fn new(variant: T) -> Result<Self, MatrixMultiplyError> {
         // Set up WGPU to talk to the system's GPUs and manage rendering or compute tasks.
         let instance = create_instance().await;
 
@@ -51,20 +51,27 @@ where
         // Build the actual GPU pipeline to run the GPU program and manage execution.
         let pipeline = create_compute_pipeline(&device, &pipeline_layout, &shader);
 
-        Self {
+        Ok(Self {
             device,
             queue,
             pipeline,
             bind_group_layout,
             variant,
-        }
+        })
     }
 
     /// Executes matrix multiplication for given input matrices.
     ///
     /// Uploads the input matrices to the GPU, dispatches the compute shader,
     /// and retrieves the result.
-    fn multiply(&self, a: &[f32], b: &[f32], m: u32, k: u32, n: u32) -> Vec<f32> {
+    fn multiply(
+        &self,
+        a: &[f32],
+        b: &[f32],
+        m: u32,
+        k: u32,
+        n: u32,
+    ) -> Result<Vec<f32>, MatrixMultiplyError> {
         trace!(?a, ?b, "Starting matrix multiplication");
 
         let result_size = (m * n * std::mem::size_of::<f32>() as u32) as u64;
@@ -100,7 +107,7 @@ where
         //
         // This is a `uniform` buffer instead of `storage` buffer because the data is
         // the same for all workgroups, it is read-only, and it is small enough to fit
-        // in a single buffer (`uniform` buffers are limited to to 64 KB on most GPUs
+        // in a single buffer (`uniform` buffers are limited to 64 KB on most GPUs
         // and often less on older GPUs).
         let dimensions = Dimensions::new(m, k, n);
         let dimensions_buffer = create_buffer_init(
@@ -163,8 +170,8 @@ where
 
         // Wait for the mapping to complete and verify success.
         block_on(receiver)
-            .expect("Failed to receive data")
-            .expect("Map async failed");
+            .map_err(|_| MatrixMultiplyError::GpuDataReceive)?
+            .map_err(|_| MatrixMultiplyError::GpuBufferMapping)?;
 
         // Read and convert the result data into a typed vector instead of raw bytes.
         let data = slice.get_mapped_range();
@@ -173,7 +180,7 @@ where
         staging_buffer.unmap();
 
         trace!(?result, "Matrix multiplication result");
-        result
+        Ok(result)
     }
 }
 
