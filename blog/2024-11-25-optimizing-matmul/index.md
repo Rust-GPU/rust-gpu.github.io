@@ -1,5 +1,5 @@
 ---
-title: "Optimizing a Rust GPU matmul kernel for 1TFLOP+ performance"
+title: "Optimizing a Rust GPU matmul kernel"
 authors: ["LegNeato"]
 slug: optimizing-matmul
 tags: ["demo", "code", "performance"]
