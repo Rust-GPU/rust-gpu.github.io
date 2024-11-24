@@ -414,9 +414,8 @@ Testing the kernel in isolation is useful, but it does not reflect how the GPU e
 it with multiple invocations across workgroups and dispatches. To test the kernel
 end-to-end, I needed a test harness that simulated this behavior on the CPU.
 
-Building the harness was straightforward due to due to Rust. By enforcing the
-same invariants as the GPU I could validate the kernel under the same conditions the GPU
-would run it:
+Building the harness was straightforward due to Rust. By enforcing the same invariants
+as the GPU I could validate the kernel under the same conditions the GPU would run it:
 
 import { RustCpuBackendHarness } from './snippets/party.tsx';
 
