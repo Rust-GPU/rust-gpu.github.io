@@ -147,7 +147,7 @@
 
   main ul,
   main ol {
-    @apply pl-16 space-y-[1em] !important;
+    @apply pl-12 space-y-[1em] !important;
   }
 
   ul.breadcrumbs {
