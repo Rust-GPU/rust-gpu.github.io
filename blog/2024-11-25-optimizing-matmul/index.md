@@ -3,7 +3,6 @@ title: "Optimizing a Rust GPU matmul kernel"
 authors: ["LegNeato"]
 slug: optimizing-matmul
 tags: ["demo", "code", "performance"]
-draft: true
 ---
 
 I read the excellent post [Optimizing a WebGPU Matmul Kernel for 1TFLOP+
@@ -45,7 +44,8 @@ a low-level format that [most GPUs understand](https://vulkan.gpuinfo.org/). Sin
 SPIR-V is the format [Vulkan](https://www.vulkan.org/) uses, Rust GPU makes it possible
 to integrate Rust-based GPU programs into any Vulkan-compatible workflow[^1].
 
-For more details, check out the [Rust GPU website](https://Rust-gpu.github.io/) or the [GitHub repository](https://github.com/Rust-gpu/Rust-gpu).
+For more details, check out the [Rust GPU website](http://Rust-gpu.github.io/) or the
+[GitHub repository](https://github.com/Rust-gpu/Rust-gpu).
 
 ## How does Rust GPU work?
 
@@ -54,9 +54,12 @@ what the GPU executes. However, Rust GPU doesn't dictate how you handle CPU-to-G
 communication or data transfer. You're free to choose a host CPU library written in
 whatever language that fits your project. Some popular options in Rust include:
 
-- **[ash](https://github.com/ash-rs/ash)**: Low-level Vulkan bindings for Rust, providing maximum control over Vulkan operations.
-- **[vulkano](https://github.com/vulkano-rs/vulkano)**: A higher-level Vulkan library that simplifies common tasks.
-- **[wgpu](https://github.com/gfx-rs/wgpu)**: A cross-platform library that abstracts GPU operations across Vulkan, DirectX, Metal, and WebGPU.
+- **[ash](https://github.com/ash-rs/ash)**: Low-level Vulkan bindings for Rust,
+  providing maximum control over Vulkan operations.
+- **[vulkano](https://github.com/vulkano-rs/vulkano)**: A higher-level Vulkan library
+  that simplifies common tasks.
+- **[wgpu](https://github.com/gfx-rs/wgpu)**: A cross-platform library that abstracts
+  GPU operations across Vulkan, DirectX, Metal, and WebGPU.
 
 But again, you don't _have_ to use Rust for the CPU-side when using Rust on the GPU—any
 language will do.
