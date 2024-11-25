@@ -43,7 +43,7 @@ Rust GPU changes this by letting you use Rust to write GPU programs (often calle
 These Rust GPU programs are then compiled into [SPIR-V](https://www.khronos.org/spir/),
 a low-level format that [most GPUs understand](https://vulkan.gpuinfo.org/). Since
 SPIR-V is the format [Vulkan](https://www.vulkan.org/) uses, Rust GPU makes it possible
-to integrate Rust-based GPU programs into any Vulkan-compatible workflow.
+to integrate Rust-based GPU programs into any Vulkan-compatible workflow[^1].
 
 For more details, check out the [Rust GPU website](https://Rust-gpu.github.io/) or the [GitHub repository](https://github.com/Rust-gpu/Rust-gpu).
 
@@ -82,7 +82,7 @@ To handle communication between our code on the CPU and GPU, we'll use
 implements the WebGPU API. On the web, it works directly with the browser's WebGPU
 implementation. On native platforms, it translates API calls to the platform's GPU API
 (Vulkan, DirectX, or Metal). This lets us run the same code on a wide range of
-platforms, including Windows, Linux, macOS[^1], iOS[^2], Android, and the web[^3].
+platforms, including Windows, Linux, macOS[^2], iOS[^3], Android, and the web[^4].
 
 By using Rust GPU and `wgpu`, we have a clean, portable setup with everything written in
 Rust.
@@ -568,8 +568,19 @@ or get involved, check out the [`rust-gpu` repo on
 GitHub](https://github.com/rust-gpu/rust-gpu).
 <br/>
 
-[^1]: Technically `wgpu` uses [MoltenVK](https://github.com/KhronosGroup/MoltenVK) or translates to Metal on macOS
-[^2]: Technically `wgpu` uses [MoltenVK](https://github.com/KhronosGroup/MoltenVK) or translates to Metal on iOS
+[^1]:
+    Why not CUDA? That is covered by [Rust
+    CUDA](https://github.com/Rust-GPU/Rust-CUDA), a related project that I am planning
+    on rebooting soon!
+
+[^2]:
+    Technically `wgpu` uses [MoltenVK](https://github.com/KhronosGroup/MoltenVK) or
+    translates to Metal on macOS
+
 [^3]:
+    Technically `wgpu` uses [MoltenVK](https://github.com/KhronosGroup/MoltenVK) or
+    translates to Metal on iOS
+
+[^4]:
     Technically `wgpu` translates SPIR-V to GLSL (WebGL) or WGSL (WebGPU) via
     [naga](https://github.com/gfx-rs/wgpu/tree/trunk/naga) on the web
