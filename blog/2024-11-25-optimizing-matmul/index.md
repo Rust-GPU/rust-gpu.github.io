@@ -14,8 +14,7 @@ it with [Rust GPU](https://Rust-gpu.github.io/).
 We'll follow Zach's original post closely, comparing and contrasting using Rust vs the
 WGSL and Typescript from his post.
 
-At the end, I'll show some additional fun things that are enabled by using Rust on the
-GPU.
+At the end, I'll show some unique benefits of using Rust on the GPU.
 
 <!-- truncate -->
 
