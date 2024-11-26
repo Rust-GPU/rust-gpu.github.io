@@ -23,7 +23,7 @@ his blog post!
 :::tip
 
 The complete runnable code can be [found on
-GitHub](https://github.com/Rust-GPU/rust-gpu.github.io/tree/main/blog/2024-11-21-optimizing-matrix-mul/code).
+GitHub](https://github.com/Rust-GPU/rust-gpu.github.io/tree/main/blog/2024-11-25-optimizing-matmul/code).
 
 :::
 
@@ -307,7 +307,7 @@ leave the "fancier" experiments for another time.
 
 I didn't include performance numbers as I have a different machine than Zach. The
 complete runnable code can be [found on
-GitHub](https://github.com/Rust-GPU/rust-gpu.github.io/tree/main/blog/2024-11-21-optimizing-matrix-mul/code)
+GitHub](https://github.com/Rust-GPU/rust-gpu.github.io/tree/main/blog/2024-11-25-optimizing-matmul/code)
 and you can run the benchmarks yourself with `cargo bench`.
 
 :::tip
@@ -325,7 +325,7 @@ my time was spent with concerns that were not specifically about writing GPU cod
 example, deciding how much to abstract vs how much to make the code easy to follow, if
 everything should be available at runtime or if each kernel should be a compilation
 target, etc. [The
-code](https://github.com/Rust-GPU/rust-gpu.github.io/tree/main/blog/2024-11-21-optimizing-matrix-mul/code)
+code](https://github.com/Rust-GPU/rust-gpu.github.io/tree/main/blog/2024-11-25-optimizing-matmul/code)
 is not _great_ as it is still blog post code!
 
 My background is not in GPU programming, but I do have Rust experience. I joined the
