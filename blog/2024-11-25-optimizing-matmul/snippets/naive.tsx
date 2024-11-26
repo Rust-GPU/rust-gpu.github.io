@@ -46,7 +46,6 @@ export const RustNaiveKernel: React.FC = () => (
   <Snippet
     language="rust"
     className="text-xs"
-    showLineNumbers
     title="Naive kernel with Rust GPU"
   >
     {RustKernelSource}
