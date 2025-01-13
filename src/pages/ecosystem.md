@@ -23,7 +23,11 @@ on the GPU. _Currently unmaintained but stay tuned!_
 
 Compiles unmodified Rust code to
 [PTX](https://docs.nvidia.com/cuda/parallel-thread-execution/index.html) (CUDA) so that
-it can run on the GPU.
+it can run on NVIDIA GPUs.
+
+## [amdgpu backend in rustc](https://github.com/rust-lang/rust/issues/135024)
+
+Compiles unmodified Rust code to [HSA](https://github.com/RadeonOpenCompute/ROCR-Runtime) so that it can run on AMD GPUs.
 
 ## [CubeCL](https://github.com/tracel-ai/cubecl)
 
