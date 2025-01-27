@@ -53,7 +53,7 @@ projects.
 For a broader look at Rust and GPUs, check out the [ecosystem overview
 page](https://rust-gpu.github.io/ecosystem/).
 
-## Short-Term Roadmap
+## Short-term roadmap
 
 Our immediate focus is on stabilizing and modernizing the Rust CUDA project:
 
@@ -78,7 +78,7 @@ its functionality and integrate with the broader ecosystem:
 - **`rust-gpu` collaboration**: Leverage `rust-gpu`'s tooling and compiler
   infrastructure to reduce duplication.
 
-## Long-Term Roadmap
+## Long-term roadmap
 
 Our long-term vision is to make GPU programming in Rust safe, ergonomic, fast, and fully
 integrated into the language:
