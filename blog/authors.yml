@@ -1,6 +1,6 @@
 LegNeato:
   name: Christian Legnitto
-  title: Rust GPU maintainer
+  title: Rust GPU and Rust CUDA maintainer
   url: https://github.com/LegNeato
   image_url:
     ## Image URL managed by the fetchAuthorImages plugin. Changes may be overwritten.

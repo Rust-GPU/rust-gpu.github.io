@@ -27,3 +27,8 @@ performance:
   label: performance
   permalink: /performance
   description: Performance measuring and tuning
+
+cuda:
+  label: cuda
+  permalink: /cuda
+  description: Related to CUDA
