@@ -49,11 +49,11 @@ Jorge used a [draft PR](https://github.com/Rust-GPU/Rust-CUDA/pull/98) put toget
 
 The [latest NVIDIA CUDA toolkit is
 `12.x`](https://docs.nvidia.com/cuda/cuda-toolkit-release-notes/index.html). When
-Rust-GPU was last maintained only `11.x` was available. Rust-GPU crates would error if
+Rust-CUDA was last maintained only `11.x` was available. Rust-CUDA crates would error if
 CUDA was less than version `11.x`, but the check also errored on `12.x`. Supporting CUDA
 `12.x` is critical as most users install the latest CUDA toolkit.
 
-<Gh user="jorge-ortega" /> tested Rust-GPU with CUDA `12.x` successfully, giving
+<Gh user="jorge-ortega" /> tested Rust-CUDA with CUDA `12.x` successfully, giving
 us confidence to enable initial support. New contributor <Gh user="Schmiedium" /> then
 [updated the version check](https://github.com/Rust-GPU/Rust-CUDA/pull/165), and
 maintainer <Gh user="LegNeato" /> integrated `12.x` [into CI](https://github.com/Rust-GPU/Rust-CUDA/pull/168).
@@ -74,7 +74,7 @@ addressed linker errors across both Windows and Linux. The [first passing CI
 run](https://github.com/Rust-GPU/Rust-CUDA/actions/runs/13913964011/) was a huge
 accomplishment and a culmination of a lot of debugging and development work.
 
-The Rust-GPU project currently can't run GPU tests on GitHub Actions due to the lack of
+The Rust-CUDA project currently can't run GPU tests on GitHub Actions due to the lack of
 NVIDIA GPUs. **If you want to sponsor some CI machines, get in touch!**
 
 Even without GPU tests, CI now provides a critical safety net for future development.
@@ -117,7 +117,7 @@ Thank you to all of our new contributors!
 
 #### Project cleanups
 
-Rust-GPU maintainer <Gh user="LegNeato" /> went through the project and closed most of the
+Rust-CUDA maintainer <Gh user="LegNeato" /> went through the project and closed most of the
 outdated issues and any pull requests that were no longer relevant. Little things like
 tags on GitHub were added to aid discoverablility.
 
@@ -139,7 +139,7 @@ we are thinking:
   infrastructure to reduce duplication.
 
 Of course, what's next will largely depend on who shows up and what they want to do!
-Rust-GPU is 100% community-driven; none of us are paid to work on it.
+Rust-CUDA is 100% community-driven; none of us are paid to work on it.
 
 ## Relation to other GPU projects in the Rust ecosystem
 
