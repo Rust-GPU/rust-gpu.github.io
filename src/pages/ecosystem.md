@@ -10,14 +10,14 @@ decoder ring for key projects that relate to both Rust and GPUs in some way.
 
 ## [rust-gpu](https://github.com/rust-gpu/rust-gpu)
 
-Compiles unmodified Rust code to
-[SPIR-V](https://www.khronos.org/spir/) (Vulkan) so that it can run on the GPU.
+Compiles unmodified Rust code to [SPIR-V](https://www.khronos.org/spir/) (Vulkan) so
+that it can run on the GPU.
 
 ## [rust-cuda](https://github.com/Rust-GPU/Rust-CUDA)
 
 Compiles unmodified Rust code to
 [NVVM](https://docs.nvidia.com/cuda/nvvm-ir-spec/index.html) (CUDA) so that it can run
-on the GPU. _Currently unmaintained but stay tuned!_
+on the GPU.
 
 ## [nvptx backend in rustc](https://doc.rust-lang.org/rustc/platform-support/nvptx64-nvidia-cuda.html)
 
