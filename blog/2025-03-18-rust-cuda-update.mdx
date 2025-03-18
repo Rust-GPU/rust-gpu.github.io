@@ -1,0 +1,193 @@
+---
+title: "Rust CUDA project update"
+authors: [LegNeato]
+tags: ["announcement", "cuda"]
+---
+
+import Gh from "@site/blog/src/components/UserMention";
+
+The [Rust CUDA project](https://github.com/rust-gpu/rust-cuda) has been [rebooted after
+being dormant for 3+ years](./2025-01-27-rust-cuda-reboot.md).
+
+Rust CUDA enables you to write and run [CUDA](https://developer.nvidia.com/cuda-toolkit)
+kernels in Rust, executing directly on NVIDIA GPUs using [NVVM
+IR](https://docs.nvidia.com/cuda/nvvm-ir-spec/index.html).
+
+Much has happened since the reboot announcement and we wanted to give an update.
+
+**To follow along or get involved, check out the [`rust-cuda` repo on GitHub](https://github.com/rust-gpu/rust-cuda).**
+
+<!-- truncate -->
+
+## Short-term goals
+
+As a reminder, our short-term goals were to stabilize and modernize the Rust CUDA
+project by updating dependencies, merging outstanding PRs, and closing outdated issues.
+
+### Update to a newer Rust toolchain
+
+Rust-CUDA is a collection of crates, one of which is
+[`rustc_codegen_nvvm`](https://github.com/Rust-GPU/Rust-CUDA/tree/main/crates/rustc_codegen_nvvm).
+This crate plugs directly into the Rust compiler to generate [NVVM
+IR](https://docs.nvidia.com/cuda/nvvm-ir-spec/index.html), which NVIDIA's tools then
+compile down to GPU-executable code. It's the magic that makes Rust-on-GPU happen and
+allows your Rust code to call existing CUDA libraries (anything compiled into
+[PTX](https://docs.nvidia.com/cuda/parallel-thread-execution)).
+
+Because `rustc_codegen_nvvm` relies heavily on the Rust compiler's internals, it needs
+to exactly match with a particular compiler version. Up until recently, Rust-CUDA was
+stuck on a very old nightly version—`nightly-2021-12-04`. That is **over 3 years old**!
+
+Huge shoutout to new contributor <Gh user="jorge-ortega" /> for [bringing Rust-CUDA
+forward to `nightly-2025-03-02`](https://github.com/Rust-GPU/Rust-CUDA/pull/155). With
+this update, we've got much better compatibility with the Rust crate ecosystem and
+access to new language features.
+
+Jorge used a [draft PR](https://github.com/Rust-GPU/Rust-CUDA/pull/98) put together by <Gh user="apriori" /> way back in 2022 as a guide. Big thanks to both <Gh user="jorge-ortega" /> and <Gh user="apriori" /> for making this leap possible!
+
+### Experimental support for the latest CUDA tookit
+
+The [latest NVIDIA CUDA toolkit is
+`12.x`](https://docs.nvidia.com/cuda/cuda-toolkit-release-notes/index.html). When
+Rust-GPU was last maintained only `11.x` was available. Rust-GPU crates would error if
+CUDA was less than version `11.x`, but the check also errored on `12.x`. Supporting CUDA
+`12.x` is critical as most users install the latest CUDA toolkit.
+
+<Gh user="jorge-ortega" /> tested Rust-GPU with CUDA `12.x` successfully, giving
+us confidence to enable initial support. New contributor <Gh user="Schmiedium" /> then
+[updated the version check](https://github.com/Rust-GPU/Rust-CUDA/pull/165), and
+maintainer <Gh user="LegNeato" /> integrated `12.x` [into CI](https://github.com/Rust-GPU/Rust-CUDA/pull/168).
+
+Support for CUDA `12.x` remains experimental due to limited testing and ongoing codebase
+ramp-up. Please [file issues](https://github.com/Rust-GPU/Rust-CUDA/issues) if
+encountered!
+
+### Fix CI
+
+Rust-CUDA's CI was broken after three years of inactivity and there was significant
+technical debt.
+
+As CI is critically important to quality, we focused on fixing and modernizing it. <Gh
+user="jorge-ortega" />, <Gh user="Schmiedium" />, and <Gh user="LegNeato" /> resolved
+formatting issues, fixed clippy warnings, updated dependencies, rewrote code, and
+addressed linker errors across both Windows and Linux. The [first passing CI
+run](https://github.com/Rust-GPU/Rust-CUDA/actions/runs/13913964011/) was a huge
+accomplishment and a culmination of a lot of debugging and development work.
+
+The Rust-GPU project currently can't run GPU tests on GitHub Actions due to the lack of
+NVIDIA GPUs. **If you want to sponsor some CI machines, get in touch!**
+
+Even without GPU tests, CI now provides a critical safety net for future development.
+
+### Merging outstanding PRs
+
+We merged over 16 outstanding pull requests from over 12 contributors as far back as 2022. Some selected changes:
+
+- [#105](https://github.com/rust-gpu/rust-gpu/pull/105) by <Gh user="DoeringChristian"
+  />: Fixed a double-free caused by incorrect casting, significantly improving memory
+  safety. While Rust-CUDA is written in Rust, we interface with CUDA libraries and tools
+  written in C/C++ so issues like this can happen.
+- [#64](https://github.com/rust-gpu/rust-gpu/pull/64) by <Gh user="kjetilkjeka" /> (the
+  `rustc` ptx backend maintainer): Added pitched memory allocation and 2D memcpy
+  support, enabling more efficient GPU memory management.
+- [#67](https://github.com/rust-gpu/rust-gpu/pull/67) /
+  [#68](https://github.com/rust-gpu/rust-gpu/pull/68) by <Gh user="chr1sj0nes" />:
+  Removed unnecessary `Default` bounds, making the API better.
+- [#71](https://github.com/rust-gpu/rust-gpu/pull/71) by <Gh user="vmx" />: Added
+  support for retrieving device UUID, making GPU resource management easier.
+
+Thank you to all the (old) contributors:
+
+<Gh user="zeroecco" />, <Gh user="skierpage" />, <Gh user="Vollkornaffe" />, <Gh user="Tweoss" />
+, <Gh user="DoeringChristian" />, <Gh user="ralfbiedert" />, <Gh user="vmx" />, <Gh user="jac-cbi" />
+, <Gh user="jounathaen" />, <Gh user="WilliamVenner" />, <Gh user="chr1sj0nes" />
+, <Gh user="kjetilkjeka" />
+
+Sorry for your changes languishing for so long! We hope you come back and contribute
+again soon.
+
+### Merging new PRs
+
+Since the reboot, we merged over 22 new pull requests from over 7 new contributors:
+
+<Gh user="Schmiedium" />, <Gh user="LegNeato" />, <Gh user="jorge-ortega" />, <Gh user="alaric728" />
+, <Gh user="Jerryy959" />, <Gh user="juntyr" />
+
+Thank you to all of our new contributors!
+
+#### Project cleanups
+
+Rust-GPU maintainer <Gh user="LegNeato" /> went through the project and closed most of the
+outdated issues and any pull requests that were no longer relevant. Little things like
+tags on GitHub were added to aid discoverablility.
+
+## What's next?
+
+Now that the project is rebooted and stabilized, we can start to look forward. As
+mentioned in the [reboot post](./2025-01-27-rust-cuda-reboot.md), this is broadly what
+we are thinking:
+
+- **Rust-C++ interop**: Investigate Rust's recent C++ interoperability initiatives to
+  see if they can be used to simplify host and library integration for CUDA.
+- **Rust community collaboration**: Work with other Rust CUDA projects to consolidate
+  and unify host-side tools and workflows where appropriate.
+- **PTX backend collaboration**: Coordinate with the [rustc PTX
+  backend](https://doc.rust-lang.org/rustc/platform-support/nvptx64-nvidia-cuda.html)
+  team to explore shared infrastructure and evaluate transitioning Rust CUDA from NVVM
+  IR to raw PTX.
+- **`rust-gpu` collaboration**: Leverage `rust-gpu`'s tooling and compiler
+  infrastructure to reduce duplication.
+
+Of course, what's next will largely depend on who shows up and what they want to do!
+Rust-GPU is 100% community-driven; none of us are paid to work on it.
+
+## Relation to other GPU projects in the Rust ecosystem
+
+In the reboot post, we mentioned significant opportunities for collaboration and
+unification with related projects:
+
+- **[Rust GPU](https://rust-gpu.github.io/)**: This project is similar to Rust CUDA but
+  targets [SPIR-V](https://www.khronos.org/spir/) for [Vulkan](https://www.vulkan.org/)
+  GPUs.
+
+  Our long-term vision for the two projects includes merging developer-facing APIs to
+  provide a unified experience for GPU programming in Rust. Developers should not need
+  to worry about underlying platforms (Vulkan vs. CUDA) or low-level IR (SPIR-V vs.
+  NVVM) unless doing specialized work. This would make GPU programming in Rust feel as
+  seamless as its abstractions for CPU architectures or operating systems.
+
+  Christian Legnitto ([LegNeato](https://github.com/LegNeato)) is one of the maintainers
+  for both projects.
+
+- **[`rustc` PTX
+  backend](https://doc.rust-lang.org/rustc/platform-support/nvptx64-nvidia-cuda.html)**:
+  The Rust compiler's experimental `nvptx` backend generates CUDA's low-level
+  [PTX](https://docs.nvidia.com/cuda/parallel-thread-execution/) IR. We plan to
+  collaborate with this effort to determine how it can complement or integrate with
+  `rust-cuda`'s NVVM IR approach.
+
+- **[cudarc](https://github.com/coreylowman/cudarc)**: This crate provides a host-side
+  abstraction for CUDA programming in Rust. We aim to explore how `rust-cuda` can
+  interoperate with `cudarc` or consolidate efforts.
+
+After digging deeper into the Rust-CUDA codebase, we're even more convinced these
+opportunities are real. The path to merging Rust-CUDA and Rust-GPU, in particular, looks
+shorter and more relevant than we originally expected.
+
+For a broader look at Rust and GPUs, check out the [ecosystem overview
+page](https://rust-gpu.github.io/ecosystem/).
+
+## Call for contributors
+
+We need your help to shape the future of CUDA programming in Rust. Whether you're a
+maintainer, contributor, or user, there's an opportunity to [get
+involved](https://github.com/rust-gpu/rust-cuda). We're especially
+interested in adding maintainers to make the project sustainable.
+
+Be aware that the process may be a bit bumpy as we are still getting the project in
+order.
+
+If you'd prefer to focus on non-proprietary and multi-vendor platforms, check out our
+related **[Rust GPU](https://rust-gpu.github.io/)** project. It is similar to Rust CUDA
+but targets [SPIR-V](https://www.khronos.org/spir/) for
+[Vulkan](https://www.vulkan.org/) GPUs.
