@@ -27,8 +27,8 @@ export const RustIsomorphicGlam: React.FC = () => (
 export const RustIsomorphicDeps: React.FC = () => (
   <Snippet
     language="rust"
-    lines="9-20"
-    hash="72c14d7"
+    lines="12-22"
+    hash="476b902"
     className="text-xs"
     title="Cargo.toml"
   >
