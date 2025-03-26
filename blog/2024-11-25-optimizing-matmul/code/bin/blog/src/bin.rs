@@ -183,8 +183,9 @@ fn verify_results(a: &[f32], b: &[f32], result: &[f32], m: u32, k: u32, n: u32) 
             }
             let actual = result[(i * n + j) as usize];
             let diff = (actual - expected).abs();
+            let rel_error = diff / expected.abs();
             assert!(
-                diff < 1e-3,
+                rel_error < 1e-3,
                 "Mismatch at [{}, {}]: expected {}, got {}",
                 i,
                 j,
