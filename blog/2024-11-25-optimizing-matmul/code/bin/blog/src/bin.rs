@@ -158,9 +158,10 @@ fn run_test<T: Display, U: MatrixMultiply<T>>(multiplier: U, size: (u32, u32, u3
     // Calculate FLOPS
     let flop_span = span!(Level::DEBUG, "calculate_flops");
     let _flop_enter = flop_span.enter();
-    let ops = 2.0 * (m * n * k) as f64;
-    let flops = ops / compute_time.as_secs_f64() / 1e9;
-    info!("Flops: {}", flops);
+    let ops = 2.0 * (m as u64 * n as u64 * k as u64) as f64;
+    let flops = ops / compute_time.as_secs_f64();
+    let gflops = flops / 1e9;
+    info!("GFlops: {}", gflops);
     drop(_flop_enter);
 
     // Verification phase
