@@ -7,4 +7,4 @@ edition = "2021"
 crate-type = ["lib", "cdylib"]
 
 [build-dependencies]
-spirv-builder = { git = "https://github.com/rust-gpu/rust-gpu", rev = "0da80f8a61867590a0824873fa45dc8983e49da8" }
+spirv-builder = { git = "https://github.com/rust-gpu/rust-gpu", rev = "05042d1713012862be103e85bfd2c15dfeccda7b" }

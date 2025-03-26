@@ -6,6 +6,9 @@ edition = "2021"
 [lib]
 crate-type = ["dylib", "lib"]
 
+[lints]
+workspace = true
+
 # Dependencies when run on either the CPU or GPU
 [dependencies]
 settings = { path = "../../shared/settings" }

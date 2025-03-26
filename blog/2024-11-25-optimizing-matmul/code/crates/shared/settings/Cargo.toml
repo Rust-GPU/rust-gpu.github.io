@@ -6,6 +6,9 @@ edition = "2021"
 [dependencies]
 bytemuck = { version = "1.9", features = ["derive"] }
 
+[lints]
+workspace = true
+
 # Conditionally include `glam` only when not on the `spirv` target.
 [target.'cfg(not(target_arch = "spirv"))'.dependencies]
 glam = { workspace = true }
