@@ -5,6 +5,7 @@ use std::path::{Path, PathBuf};
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     let gpu_crate_path = Path::new("../../../gpu/tiling_2d");
+    println!("cargo::rerun-if-changed={}", gpu_crate_path.display());
 
     // Compile the shader crate with SpirvBuilder.
     let result = SpirvBuilder::new(gpu_crate_path, "spirv-unknown-vulkan1.2")
