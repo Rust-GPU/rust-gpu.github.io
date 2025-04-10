@@ -14,7 +14,7 @@ and we want to share some highlights.
 
 The code is available on [GitHub](https://github.com/Rust-GPU/rust-gpu-shadertoys).
 
-![Shadertoy screenshot](/img/shadertoys.png)
+![Shadertoy screenshot](/img/shadertoys.jpg)
 
 ## What is Rust GPU?
 
