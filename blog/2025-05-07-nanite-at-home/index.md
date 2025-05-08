@@ -1,5 +1,5 @@
 ---
-title: "Nanite at Home using Rust-GPU"
+title: "Nanite at Home"
 authors: ["firestar99"]
 slug: nanite-at-home
 tags: ["demo", "code", "performance"]
@@ -15,11 +15,13 @@ TODO Nanite at home meme?
 
 <!-- truncate -->
 
-
+TODO proper introduction, why Terrain gen before nanite?    
 
 ## Triangles, Vertices, Meshes and Level of Detail
 
+:::tip
 Feel free to skip this chapter if you already know all these concepts, but I suspect there will be plenty of rust programmers unfamiliar with computer graphics.
+:::
 
 TODO pic of some low poly 3D model
 
@@ -33,15 +35,59 @@ For realtime applications you'd typically use a process called "rasterization" t
 
 The cost of rendering scales largely by the shaders that need to be run, or in other words: The amount of pixels on screen plus the amount of vertices of the model. 
 
-As we move a model further away from the camera, the mesh gets smaller and fewer fragment shader need to be evaluated. However, we would still need to call the vertex shader for every single vertex to know where it ends up on screen, even if the detail they describe would be too small to notice. To improve performance, it is common practice to not just have a single mesh, but to create multiple meshes at different Level of Detail (LOD) that can be swapped out, depending on the distance to the camera.
+TODO pic of some different LOD levels
 
-## Terrain Generation
+As we move a model further away from the camera, the mesh gets smaller and fewer fragments need to be evaluated. However, we would still need to call the vertex shader for every single vertex to know where it ends up on screen, even if the detail they describe would be too small to notice. To improve performance, it is common practice to not just have a single mesh, but to create multiple meshes at different Level of Detail (LOD) that can be swapped out, depending on the distance to the camera. The process of reducing the amount of geometry of a mesh is called "mesh simplification", 
 
+
+
+## Terrain in video games
+
+![minecraft chunks](./minecraft_chunks.jpg)
+
+You've all played or at least seen Minecraft with its infinite worlds made of blocks. We can't draw infinite amounts of geometry, so we need to segment the world into chunks and only load a small amount of them around the player. And as the player moves in some direction, we load new chunks there and unload the ones behind them.
+But that alone doesn't lend itself to far view distances, as chunks further from the camera as just as geometrically dense as the one the player is standing in.
+We need simplified chunks.
+
+<figure>
+![terrain_mesh_lod.jpg](terrain_mesh_lod.jpg)
+<figcaption>[image source](https://www.researchgate.net/publication/342611763_General-Purpose_Real-Time_VR_Landscape_Visualization_with_Free_Software_and_Open_Data)</figcaption>
+</figure>
+
+Above you can see a single chunk of a more typical non-blocky game. The white lines indicate the geometry for a 64x64 grid, with a square being represented by 2 triangles each. Compare that to the red geometry representing the same chunk, but with only an 8x8 grid with far fewer geometric detail. By simply using a smaller grid, thus lowering our sampling frequency, we can generate simpler geometry.
+
+TODO rephrase
+
+<figure>
+![cdlod_selection.jpg](./cdlod_selection.jpg)
+<figcaption>Source: Continuous Distance-Dependent Level of Detail for Rendering Heightmaps</figcaption>
+</figure>
+
+A typical approach is to combine a 2x2 of chunks into a larger chunk. If we use a quarter of the vertex density representing four times as much area, every chunk, independent of its LOD, has the exact same amount of vertices and triangles. If we then repeat this process a bunch of times, we can create a chunk system like the one pictured above, with many very detailed chunks near the camera and larger, less detailed chunks the further away we get. 
+
+![](./tikz/terrain_tree.png)
+
+But as we are building up this data structure, we create a special kind of tree: a Quadtree. Ubiquitous in the computer graphics world, it's a binary tree but in 2 dimensions, where one node splits into four new nodes. For clarity, we will only be visualizing two children per node in our graphs.
+
+
+
+## Terrain holes
+
+![](./tikz/terrain_hole.png)
+
+<figure>
+![terrain_mesh_lod.jpg](terrain_mesh_lod.jpg)
+<figcaption>[image source](https://www.researchgate.net/publication/342611763_General-Purpose_Real-Time_VR_Landscape_Visualization_with_Free_Software_and_Open_Data)</figcaption>
+</figure>
+
+
+<figure>
+![](./tree_locked_border.jpg)
+<figcaption>[image source](https://blog.traverseresearch.nl/creating-a-directed-acyclic-graph-from-a-mesh-1329e57286e5)</figcaption>
+</figure>
 
 
 ## Nanite
-
-The reducing vertices in a model can be automated and is called "mesh simplification".
 
 ## rust-gpu-bindless
 
