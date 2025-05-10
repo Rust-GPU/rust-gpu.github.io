@@ -7,15 +7,16 @@ tags: ["demo", "code", "performance"]
 
 TODO Nanite at home meme?
 
-Why pay Unreal Engine money for their Nanite, when we have Nanite at Home?
+Why pay Unreal Engine money for their Nanite, when we have Nanite at Home? How hard could it be to replicate it ourselves, with rust-gpu?
 
-How hard could it be to replicate it ourselves, with rust-gpu?
+* split into multiple posts
+* this one about Nanite
+* next one about rust-gpu
+* why read this? unique perspective: Terrain gen really similar to nanite
 
 
 
-<!-- truncate -->
-
-TODO proper introduction, why Terrain gen before nanite?    
+<!-- truncate -->    
 
 ## Triangles, Vertices, Meshes and Level of Detail
 
@@ -74,11 +75,11 @@ As we iteratively create more and more simplified chunks, you may notice that th
 
 import terrain_hole from './tikz/terrain_hole.png';
 
-<figure style={{float:"left"}}>
+<figure style={{float:"right"}}>
 <img src={terrain_hole} width="350"/>
 </figure>
 
-The biggest issue with LOD Terrain is the creation of holes between different detail levels. In the image above, imagine you are up high looking down on some terrain, with the orange chunk being closer to you and at a higher detail and the blue chunk being further away with less detail. On these LOD transitions, the geometry between the chunks usually doesn't perfectly align, which can result in some visual artifacts. In the lucky case on the left, we may notice that a hill is being cut off. But on the right side, the detailed vertices go below the simplified chunk's height, creating a hole into the void underneath! There's different approaches on how to deal with these holes, and we want to outline some of them here.
+The biggest issue with LOD Terrain is the creation of holes between different detail levels. In the image above, imagine you are up high looking down on some terrain, with the orange chunk being closer to you and at a higher detail and the blue chunk being further away with less detail. On these LOD transitions, the geometry between the chunks usually doesn't perfectly align, which can result in some visual artifacts. In the lucky case on the right, we may notice that a hill is being cut off. But on the right side, the detailed vertices go below the simplified chunk's height, creating a hole into the void underneath! There's different approaches on how to deal with these holes, and we want to outline some of them here.
 
 <figure>
 ![terrain_mesh_lod.jpg](terrain_mesh_lod.jpg)
@@ -111,23 +112,32 @@ The very first step is to load our mesh from disk using the [gltf crate](https:/
 
 ![](./tikz/nanite_mesh_all.png)
 
-1. Select a group of 4 clusters: This would get us the state on the left, with 4 clusters in different colors, and their respective cluster graph at the bottom. Think of it as selecting our "2x2 of chunks" which we want to simplify.
+1. Select a group of 4 clusters: This would get us the state on the right, with 4 clusters in different colors, and their respective cluster graph at the bottom. Think of it as selecting our "2x2 of chunks" which we want to simplify.
 2. Merge the clusters into a single mesh: We forget about clusters for a moment, and just merge the clusters of our group into a single small mesh, which we'll need for the next step.
-3. Simplify the clusters with fixed borders: This gets us to the middle state, where we have a white mesh that has been simplified. But most importantly, the outer borders to the surrounding groups are fixed and have not changed at all. This allows us to decide to draw the higher or lower LOD *independently* of our neighbours, which is critical to ensure we don't get any holes in our model though LOD transitions. In our cluster graph, we deonte it as a new node, who's children are the 4 clusters, similarly to a quadtree in terrain generation.
-4. Split the mesh back into clusters: This may seem weird at first, but it's a critical step as we see later. For now, take note how in the right image we just created a new border going through our group. And how in the graph we now have the two clusters as separate nodes, with both having all original clusters as their children.
+3. Simplify the clusters with fixed borders: This gets us to the middle state, where we have a white mesh that has been simplified. But most importantly, the outer borders to the surrounding groups are fixed and have not changed at all. This allows us to decide to draw the higher or lower LOD *independently* of our neighbours, which is critical to ensure we don't get any holes in our model though LOD transitions. The meshoptimizer library also provides a simplification implementation, specifically I'm using [`simplify_with_attributes_and_locks`](https://github.com/gwihlidal/meshopt-rs/blob/c2165927e09c557e717f6fcb6b7690bee65f6c90/src/simplify.rs#L193) cause it's very unlikely I'd be able to build a better simplifier than what the rest of the industry uses. In our cluster graph, we deonte it as a new node, who's children are the 4 clusters, similarly to a quadtree in terrain generation.
+4. Split the mesh back into clusters: This may seem weird at first, but it's a critical step as we see in a bit. In the right image you can see the newly created border going through our group. Note how this border consists just out of a single long edge and it being a lot longer than all the other edges from the locked border.
 
 import nanite_mesh_5 from './tikz/nanite_mesh_5.jpg';
 
-<figure style={{float:"left"}}>
+<figure style={{float:"right"}}>
 <img src={nanite_mesh_5} width="350"/>
 </figure>
 
-TODO better image
+TODO better image, cut out graph
 
-To understand why we split it up again, have a look at the borders of the resulting two clusters. The outer borders, which we weren't allowed to modify during our simplification, are still just as detailed as before. Whereas the new inner border consists of just a single edge and is very simplified. Let's say we start the next iteration, for which we have to collect all the new clusters from all the groups, getting us a mesh with many clusters like you can see on the left (ignoring the red lines for now). We will also have to throw away our group selection, as it changes for each iteration.
+To understand why we split it up into multiple clusters at the end, we need to look at what happens in the next iteration. To start the next iteration, we have to process all groups and collect all the newly generated clusters into a new mesh, like you can see on the right. Then we proceed with the first step again and select groups of 4 clusters. However, there's one detail I've left out earlier: We don't just select *any* group of 4 clusters, we want to select these groups so that there are as few outer edges as possible. Doing so will encourage the grouping algorithm to place the outer edges though longer and more simplified edges, like the edge we created earlier by splitting. Imagine the red lines as the locked borders of the new iteration, and notice how we shifted the locked borders of the previous iteration into the center of the new groups. And my the formerly locked edges being in the center of a group, they can be simplified.
 
+I like to think about it like swapping the areas around constantly: One iteration, one area is a locked border where the other is being simplified. And the next iteration they swap, and the other is the locked border whereas the one is being simplified. But instead of two discrete locations swapping, there are lots of borders throughout the mesh constantly swapping between being locked and being simplified.
 
+You may notice that group selection is an optimization problem of graph partitioning. Luckily there's the [METIS](https://github.com/KarypisLab/METIS) library (and their [rust bindings](https://github.com/lihpc-computational-geometry/metis-rs)), which has implemented decades of research in graph partitioning to allow solving these with almost linear scaling, which is amazing considering any native implementation would likely take exponential or even factorial time to run. It's also surprisingly trivial to use, if you're interested I recommend reading the [docs of `Graph::new`](https://github.com/LIHPC-Computational-Geometry/metis-rs/blob/410f512740476bac38199a3f3d0ab605cd81fe67/src/lib.rs#L230-L302).
+
+## lod selection
+And how in the graph we now have the two clusters as separate nodes, with both having all original clusters as their children.
 
 ## rust-gpu-bindless
+* maybe a separate article, coming later?
 
 ## Epilog
+* link to thesis
+* link to other's efforts in reimpl nanite
+* searching job
