@@ -1,0 +1,160 @@
+---
+title: "Rust CUDA May 2025 project update"
+authors: [LegNeato]
+tags: ["announcement", "cuda"]
+---
+
+import Gh from "@site/blog/src/components/UserMention";
+
+Rust CUDA enables you to write and run [CUDA](https://developer.nvidia.com/cuda-toolkit)
+kernels in Rust, executing directly on NVIDIA GPUs using [NVVM
+IR](https://docs.nvidia.com/cuda/nvvm-ir-spec/index.html).
+
+Work is ongoing in the project and we wanted to share an update.
+
+**To follow along or get involved, check out the [`rust-cuda` repo on GitHub](https://github.com/rust-gpu/rust-cuda).**
+
+<!-- truncate -->
+
+## New Docker images
+
+Thanks to <Gh user="adamcavendish" />, we now automatically build and publish Docker
+images as part of CI. These images are based on [NVIDIA's official CUDA
+containers](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html)
+and come preconfigured to build and run Rust GPU kernels.
+
+Rust CUDA uses [NVVM](https://docs.nvidia.com/cuda/nvvm-ir-spec/) under the hood, which
+is NVIDIA's LLVM-based CUDA frontend. NVVM is currently based on LLVM 7 and getting it
+set up manually can be tedious and error-prone. These images solve the setup issue.
+
+## Improved constant memory handling
+
+### Background
+
+CUDA exposes [distinct memory
+spaces](https://docs.nvidia.com/cuda/cuda-c-programming-guide/index.html#memory-hierarchy),
+each with different characteristics:
+
+| Memory Space    | Scope       | Speed     | Size        | Use Case                                  |
+| :-------------- | :---------- | :-------- | :---------- | :---------------------------------------- |
+| Registers       | Per thread  | Fastest   | Very small  | Thread-local temporaries                  |
+| Shared memory   | Per block   | Fast      | ~48 KB      | Inter-thread communication within a block |
+| Constant memory | Device-wide | Fast read | 64 KB total | Read-only values broadcast to all threads |
+| Global memory   | Device-wide | Slower    | GBs         | General-purpose read/write memory         |
+
+CUDA C++ code is often monolithic with minimal abstraction and everything in one file.
+Rust CUDA brings idiomatic Rust to GPU programming and encourages modularity, traits,
+generics, and reuse of third-party `no_std` crates from [crates.io](https://crates.io).
+As a result, CUDA programs written in Rust tend to be more complex and depend on more
+static data spread across your code and its dependencies.
+
+A good example is
+[`curve25519-dalek`](https://docs.rs/curve25519-dalek/latest/curve25519_dalek/), a
+cryptographic crate that defines large static lookup tables for scalar multiplication
+and point decompression. These values are immutable and read-only—ideal for constant
+memory—but together exceed the 64 KB limit. Using `curve25519-dalek` as a dependency
+means your kernel's static data will never entirely fit in constant memory.
+
+### The issue
+
+Previously, Rust CUDA would try to place all eligible static values into constant memory
+automatically. If you had too many, or one was too big, your kernel would break at
+runtime and CUDA would return an `IllegalAddress` error with no clear cause.
+
+Manual placement via `#[cuda_std::address_space(constant)]` or
+`#[cuda_std::address_space(global)]` was possible, but only for code you controlled. The
+annotations did not help for dependencies pulled from crates.io. This made it dangerous
+to use larger crates or write more modular GPU programs as at any point they might tip
+over the 64 KB limit and start throwing runtime errors.
+
+This situation had the potential to create frustrating and difficult-to-diagnose bugs.
+For example:
+
+- Adding a new `no_std` crate to a project could inadvertently push total static data size over the constant memory limit, causing crashes. This could happen even if the new crate's functionality was not directly invoked, simply due to the inclusion of its static data.
+- A kernel might function correctly in one build configuration but fail in another if different features or Cargo flags led to changes in which static variables were included in the final binary.
+- If a large static variable was initially unused, the compiler might optimize it away. If subsequent code changes caused that static to be referenced, it would be included, potentially triggering the memory limit and causing runtime failures.
+- Code behavior could vary unexpectedly across different versions of a dependency or between debug and release builds.
+
+### The Fix
+
+New contributor <Gh user="brandonros" /> and Rust CUDA maintainer <Gh user="LegNeato" />
+[landed a
+change](https://github.com/Rust-GPU/Rust-CUDA/commit/afb147ed51fbb14b758e10a0a24dbc2311a52b82)
+that avoids those pitfalls with a conservative default and a safe opt-in mechanism:
+
+1. By default all statics are placed in global memory.
+
+2. A new opt-in flag, `--use-constant-memory-space`, enables automatic placement in constant memory.
+
+3. If a static is too large it is spilled to global memory automatically, even when the
+   flag is enabled.
+
+4. Manual overrides with `#[cuda_std::address_space(constant)]` or
+   `#[cuda_std::address_space(global)]` still work and take precedence.
+
+<br />
+
+This gives developers some level of control without the risk of unstable runtime
+behavior.
+
+### Future work
+
+This change prevents runtime errors and hard-to-debug issues but may reduce performance
+in some cases by not fully utilizing constant memory.
+
+The long-term goal is to make automatic constant memory placement smarter so we can turn
+it on by default without breaking user code. To get there, we need infrastructure to
+support correct and tunable placement logic.
+
+Planned improvements include:
+
+1. Tracking total constant memory usage across all static variables during codegen.
+2. Spilling based on cumulative usage, not just individual static size.
+3. Failing at compile time when the limit is exceeded, especially for manually annotated statics.
+4. Compiler warnings when usage is close to the 64 KB limit, perhaps with a configurable
+   range.
+5. User-defined packing policies, such as prioritizing constant placement of small or
+   large statics, or statics from a particular crate.
+
+<br />
+
+These should give developers control and enable using profiling data or usage frequency
+to drive placement decisions for maximum performance.
+
+**If these improvements sound interesting to you, join us in [issue
+#218](https://github.com/Rust-GPU/Rust-CUDA/issues/218).** We're always looking for new
+contributors!
+
+## Updated examples and CI
+
+<Gh user="giantcow" />, <Gh user="jorge-ortega" />, <Gh user="adamcavendish" />, and <Gh
+user="LegNeato" /> fixed broken examples, cleaned up CI, and added a new
+[GEMM](https://en.wikipedia.org/wiki/Basic_Linear_Algebra_Subprograms#Level_3) example.
+These steady improvements are important to keep the project healthy and usable.
+
+## Cleaned up bindings
+
+CUDA libraries ship as binary objects, typically wrapped in Rust using `-sys` crates.
+With many subframeworks like [cuDNN](https://developer.nvidia.com/cudnn),
+[cuBLAS](https://developer.nvidia.com/cublas), and
+[OptiX](https://developer.nvidia.com/optix), maintaining these crates requires
+generating bindings automatically via
+[`bindgen`](https://github.com/rust-lang/rust-bindgen).
+
+<Gh user="adamcavendish" /> and <Gh user="jorge-ortega" /> streamlined our `bindgen`
+setup to simplify maintenance and make subframeworks easier to include or exclude.
+
+## Call for contributors
+
+We need your help to shape the future of CUDA programming in Rust. Whether you're a
+maintainer, contributor, or user, there's an opportunity to [get
+involved](https://github.com/rust-gpu/rust-cuda). We're especially interested in adding
+maintainers to make the project sustainable.
+
+Be aware that the process may be a bit bumpy as we are still getting the project in
+order.
+
+If you'd prefer to focus on non-proprietary and multi-vendor platforms, check out our
+related **[Rust GPU](https://rust-gpu.github.io/)** project. It is similar to Rust CUDA
+but targets [SPIR-V](https://www.khronos.org/spir/) for
+[Vulkan](https://www.vulkan.org/) GPUs.
