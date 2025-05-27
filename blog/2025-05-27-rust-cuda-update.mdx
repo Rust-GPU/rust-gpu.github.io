@@ -75,7 +75,7 @@ For example:
 - If a large static variable was initially unused, the compiler might optimize it away. If subsequent code changes caused that static to be referenced, it would be included, potentially triggering the memory limit and causing runtime failures.
 - Code behavior could vary unexpectedly across different versions of a dependency or between debug and release builds.
 
-### The Fix
+### The fix
 
 New contributor <Gh user="brandonros" /> and Rust CUDA maintainer <Gh user="LegNeato" />
 [landed a
