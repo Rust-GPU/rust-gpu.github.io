@@ -1,7 +1,7 @@
 ---
 title: "Shadertoys ported to Rust GPU"
 authors: [LegNeato]
-tags: ["demo"]
+tags: ["demo", "port"]
 ---
 
 # Porting Shadertoys to Rust with Rust GPU
