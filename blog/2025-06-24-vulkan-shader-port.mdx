@@ -1,0 +1,562 @@
+---
+title: "Porting GPU shaders to Rust 30x faster with AI"
+authors: [LegNeato]
+tags: ["demo", "port"]
+---
+
+import Gh from "@site/blog/src/components/UserMention";
+
+# Porting GPU shaders to Rust 30x faster with AI
+
+I used AI to port virtually all of the shaders from Sascha Willems' [popular Vulkan
+sample repo](https://github.com/SaschaWillems/Vulkan) over to Rust using [Rust
+GPU](https://github.com/Rust-GPU/rust-gpu/). This demonstrates Rust GPU is ready for
+production use.
+
+With AI handling most of the codegen and me reviewing and tweaking the results, the port
+took about four days of part-time work—a **30x speedup** compared to Sascha's [manual
+port to
+Slang](https://www.saschawillems.de/blog/2025/06/03/shaders-for-vulkan-samples-now-also-available-in-slang/).
+
+<!-- truncate -->
+
+The code is available on
+[GitHub](https://github.com/Rust-GPU/VulkanShaderExamples/tree/master/shaders).
+
+## What is Rust GPU?
+
+[Rust GPU](https://rust-gpu.github.io/) is a project that allows you to write code for
+GPUs using the Rust programming language. GPUs are typically programmed using
+specialized languages like [WGSL](https://www.w3.org/TR/WGSL/),
+[GLSL](https://developer.mozilla.org/en-US/docs/Games/Techniques/3D_on_the_web/GLSL_Shaders),
+[MSL](https://developer.apple.com/documentation/metal/performing_calculations_on_a_gpu),
+or
+[HLSL](https://learn.microsoft.com/en-us/windows/win32/direct3dhlsl/dx-graphics-hlsl).
+Rust GPU changes this by letting you use Rust to write GPU programs (often called
+"shaders" or "kernels").
+
+These Rust GPU programs are then compiled into [SPIR-V](https://www.khronos.org/spir/),
+a low-level format that [most GPUs understand](https://vulkan.gpuinfo.org/). Since
+SPIR-V is the format [Vulkan](https://www.vulkan.org/) uses, Rust GPU makes it possible
+to integrate Rust-based GPU programs into any Vulkan-compatible workflow.
+
+For more details, check out the [Rust GPU website](http://rust-gpu.github.io/) or the
+[GitHub repository](https://github.com/rust-gpu/rust-gpu).
+
+## Porting Vulkan shaders
+
+I went through every sample in Sascha's Vulkan repo and ported around 90% of the
+shaders.
+
+Each Rust shader compiles to valid SPIR-V via Rust GPU and drops into the original C++
+Vulkan pipeline without modification. This lack of host-side changes demonstrates that
+Rust GPU shaders can integrate into non-Rust Vulkan workflows with only build system
+changes.
+
+I was developing on macOS, so I used
+[MoltenVK](https://github.com/KhronosGroup/MoltenVK) to run the examples. I compared the
+GLSL and Rust output manually. Because MoltenVK does not support some advanced Vulkan
+features, a few shaders could not be checked at runtime to confirm they worked. I plan
+to eventually double check such shaders on a GPU with native Vulkan support.
+
+Porting these shaders proves that Rust GPU is ready for real use, but they aren't a good
+representation of what "Rust-native" shaders would look like. These shaders do not use
+advanced features supported in Rust GPU like traits, enums, feature flags, dependency
+management, lints, and others.
+
+## Rust GPU Vulkan support
+
+I'm a maintainer of Rust GPU but not a graphics or GPU programmer by background. Going
+in, I didn't know which Vulkan features and techniques would actually work with Rust
+GPU. Vulkan is
+[expansive](https://registry.khronos.org/vulkan/specs/latest/html/vkspec.html). Rust GPU
+is a large and evolving project with [new maintainers](/blog/transition-announcement)
+and little to no documentation.
+
+I was pleasantly surprised to find out that Rust GPU supports all the major Vulkan shader
+types! In addition to simple examples covering a single shader type, most of the
+examples have multiple shaders of different types working together in a full pipeline.
+Rust GPU supports this in a flexible way. A single crate can output each shader to its
+own file or combine them into a single [uber
+shader](https://dolphin-emu.org/blog/2017/07/30/ubershaders/) with multiple entry
+points. I did not use the uber shader route and instead matched what the C++ host code
+expected.
+
+<details>
+  <summary><strong>All Vulkan shader types supported by Rust GPU</strong></summary>
+
+- **[Vertex
+  Shaders](https://registry.khronos.org/vulkan/specs/1.3/html/chap15.html#vertex-stage)**  
+  Transforms per-vertex input data (positions, normals, etc.)  
+  (example:
+  [triangle](https://github.com/Rust-GPU/VulkanShaderExamples/tree/master/shaders/rust/triangle))
+
+- **[Fragment
+  Shaders](https://registry.khronos.org/vulkan/specs/1.3/html/chap15.html#fragment-stage)**  
+  Runs per-fragment to compute final pixel color  
+  (example:
+  [texture](https://github.com/Rust-GPU/VulkanShaderExamples/tree/master/shaders/rust/texture))
+
+- **[Tessellation Control & Evaluation
+  Shaders](https://registry.khronos.org/vulkan/specs/1.3/html/chap15.html#tessellation)**  
+  Dynamically subdivides geometry for smoother surfaces  
+  (example:
+  [tessellation](https://github.com/Rust-GPU/VulkanShaderExamples/tree/master/shaders/rust/tessellation))
+
+- **[Geometry
+  Shaders](https://registry.khronos.org/vulkan/specs/1.3/html/chap15.html#geometry)**  
+  Programmatically generates new geometry primitives  
+  (example:
+  [geometryshader](https://github.com/Rust-GPU/VulkanShaderExamples/tree/master/shaders/rust/geometryshader))
+
+- **[Compute
+  Shaders](https://registry.khronos.org/vulkan/specs/1.3/html/chap15.html#compute-shader)**  
+  General-purpose GPU execution outside the graphics pipeline  
+  (example:
+  [computeshader](https://github.com/Rust-GPU/VulkanShaderExamples/tree/master/shaders/rust/computeshader))
+
+- **[Mesh & Task
+  Shaders](https://www.khronos.org/blog/an-introduction-to-mesh-shaders)**  
+  Replaces traditional vertex/geometry pipeline with flexible meshlet-based execution  
+  (example:
+  [meshshader](https://github.com/Rust-GPU/VulkanShaderExamples/tree/master/shaders/rust/meshshader))
+
+- **[Ray Tracing Shaders](https://www.khronos.org/blog/ray-tracing-in-vulkan)**  
+  Enables hardware-accelerated ray traversal and shading logic  
+  (example:
+  [raytracingbasic](https://github.com/Rust-GPU/VulkanShaderExamples/tree/master/shaders/rust/raytracingbasic))
+
+</details>
+
+Sascha Willems' Vulkan examples are a well-known reference for real-world GPU
+techniques. They cover more than just API basics and include advanced techniques like
+dynamic rendering, PBR, deferred shading, compute, and ray tracing. Again, I was
+pleasantly surprised to see that these techniques work in Rust GPU without any major
+issues!
+
+<details>
+  <summary><strong>List of shader techniques and features demonstrated</strong></summary>
+
+### 🟢 Core and Basics
+
+- [Vulkan
+  basics](https://github.com/Rust-GPU/VulkanShaderExamples/tree/master/shaders/rust/triangle)
+- [Dynamic
+  rendering](https://github.com/Rust-GPU/VulkanShaderExamples/tree/master/shaders/rust/dynamicrendering)
+- [Pipelines](https://github.com/Rust-GPU/VulkanShaderExamples/tree/master/shaders/rust/pipelines),
+  [Graphics pipeline
+  library](https://github.com/Rust-GPU/VulkanShaderExamples/tree/master/shaders/rust/graphicspipelinelibrary)
+- [Vertex
+  attributes](https://github.com/Rust-GPU/VulkanShaderExamples/tree/master/shaders/rust/vertexattributes)
+
+### 📦 Data Binding
+
+- [Descriptor
+  sets](https://github.com/Rust-GPU/VulkanShaderExamples/tree/master/shaders/rust/descriptorsets)
+- [Dynamic uniform
+  buffers](https://github.com/Rust-GPU/VulkanShaderExamples/tree/master/shaders/rust/dynamicuniformbuffer)
+- [Push
+  constants](https://github.com/Rust-GPU/VulkanShaderExamples/tree/master/shaders/rust/pushconstants)
+- [Push
+  descriptors](https://github.com/Rust-GPU/VulkanShaderExamples/tree/master/shaders/rust/pushdescriptors)
+- [Specialization
+  constants](https://github.com/Rust-GPU/VulkanShaderExamples/tree/master/shaders/rust/specializationconstants)
+- [Descriptor
+  buffer](https://github.com/Rust-GPU/VulkanShaderExamples/tree/master/shaders/rust/descriptorbuffer)
+- [Descriptor
+  indexing](https://github.com/Rust-GPU/VulkanShaderExamples/tree/master/shaders/rust/descriptorindexing)
+- [Inline uniform
+  blocks](https://github.com/Rust-GPU/VulkanShaderExamples/tree/master/shaders/rust/inlineuniformblocks)
+
+### 🖼️ Textures
+
+- [2D
+  textures](https://github.com/Rust-GPU/VulkanShaderExamples/tree/master/shaders/rust/texture)
+- [3D
+  textures](https://github.com/Rust-GPU/VulkanShaderExamples/tree/master/shaders/rust/texture3d)
+- [Cubemaps](https://github.com/Rust-GPU/VulkanShaderExamples/tree/master/shaders/rust/texturecubemap)
+- [Texture
+  arrays](https://github.com/Rust-GPU/VulkanShaderExamples/tree/master/shaders/rust/texturearray)
+- [Cubemap
+  arrays](https://github.com/Rust-GPU/VulkanShaderExamples/tree/master/shaders/rust/texturecubemaparray)
+- [Mipmapping](https://github.com/Rust-GPU/VulkanShaderExamples/tree/master/shaders/rust/texturemipmapgen)
+- [Sparse
+  textures](https://github.com/Rust-GPU/VulkanShaderExamples/tree/master/shaders/rust/texturesparseresidency)
+
+### 📸 Framebuffer Techniques
+
+- [Offscreen
+  rendering](https://github.com/Rust-GPU/VulkanShaderExamples/tree/master/shaders/rust/offscreen)
+- [Input
+  attachments](https://github.com/Rust-GPU/VulkanShaderExamples/tree/master/shaders/rust/inputattachments)
+- [Subpasses](https://github.com/Rust-GPU/VulkanShaderExamples/tree/master/shaders/rust/subpasses)
+- [Deferred
+  shading](https://github.com/Rust-GPU/VulkanShaderExamples/tree/master/shaders/rust/deferred),
+  [Deferred with
+  shadows](https://github.com/Rust-GPU/VulkanShaderExamples/tree/master/shaders/rust/deferredshadows)
+- [Multisampling](https://github.com/Rust-GPU/VulkanShaderExamples/tree/master/shaders/rust/multisampling),
+  [Deferred
+  multisampling](https://github.com/Rust-GPU/VulkanShaderExamples/tree/master/shaders/rust/deferredmultisampling)
+- [Order-independent transparency
+  (OIT)](https://github.com/Rust-GPU/VulkanShaderExamples/tree/master/shaders/rust/oit)
+
+### 🌑 Shadows and Lighting
+
+- [Shadow
+  mapping](https://github.com/Rust-GPU/VulkanShaderExamples/tree/master/shaders/rust/shadowmapping)
+- [Cascaded
+  shadows](https://github.com/Rust-GPU/VulkanShaderExamples/tree/master/shaders/rust/shadowmappingcascade)
+- [Omnidirectional
+  shadows](https://github.com/Rust-GPU/VulkanShaderExamples/tree/master/shaders/rust/shadowmappingomni)
+- [PBR
+  basic](https://github.com/Rust-GPU/VulkanShaderExamples/tree/master/shaders/rust/pbrbasic)
+- [PBR with
+  IBL](https://github.com/Rust-GPU/VulkanShaderExamples/tree/master/shaders/rust/pbribl)
+- [HDR](https://github.com/Rust-GPU/VulkanShaderExamples/tree/master/shaders/rust/hdr)
+- [Bloom](https://github.com/Rust-GPU/VulkanShaderExamples/tree/master/shaders/rust/bloom)
+- [SSAO](https://github.com/Rust-GPU/VulkanShaderExamples/tree/master/shaders/rust/ssao)
+
+### 🔁 Performance and Instancing
+
+- [Instanced
+  rendering](https://github.com/Rust-GPU/VulkanShaderExamples/tree/master/shaders/rust/instancing)
+- [Indirect
+  draw](https://github.com/Rust-GPU/VulkanShaderExamples/tree/master/shaders/rust/indirectdraw)
+- [Multithreading](https://github.com/Rust-GPU/VulkanShaderExamples/tree/master/shaders/rust/multithreading)
+- [Occlusion
+  queries](https://github.com/Rust-GPU/VulkanShaderExamples/tree/master/shaders/rust/occlusionquery)
+- [Pipeline
+  statistics](https://github.com/Rust-GPU/VulkanShaderExamples/tree/master/shaders/rust/pipelinestatistics)
+- [Conditional
+  rendering](https://github.com/Rust-GPU/VulkanShaderExamples/tree/master/shaders/rust/conditionalrender)
+
+### 🧠 Compute and Simulation
+
+- [Compute
+  shaders](https://github.com/Rust-GPU/VulkanShaderExamples/tree/master/shaders/rust/computeshader)
+- [N-body
+  simulation](https://github.com/Rust-GPU/VulkanShaderExamples/tree/master/shaders/rust/computenbody)
+- [Cloth
+  simulation](https://github.com/Rust-GPU/VulkanShaderExamples/tree/master/shaders/rust/computecloth)
+- [Particle
+  systems](https://github.com/Rust-GPU/VulkanShaderExamples/tree/master/shaders/rust/computeparticles),
+  [CPU-based
+  particles](https://github.com/Rust-GPU/VulkanShaderExamples/tree/master/shaders/rust/particlesystem)
+- [GPU culling and
+  LOD](https://github.com/Rust-GPU/VulkanShaderExamples/tree/master/shaders/rust/computecullandlod)
+- [Headless
+  compute](https://github.com/Rust-GPU/VulkanShaderExamples/tree/master/shaders/rust/computeheadless)
+- [Ray
+  queries](https://github.com/Rust-GPU/VulkanShaderExamples/tree/master/shaders/rust/rayquery)
+
+### 🔺 Geometry & Tessellation
+
+- [Geometry
+  shaders](https://github.com/Rust-GPU/VulkanShaderExamples/tree/master/shaders/rust/geometryshader)
+- [Tessellation
+  basics](https://github.com/Rust-GPU/VulkanShaderExamples/tree/master/shaders/rust/tessellation)
+- [Terrain
+  tessellation](https://github.com/Rust-GPU/VulkanShaderExamples/tree/master/shaders/rust/terraintessellation)
+- [Displacement
+  mapping](https://github.com/Rust-GPU/VulkanShaderExamples/tree/master/shaders/rust/displacement)
+- [Viewport
+  arrays](https://github.com/Rust-GPU/VulkanShaderExamples/tree/master/shaders/rust/viewportarray)
+
+### 🧪 Ray Tracing
+
+- [Basic ray
+  tracing](https://github.com/Rust-GPU/VulkanShaderExamples/tree/master/shaders/rust/raytracingbasic)
+
+### ⚙️ Advanced Extensions
+
+- [Dynamic
+  rendering](https://github.com/Rust-GPU/VulkanShaderExamples/tree/master/shaders/rust/dynamicrendering)
+- [Mesh
+  shaders](https://github.com/Rust-GPU/VulkanShaderExamples/tree/master/shaders/rust/meshshader)
+- [Shader
+  objects](https://github.com/Rust-GPU/VulkanShaderExamples/tree/master/shaders/rust/shaderobjects)
+- [Descriptor
+  buffers](https://github.com/Rust-GPU/VulkanShaderExamples/tree/master/shaders/rust/descriptorbuffer)
+- [Conservative
+  raster](https://github.com/Rust-GPU/VulkanShaderExamples/tree/master/shaders/rust/conservativeraster)
+- [Debug
+  printf](https://github.com/Rust-GPU/VulkanShaderExamples/tree/master/shaders/rust/debugprintf)
+- [Debug
+  utils](https://github.com/Rust-GPU/VulkanShaderExamples/tree/master/shaders/rust/debugutils)
+- [Negative
+  viewport](https://github.com/Rust-GPU/VulkanShaderExamples/tree/master/shaders/rust/negativeviewportheight)
+- [Multiview](https://github.com/Rust-GPU/VulkanShaderExamples/tree/master/shaders/rust/multiview)
+
+### 👁️ UI and Text
+
+- [Distance field
+  fonts](https://github.com/Rust-GPU/VulkanShaderExamples/tree/master/shaders/rust/distancefieldfonts)
+- [ImGui
+  integration](https://github.com/Rust-GPU/VulkanShaderExamples/tree/master/shaders/rust/imgui)
+- [Text
+  overlay](https://github.com/Rust-GPU/VulkanShaderExamples/tree/master/shaders/rust/textoverlay)
+
+### ⚡ Effects and Demos
+
+- [Parallax
+  mapping](https://github.com/Rust-GPU/VulkanShaderExamples/tree/master/shaders/rust/parallaxmapping)
+- [Radial
+  blur](https://github.com/Rust-GPU/VulkanShaderExamples/tree/master/shaders/rust/radialblur)
+- [Environment
+  mapping](https://github.com/Rust-GPU/VulkanShaderExamples/tree/master/shaders/rust/sphericalenvmapping)
+- [Gears
+  demo](https://github.com/Rust-GPU/VulkanShaderExamples/tree/master/shaders/rust/gears)
+- [Vulkan
+  scene](https://github.com/Rust-GPU/VulkanShaderExamples/tree/master/shaders/rust/vulkanscene)
+
+</details>
+
+Successfully porting all these shaders demonstrates that Rust GPU can handle most major
+use-cases traditionally done in GLSL.
+
+## How I used AI
+
+The project was conceived as an opportunity to use [Claude
+Code](https://www.anthropic.com/claude-code) for the first time. I've been wanting to
+use it for a while, but a billing issue on Anthropic's side prevented me from doing so.
+Naturally, it started working when I signed up for the more expensive Pro plan!
+
+### The loop
+
+I worked interactively with Claude to port a single shader at a time. At first, I just
+asked Claude to "Port X GLSL shader to Rust using rust-gpu.” The results were not good.
+Claude would get confused and make obvious mistakes:
+
+- Name functions incorrectly
+- Forget to add shader crates to the workspace
+- Use incorrect crate names, paths, or imports. One thing it _loved_ to do was
+  hallucinate dependencies in `Cargo.toml`
+- Add build scripts or hardcode things that should be auto-detected
+- Get confused about where it was in the filesystem, affecting what it was reading,
+  writing, or running
+
+I would tell it what I wanted, it would do something wrong, I would tell it how to fix
+it, it would get that wrong, I would tell it how to fix _that_, and so on. Eventually, I
+had little fragments of directions that solved specific subproblems that kept coming up.
+
+I took these subproblem fixes and aggregated them into the initial prompt for the next
+shader. Again, I would interactively work on the shader and gain more fragments or
+tweaks to the existing ones. Over a few hours, this evolved into a detailed,
+repeatable, high-quality initial prompt. Once I had this "golden prompt," things went
+very smoothly and I was largely babysitting.
+
+<details>
+  <summary><strong>Golden prompt</strong></summary>
+
+Here are your instructions. Refer back to them frequently to make sure you are on plan:
+
+Let’s rewrite the glsl / slang shaders in rust using rust-gpu. Pick an unimplemented one
+that looks the easiest and tell me which you picked to work on (don’t do
+computeraytracing—other raytracing is fine—or conservativeraster or bufferdeviceaddress
+or variablerateshading or texturesparseresidency or oit or variablerateshading). The
+glsl/slang/rust versions of the logical shader should all be semantically equivalent. We
+will use the existing C++ harness to run them. Always use rust dependencies from the
+workspace and make the new shader consistent with the other rust shaders. We do not need
+build.rs, building is handled by an external script.
+
+spirv_std doesn’t have a glam feature, it is always built in at spirv_std::glam. The
+shader entry points have to be named something specific to be picked up by the C++. The
+C++ handles rust differently than the other languages that require “main”, it is
+main\*[x] with the shader type (check the other rust shaders)
+
+The shader must always be built with a build script as it sets up stuff in the env. You
+can run it with cd /Users/legnitto/src/vulkan_shader_examples/shaders/rust && python3
+compileshaders.py. If you are building one shader while iterating on it, you can use:
+python3 compileshaders.py [shader]
+
+Be sure to add any new crates to the cargo workspace. Do not create any manifest.json
+files, they are created when building.
+
+Shader crate names must be globally unique in the rust workspace. If there is a
+conflict, name it [groupname]-[shadername] in the cargo.toml package section, similar to
+existing ones. Only do it for the conflict.
+
+If a shader needs a Vulkan capability or extension, it is set in the crate’s Cargo.toml.
+Example: [package.metadata.rust-gpu.build] capabilities = ["ImageQuery"]
+
+To test the shader, you must first compile the test / example binary. Example:
+
+cmake --build build --target texturecubemap
+
+Then you can run the example binary with the shader. Example:
+
+cd /Users/legnitto/src/vulkan_shader_examples &&
+VK_ICD_FILENAMES=~/VulkanSDK/1.4.313.1/macOS/share/vulkan/icd.d/MoltenVK_icd.json
+./build/bin/computeraytracing -s rust
+
+Note you can swap “rust” for “glsl” to test the glsl shaders so we can compare the
+output.
+
+Use straightforward idiomatic rust things like constants for PI, TAU, and EPSILON where
+possible. Do not use bytemuck. Glam has many similar apis to glsl, use them when
+possible. You also might need spirv_std::num_traits::Float to access some rust apis on
+floats.
+
+Care should be taken to make sure padding of input and output structs is correct.
+
+Iterate on the shader until it compiles and is semantically equal to the glsl/slang
+shader. If you get stuck, look at the other rust shaders for what they do. Look line by
+line in the glsl, slang and rust shaders and make sure they have equivalent semantics
+that will produce equivalent output. do not copy obvious bugs in the source shaders. Ask
+if there is some glsl feature that rust-gpu does not support. If the semantics / logic /
+output is not the same, fix it and check again. Compile the test binary if it does not
+exist and run it. Then run the same thing with glsl so I can compare. Set the timeout to
+15 seconds when running.
+
+After the shader is complete, compiling with the build script, and I have confirmed
+both, ask if you should commit. When you commit, do not include any Claude info and look
+at other commit messages to make the format match. Make the style of the commit
+message match other rust shader commits. Include the lockfile.
+
+If you have any doubts, ask me, but you should be able to iterate your way to a
+completely working shader without my help.
+
+</details>
+
+## Tactics that helped AI
+
+**Giving AI complete control.** I kept an eye on the code to make sure it was
+reasonable, but I made Claude do all edits. In the past, I have found that when both the
+AI and I make changes the AI gets confused. I now choose up front if I am using AI as an
+aid to _my_ coding or if I am making AI code and I am reviewing instead.
+
+**Not compacting.** I found that when Claude compacted the conversation, the output
+quality dropped until I gave Claude more context and corrections to recover. Eventually,
+my golden prompt became so effective that it was better to restart Claude with the
+prompt rather than continue a compacted session.
+
+**Putting scaffolding in place.** In addition to the prompt, having scaffolding in place
+(directory layout, workspace setup, build commands, etc) meant the AI could focus just
+on the shader. This helped prevent confusion. Setting up scaffolding and working through
+a clear list is apparently good advice for both human programmers and AI!
+
+**Tightening the feedback loop.** One thing I resisted was changing the build system to
+allow specifying a single shader instead of building them all. As more shaders were
+added, the build system slowed down. Claude would hit timeouts unless I told it to
+increase them and velocity took a hit. I eventually bit the bullet and had Claude add a
+feature to build a single shader at a time. After that, Claude could run fast
+edit-compile-fix loops without my involvement.
+
+**Using existing examples.** As more shaders were implemented, Claude began referencing
+previously ported Rust shaders and correcting itself when it went off track. Errors and
+human intervention dropped significantly and velocity increased. Due to this the
+development curve was definitely not linear and accelerated up until the end. There’s a
+reason [OpenAI and others suggest giving AI examples in
+prompts](https://help.openai.com/en/articles/6654000-best-practices-for-prompt-engineering-with-the-openai-api).
+
+## AI limitations
+
+Even with my golden prompt, I could never get Claude to "one-shot" a shader port. The
+best I could get was a correct shader followed by manual reminders. The two main things
+I had to remind Claude were:
+
+1. _"Look line by line in the GLSL, Slang, and Rust shaders and make sure they have
+   equivalent semantics that will produce equivalent output."_
+2. _"When you commit, do not include any Claude info. Look at other commit messages and
+   match the format. Match the style of other Rust shader commits. Include the
+   lockfile."_
+
+<br />
+
+I would just paste those lines back in from the golden prompt. So, Claude was
+effectively "three-shotting" the task. I think it was forgetting due to a small context
+window, or it was de-emphasizing those directions in the initial prompt. Interestingly,
+I only needed to repaste them in once per session. For multiple ports in the same
+session, Claude would remember and one-shot them correctly. Well, until compacting and
+then it was time to start fresh again.
+
+When reviewing the generated code, I often caught Claude wallpapering over real or
+imagined Rust GPU limitations. For example, it assumed push constants were unsupported
+and hardcoded example values instead. Claude never _told_ me this; it only showed up in
+the code. If I had only looked at the conversation I would have missed it. The code
+would have run and appeared functional but it wouldn’t have been correct.
+
+## I ❤️ AI
+
+Even with all these issues, AI is _wild_. **Despite being new to the project and
+inexperienced with shaders, I was able to implement everything 30x faster than the
+original expert author.** Incredible!
+
+I've been using AI to write code for a while with mixed results. I was impressed when it
+one-shotted Gscript automation or handled React and CSS cleanly. But in more complex
+domains it fell apart.
+
+Lately I’ve been less frustrated. Partly because I use multiple AIs and have them
+interact, but mostly because I've learned how to manage their quirks and my
+expectations. Still, this shader porting experience really drove home just how far
+things have come. The fact that an AI could handle this volume of non-trivial,
+domain-specific code with minimal help is frankly insane.
+
+## Repos are forever
+
+One issue that comes up repeatedly while using AI is that when Embark transferred the
+Rust GPU project to the community, they [did not transfer the code
+repo](/blog/transition-announcement/#transition-challenges-repository-transfer). As a
+result, AI continues to treat the Embark repo as the source of truth and heavily weights
+the outdated APIs in that repository. I have to constantly teach AI the current Rust GPU
+repo url, APIs, and docs. The community anticipated problems like this and asked Embark
+to follow the standard repository transfer process, but they declined.
+
+## Rust GPU limitations
+
+There were only a few issues hit while porting the shaders to Rust. The first I was able
+to [fix with Claude's help](https://github.com/Rust-GPU/rust-gpu/pull/281), and the
+others are still outstanding. A huge benefit of using Rust for shaders is that the
+compiler and standard library are written in Rust too. When you hit an issue you can
+often fix it yourself, test it, and move on. No need to file bugs, wait for upstream, or
+switch to a different language like C++.
+
+### The fixed issue
+
+In GLSL, querying the size of an image is done with
+[`textureSize`](https://registry.khronos.org/OpenGL-Refpages/gl4/html/textureSize.xhtml)
+or [`imageSize`](https://registry.khronos.org/OpenGL-Refpages/gl4/html/imageSize.xhtml),
+depending on whether a level-of-detail (LOD) is required. In Rust GPU, these map to
+[`query_size_lod`](https://rust-gpu.github.io/rust-gpu/api/spirv_std/image/struct.SampledImage.html#method.query_size_lod)
+for sampled images using
+[`SampledImage`](https://rust-gpu.github.io/rust-gpu/api/spirv_std/image/struct.SampledImage.html),
+and
+[`query_size`](https://rust-gpu.github.io/rust-gpu/api/spirv_std/image/struct.SampledImage.html#method.query_size)
+for multisampled or storage images. These functions return
+[`glam`](https://docs.rs/glam/latest/glam/) vector types like
+[`UVec2`](https://docs.rs/glam/latest/glam/struct.UVec2.html),
+[`UVec3`](https://docs.rs/glam/latest/glam/struct.UVec3.html), or scalars, depending on
+image dimensionality and array status.
+
+There was a mismatch in the expected return shape, returning a
+[`UVec3`](https://docs.rs/glam/latest/glam/struct.UVec3.html) for a cubemap when SPIR-V
+expects a [`UVec2`](https://docs.rs/glam/latest/glam/struct.UVec2.html). Thankfully this
+showed up as a compile-time error rather than runtime error due to Rust's type system!
+
+### Missing APIs
+
+Rust GPU does not currently support
+[`SPV_KHR_physical_storage_buffer`](https://registry.khronos.org/SPIR-V/extensions/KHR/SPV_KHR_physical_storage_buffer.html)
+and the
+[`PhysicalStorageBuffer64`](https://registry.khronos.org/SPIR-V/specs/unified1/SPIRV.html#_storage_classes)
+addressing model, though there is a draft PR up by community member <Gh user="jwollen"
+/>. The shaders that use this API could not be ported.
+
+Rust GPU does not support
+[`VK_EXT_sparse_residency`](https://registry.khronos.org/vulkan/specs/1.3-extensions/html/chap35.html#features-sparseResidency),
+which enables partially resident textures. Support for sparse texture operations,
+including `OpImageSparse*` instructions and residency queries, is missing.
+
+Rust GPU also lacks support for
+[`VK_KHR_fragment_shading_rate`](https://registry.khronos.org/vulkan/specs/1.3-extensions/html/chap35.html#primsrast-fragment-shading-rate),
+which allows different regions of the framebuffer to be shaded at varying rates.
+This requires the `FragmentShadingRateKHR` built-in and associated decorations.
+
+## Come join us!
+
+Porting the Vulkan shaders to Rust with Rust GPU was successful. Rust GPU is definitely
+ready to use in your Vulkan-based project.
+
+We're eager to add more users and contributors! We will be working on revamping the
+onboarding and documentation soon. To follow along or get involved, check out the
+[`rust-gpu` repo on GitHub](https://github.com/rust-gpu/rust-gpu).
