@@ -124,7 +124,7 @@ simple developer experience. Here is roughly what happens for a given command:
   No external toolchains or code generation steps are involved.  
   The kernel runs directly on the CPU as standard Rust code.
 
-- `cargo build --features wgpu`:
+- `cargo run --features wgpu`:
 
   _During the build_, `build.rs` uses [`rustc_codegen_spirv`](https://github.com/rust-gpu/rust-gpu) to compile the GPU kernel to SPIR-V.  
   The resulting SPIR-V is embedded into the CPU binary as static data.  
@@ -151,7 +151,7 @@ simple developer experience. Here is roughly what happens for a given command:
     - SPIR-V is passed to Vulkan  
     - Vulkan executes the kernel on the GPU
 
-- `cargo build --features cuda`:
+- `cargo run --features cuda`:
 
   _During the build_, `build.rs` uses
   [`rustc_codegen_nvvm`](https://github.com/Rust-GPU/Rust-CUDA) to compile the GPU
