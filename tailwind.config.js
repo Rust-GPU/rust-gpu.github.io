@@ -24,7 +24,7 @@ module.exports = {
       fontFamily: {
         header: ['"Geist"', "sans-serif"],
         text: ['"Geist"', "sans-serif"],
-        mono: ['"GeistMono"', "sans-serif"],
+        mono: ['"GeistMono"', "monospace"],
       },
       borderWidth: {
         thin: "max(1px, 0.0625rem)",
