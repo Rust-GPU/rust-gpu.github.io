@@ -1,0 +1,113 @@
+---
+title: "Rust CUDA August 2025 project update"
+authors: [LegNeato]
+draft: true
+tags: ["announcement", "cuda"]
+---
+
+import Gh from "@site/blog/src/components/UserMention";
+
+Rust CUDA enables you to write and run [CUDA](https://developer.nvidia.com/cuda-toolkit)
+kernels in Rust, executing directly on NVIDIA GPUs using [NVVM
+IR](https://docs.nvidia.com/cuda/nvvm-ir-spec/index.html).
+
+Work continues at a rapid pace with significant improvements landing regularly. Here's
+what's new since our last update.
+
+**To follow along or get involved, check out the [`rust-cuda` repo on GitHub](https://github.com/rust-gpu/rust-cuda).**
+
+<!-- truncate -->
+
+## Chimera demo blog post
+
+We published a [blog post](./2025-07-25-rust-on-every-gpu.mdx) about our
+[demo](https://github.com/LegNeato/rust-gpu-chimera) showcasing a single shared Rust
+codebase that runs on every major GPU platform. The demo uses Rust CUDA for CUDA
+support.
+
+The post reached [#1 on Hacker News](https://news.ycombinator.com/item?id=44692876) and
+was [popular on
+Reddit](https://www.reddit.com/r/rust/comments/1m96z61/rust_running_on_every_gpu/).
+
+## Rust toolchain updated
+
+Rust CUDA includes a compiler backend that compiles regular Rust code into [NVVM
+IR](https://docs.nvidia.com/cuda/nvvm-ir-spec/index.html). Because of this deep
+integration with compiler internals, Rust CUDA must use a very specific version of the
+Rust compiler. Rust CUDA now supports `nightly-2025-06-23`.
+
+This aligns Rust CUDA with the [Rust GPU](https://github.com/Rust-GPU/rust-gpu) project,
+which uses the [same toolchain
+version](https://github.com/Rust-GPU/rust-gpu/blob/df1628a032d22c864397417c2871b74d602af986/rust-toolchain.toml).
+Having both projects on the same Rust version enabled the aforementioned
+[demo](https://github.com/LegNeato/rust-gpu-chimera) to work with fewer hacks.
+
+## Migration to glam
+
+Maintainers <Gh user="jorge-ortega" /> and <Gh user="LegNeato" /> migrated from the
+`vek` math library to [`glam`](https://github.com/bitshifter/glam-rs) in [PR
+#180](https://github.com/Rust-GPU/Rust-CUDA/pull/180). Glam is used by the [Rust
+GPU](https://github.com/Rust-GPU/rust-gpu) project and this consistency enables easier
+code reuse.
+
+While `vek` is still re-exported at `cuda_std::vek`, it is deprecated and will be
+removed in the future.
+
+## i128 support
+
+<Gh user="LegNeato" /> implemented emulation for `i128` operations that aren't natively
+supported by the version of LLVM NVIDIA's tools are based on.
+
+With this support, Rust CUDA's compiler backend can now correctly compile the [`sha2`
+crate from crates.io](https://crates.io/crates/sha2). We've added [an
+example](https://github.com/Rust-GPU/Rust-CUDA/tree/main/examples/cuda/sha2_crates_io)
+demonstrating the same `sha2` crate used on both CPU and GPU.
+
+Using unmodified crates from crates.io on the GPU is one of the unique benefits of using
+Rust for GPU programming.
+
+## Target feature support
+
+[PR #239](https://github.com/Rust-GPU/Rust-CUDA/pull/239) added support for CUDA compute
+capability target features. Developers can now use `#[target_feature(enable =
+"compute_75")]` to conditionally compile code for specific GPU architectures, enabling
+better optimization and feature detection at compile time.
+
+For more details, check out the
+[documentation](https://rust-gpu.github.io/Rust-CUDA/guide/compute_capabilities.html).
+
+## Added compiletests
+
+Previously we only verified that the project built in CI. GitHub Actions runners do not
+have NVIDIA GPUs, so we could not run tests to confirm correct behavior. This made
+changes risky because regressions could slip through unnoticed.
+
+<Gh user="LegNeato" /> ported the
+[`compiletest`](https://github.com/Manishearth/compiletest-rs) infrastructure from [Rust
+GPU](https://github.com/Rust-GPU/rust-gpu) to work with Rust CUDA. Compile tests let us
+confirm that the compiler backend behaves correctly and generates the expected code.
+While not full runtime testing, this change significantly improves reliability and makes
+regressions easier to catch.
+
+## Multi-architecture Docker images
+
+Rust CUDA uses a version of NVVM based on LLVM 7.1 and getting it set up manually can be
+tedious and error-prone. Rust CUDA's [docker
+images](https://github.com/orgs/Rust-GPU/packages?repo_name=Rust-CUDA) aim to solve the
+setup issue. <Gh user="LegNeato" /> updated our Docker infrastructure to add support for
+ARM64.
+
+## Call for contributors
+
+We need your help to shape the future of CUDA programming in Rust. Whether you're a
+maintainer, contributor, or user, there's an opportunity to [get
+involved](https://github.com/rust-gpu/rust-cuda). We're especially interested in adding
+maintainers to make the project sustainable.
+
+Be aware that the process may be a bit bumpy as we are still getting the project in
+order.
+
+If you'd prefer to focus on non-proprietary and multi-vendor platforms, check out our
+related **[Rust GPU](https://rust-gpu.github.io/)** project. It is similar to Rust CUDA
+but targets [SPIR-V](https://www.khronos.org/spir/) for
+[Vulkan](https://www.vulkan.org/) GPUs.
