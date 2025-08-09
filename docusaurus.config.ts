@@ -31,9 +31,12 @@ const config: Config = {
     locales: ["en"],
   },
 
-  // https://docusaurus.io/blog/releases/3.6#adoption-strategy
   future: {
-    experimental_faster: true,
+    v4: true,
+    experimental_faster: {
+      rspackBundler: true,
+      rspackPersistentCache: true,
+    },
   },
   plugins: [
     fetchAuthorImages,
