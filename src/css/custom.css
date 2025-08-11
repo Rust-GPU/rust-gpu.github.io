@@ -75,7 +75,7 @@
     @apply text-toc-highlight-text !important;
   }
 
-  code {
+  code:not(pre code) {
     @apply text-code bg-code-background;
     @apply whitespace-pre;
   }
