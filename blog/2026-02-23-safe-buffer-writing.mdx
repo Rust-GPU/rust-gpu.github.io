@@ -1,0 +1,127 @@
+---
+title: "Designing a safe buffer writing API is hard"
+authors: [firestar99]
+tags: ["code"]
+---
+
+## Current unsoundness of mutable buffers
+
+The way we expose mutable buffers is quite unsound from rust's perspective. Have a look at this shader:
+
+```rust
+#[spirv(compute(threads(32)))]
+fn main(
+    #[spirv(descriptor_set = 0, binding = 0, storage_buffer)] buffer: &mut [u32],
+    #[spirv(global_invocation_id)] inv: UVec3,
+) {
+    buffer[inv.x / 2] = inv.x;
+}
+```
+
+Every single invocation is writing a value to a mutable buffer. From the rust perspective, that buffer is just a `&mut [u32]` reference, meaning we have exclusive mutable access to the value and can safely write to it. From the shader perspective, the access is mutable but in no way exclusive as the buffer is shared between all invocations. Which from the rust perspective is a very unsound thing to do.
+
+<!-- truncate -->
+
+The code above demonstrates how safe code is able to make aliased writes: Both the 0th and 1st invocation write to index 0, the 2nd and 3rd invocation write to slot 1, and so on. And aliased writes are very much UB.
+
+I wanted to [redesign our entry point interface](https://github.com/Rust-GPU/rust-gpu/issues/449) from scratch anyway for quite some time, to make it easier to use and eliminate soundness holes like this one. The easiest path forward would be some newtype that offers an `unsafe fn write(&self, index: usize, t: T)` function and offload the guarantee of no aliased writes to the end user. But I also wanted to investigate if there was some API that allows you to write to buffers *safely*, even with some limitations in flexibility.
+
+
+
+## Unique Index
+
+One of those *failed* experiments was the `UniqueIndex`, which you can find in [PR #538](https://github.com/Rust-GPU/rust-gpu/pull/538).
+
+The core idea is quite simple: Let's say we have a compute shader with a one-dimensional workgroup size, for simplicity. Then `global_invocation_id().x` should return a unique index for every invocation. So the following unsafe code should be sound:
+```rust
+let gid = global_invocation_id().x as usize;
+*buffer.index_unchecked_mut(gid) = ...;
+```
+
+Is there a way we can offer a safe API that can prove this using the rust type system?
+
+Introducing [`UniqueIndex`](https://github.com/Rust-GPU/rust-gpu/blob/d7c2f7d14c7541e309ccf4f7176169f6ce91db19/crates/spirv-std/src/unique/index.rs#L43), a wrapper type around a `u32` with the safety invariant that each invocation has a unique index. Our [`global_invocation_id()` would return a `UniqueIndex`](https://github.com/Rust-GPU/rust-gpu/blob/00cacd0812b9ec229e1435bb3636e529536467b3/crates/spirv-std/src/unique/builtin.rs#L51-L58), which you can use to index into a buffer to gain mutable access to that index, like this:
+
+```rust
+let gid: UniqueIndex<Global> = global_invocation_index();
+buffer[gid] = ...;
+```
+
+
+
+### Math ops retaining uniqueness
+
+But I don't just want the nth invocation to always write into the nth index in the slice, I would like to compute the index myself, and somehow make the type system prove that it is unique. Like what if I want to only write every second index by multiplying the index by 2, so the 0th invocation still writes index 0, but the 1st writes index 2, the 2nd writes index 4 and so on?
+
+Pretty much all index calculation start off with `global_invocation_id` (or a combination of `local_invocation_id()` and `workgroup_id`), which returns a `UniqueIndex`, and then apply operations from there. So what operations can you apply to it that retain the uniqueness of the index? You can multiply by some constant value (barring 0), like the value 2 in example above, and every invocation would still write into a unique index within the slice. You can obviously not divide, as a division by 2 would make the indices of 0 and 1 map to 0. What you can do is add or subtract a constant, and you can bitshift left by some constant, all of which retains the uniqueness of the index. (If you assume we don't over- or underflow the index, at which point you're out of bounds anyway.) You might notice, those are all the common operations used in address calculation!
+
+Thinking one step further, the right hand side doesn't actually need to be a constant, it just needs to be a value that is the same across all invocations. Like the size of the workgroup is a value that is the same across all invocations, yet may *not* be a rust constant as it may be changed at runtime with specialization constants. So I've added the [ScalarValue](https://github.com/Rust-GPU/rust-gpu/blob/00cacd0812b9ec229e1435bb3636e529536467b3/crates/spirv-std/src/unique/scalar.rs#L15) wrapper type, thinking of AMD's RNDA hardware having scalar registers to store values that are the same across a workgroup. You can do any integer mathematical operation you want on them, as long as both sides are a scalar, and then use any of the limited math ops above to combine them with a `UniqueIndex` to create another `UniqueIndex`. This would then look like this, for the example given above:
+
+```rust
+let gid: UniqueIndex<Global> = global_invocation_index();
+// either
+buffer[gid * ScalarValue::new::<2>()] = ...;
+// or
+buffer[gid * const_scalar!(2)] = ...;
+```
+[source](https://github.com/Rust-GPU/rust-gpu/blob/b6fd482c08f4512f526ef73a26afef20e0c6d5f8/tests/compiletests/ui/entry/disjoint_slice_unique.rs#L26-L45)
+
+There's two ways of creating a new `ScalarValue`: Either you use the `new` function and "pass" the value via the const generic, or the macro, which I think looks nicer and unlike const generics allows entire constant expressions.
+
+
+
+### Scopes and shared memory
+
+If you've been wondering why you see `UniqueIndex<Global>` in the example code with that extra generic, that's the Scope. Scopes allow you to restrict the uniqueness property to some scope, for now we've just been using the `Global` scope to write to globally shared buffers using the index from `global_invocation_id`. But there's also indices that are not globally unique, like the one returned by `local_invocation_index`, which is only unique within the `Workgroup` scope. That is still a very useful property, for accessing things like shared memory, or combining it with the workgroup size scalar to create a globally unique index. There's also scopes for `Subgroup` and `ActiveInvocation`, which may come in useful in some scenarios.
+
+
+
+### The fatal flaw
+
+Unfortunately, this entire system has one fatal flaw. Let's say we have some code here wants to write two consecutive values per invocation:
+
+```rust
+let gid: UniqueIndex<Global> = global_invocation_index();
+buffer[gid * const_scalar!(2)] = ...;
+buffer[gid * const_scalar!(2) + const_scalar!(2)] = ...;
+```
+[source](https://github.com/Rust-GPU/rust-gpu/blob/b6fd482c08f4512f526ef73a26afef20e0c6d5f8/tests/compiletests/ui/entry/disjoint_slice_unique.rs#L26-L45)
+
+Did you notice the typo? In the second buffer write we probably meant to only add `1` to the index instead of `2`. But this safe code compiles and has aliased writes, as the second buffer write can alias with the first one, leading to UB.
+
+There's a few ways out of this predicament, all of them are kinda ugly:
+* Runtime validation of aliased writes, but that's really difficult to implement since you could be doing N writes, and would go against the zero cost philosophy.
+* Some other compile time validation of aliased writes in the type system. If you need multiple writes, you're most likely writing within a loop, where you need the type to be the same over multiple iterations, making this really hard as well.
+* Only allow a single write by consuming the buffer. But then you're better off with simple partitions.
+
+
+
+## Partitions
+
+Partitioning splits up the buffer into multiple partitions and assigns each invocation a unique one. It is dead simple and safe:
+
+```rust
+let buffer: TypedBuffer<[MyStruct]> = ...;
+let parts: &mut MyStruct = buffer.partition();
+*parts = MyStruct { ... };
+```
+[source](https://github.com/Rust-GPU/rust-gpu/blob/00cacd0812b9ec229e1435bb3636e529536467b3/tests/compiletests/ui/entry/disjoint_slice_partition.rs#L22-L36)
+
+We can also offer a way to assign each invocation multiple elements within the buffer, similarly to [`Iterator::array_chunks<const N: usize>(...)`](https://doc.rust-lang.org/core/iter/trait.Iterator.html#method.array_chunks):
+
+```rust
+let buffer: TypedBuffer<[u32]> = ...;
+let parts: &mut [u32; 4] = buffer.partition_many::<4>();
+*parts = [1, 2, 3, 4];
+```
+[source](https://github.com/Rust-GPU/rust-gpu/blob/00cacd0812b9ec229e1435bb3636e529536467b3/tests/compiletests/ui/entry/disjoint_slice_partition.rs#L22-L36)
+
+Of course, taking away the ability to compute your index limits it's use-case quite a bit. But there's probably plenty of shaders for which this is more than sufficient, and the rest can always use the unsafe escape hatches.
+
+There's also a few open questions to be answered:
+* How do you map a 2D or 3D workgroup down to a 1D buffer index? We'd likely have to use some kind of stride, but how to you ensure the chosen stride doesn't lead to aliasing? Even if you could, you'd likely have to query the size of the execution somehow, which either needs to be supplied externally or may be expensive to query (aka. require a memory read).
+* How to support images? And in similar vein, how you do map an arbitrary workgroup size to a 2D or 3D image? Or even a cubemap?
+
+Ideas welcome.
+
+But if there's a takeaway from this experiment, then that the uniqueness property of `global_invocation_id` is not worth preserving in the type system, as it is extremely difficult to take advantage of it. Instead, we should get on with implementing builtins as getter functions, and have `fn global_invocation_id()` just return a simple `UVec3`.
